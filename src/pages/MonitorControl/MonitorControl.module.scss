@@ -1,0 +1,117 @@
+.header-page {
+    color: black;
+    text-shadow: 1px 2px 3px #3d3b3e;
+    font-size: 2.6rem;
+}
+.select-location {
+    margin: 6px auto;
+    display: flex;
+    justify-content: center;
+}
+.room-name {
+    display: flex;
+    align-items: center;
+    padding: 5px 13px;
+    margin: 8px 12px;
+    background-color: #11d3b5;
+    max-width: 190px;
+    border-radius: 15px;
+
+    p {
+        font-size: 1.6rem;
+        font-weight: 500;
+        margin-left: 12px;
+    }
+}
+.conten-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+.control,
+.monitor {
+    padding: 12px;
+    flex-grow: 1;
+    width: 50%;
+    background-color: #ffff;
+    margin: 12px 8px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+.header {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin: 0px 6px 16px;
+    background: #c1e74fbd;
+    padding: 4px 16px;
+    border-radius: 15px;
+    text-align: center;
+}
+.control-wrapper {
+    margin-bottom: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.title-control {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 4px 12px;
+    margin-bottom: 22px;
+    background-color: #e5e2e7;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+    p {
+        margin-left: 10px;
+        font-size: 1.4rem;
+        font-weight: 500;
+    }
+}
+.speed-control,
+.dew-control {
+    display: flex;
+    align-items: center;
+    user-select: none;
+    .control-value {
+        display: flex;
+        align-items: center;
+    }
+    .icon-btn {
+        cursor: pointer;
+        color: var(--primary);
+    }
+    .text-value {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+}
+.slider-value {
+    display: block;
+    position: relative;
+    text-align: center;
+    flex: 1;
+    .range-slider {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        top: 25%;
+        left: 19%;
+    }
+}
+
+.text-value {
+    margin: 0px 12px;
+}
+.input-value {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    input {
+        border: 1px solid #3d3b3e;
+        border-radius: 15px;
+        background-color: #d7e4e2;
+        padding: 2px 12px;
+    }
+}

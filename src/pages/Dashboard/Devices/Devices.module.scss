@@ -1,0 +1,37 @@
+.row {
+    background-color: rgb(255, 255, 255);
+    padding: 16px 0;
+    border-radius: 10px;
+}
+.header {
+    display: flex;
+    align-items: center;
+    margin: 12px;
+    background-color: #cbd5da;
+    max-width: 200px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    box-shadow: 1px 2px 2px #393b3b;
+    .header-icon {
+        padding: 4px;
+        border-radius: 10px;
+    }
+    .device-name {
+        margin-left: 20px;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: rgb(87, 87, 87);
+    }
+}
+
+.wrapper-conditioner {
+    padding: 0 24px 32px;
+    display: flex;
+    flex-direction: column;
+    // .header {
+    // }
+    .content {
+        display: flex;
+        flex-direction: row;
+    }
+}

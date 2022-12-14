@@ -1,0 +1,79 @@
+.toggle-button-cover {
+    position: relative;
+}
+
+.knobs,
+.layer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.button {
+    position: relative;
+    top: 50%;
+    width: 42px;
+    height: 22px;
+    overflow: hidden;
+}
+
+.button,
+.button .layer {
+    border-radius: 100px;
+}
+
+.switch-toggle {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.layer {
+    width: 100%;
+    background-color: #aab4b9;
+    transition: 0.3s ease all;
+    z-index: 1;
+}
+.knobs {
+    z-index: 2;
+    &::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 4px;
+        width: 10px;
+        height: 6px;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: bold;
+        text-align: center;
+        line-height: 1;
+        padding: 6px 4px;
+        background-color: #f44336;
+        border-radius: 50%;
+        transition: 0.4s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+    }
+}
+
+.switch-toggle:checked + .knobs:before {
+    content: '';
+    left: 20px;
+    background-color: #03f437;
+}
+
+.switch-toggle:checked ~ .layer {
+    background-color: #7d8e96;
+}
+
+.button .knobs,
+.button .knobs:before,
+.button .layer {
+    transition: 0.3s ease all;
+}

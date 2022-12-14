@@ -1,0 +1,82 @@
+.wrapper {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 40px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    min-width: 100px;
+    padding: 9px 8px;
+    margin-left: 16px;
+    border-radius: 4px;
+    background-color: var(--white);
+    border: 1px solid transparent;
+    user-select: none;
+    + .wrapper {
+        margin-left: 8px;
+    }
+    &.disable {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+}
+//Button types
+.rounded {
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+    border-color: rgba(22, 24, 35, 0.12);
+
+    &:hover {
+        border-color: rgba(22, 24, 35, 0.2);
+        background-color: rgba(22, 24, 35, 0.03);
+    }
+}
+.primary {
+    background-color: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+
+    &:hover {
+        border-color: var(--primary);
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fb6018;
+    }
+}
+.outline {
+    color: var(--primary);
+    border-color: currentColor;
+
+    &:hover {
+        background-color: rgba(254, 44, 85, 0.06);
+        border-color: currentColor;
+    }
+}
+.text {
+    min-width: 110px;
+    border-color: rgba(22, 24, 35, 0.12);
+    border-radius: 2px;
+    &:hover {
+        background-color: rgba(22, 24, 35, 0.03);
+    }
+}
+//Button size
+.small {
+    min-width: 88px;
+    padding: 4px 8px;
+}
+.large {
+    min-width: 148px;
+    padding: 14px 8px;
+}
+
+//icon
+.icon + .title,
+.title + .icon {
+    margin-left: 8px;
+}
+.icon {
+    display: flex;
+    width: 20px;
+    text-align: center;
+    font-size: 2rem;
+}

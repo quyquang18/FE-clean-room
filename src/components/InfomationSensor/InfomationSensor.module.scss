@@ -1,0 +1,106 @@
+.wrapper {
+    border: 1px solid #141313fa;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    margin-bottom: 22px;
+}
+.header {
+    display: flex;
+    flex-direction: column;
+
+    .sensor-name {
+        display: flex;
+        justify-content: center;
+        margin: 0 12px;
+        font-size: 1.6rem;
+        font-weight: 600;
+        p {
+            flex: 1;
+            margin: 0px 12px;
+            text-align: center;
+        }
+    }
+    .sensor-status {
+        display: flex;
+        justify-content: center;
+        margin: 0 12px;
+        p {
+            flex: 1;
+            margin: 6px 42px 14px;
+            text-align: center;
+            border-radius: 15px;
+            font-size: 1.4rem;
+            font-weight: 500;
+            padding: 4px 2px;
+
+            &.ok {
+                background-color: #2bff59;
+            }
+            &.warrning {
+                background-color: #ddb60a;
+            }
+        }
+    }
+}
+
+.flat-table {
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+
+    .thead {
+        font-size: 1.4rem;
+        th {
+            text-align: left;
+            color: #000;
+            padding: 4px 2px;
+            box-shadow: inset 0 -1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(0, 0, 0, 0.25);
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+            -webkit-font-smoothing: antialiased;
+
+            p {
+                font-size: 1.2rem;
+                color: #463838;
+            }
+        }
+    }
+    .tbody {
+        color: #463838;
+        text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+        font-size: 1.6rem;
+        font-weight: 500;
+        .tr {
+            -webkit-transition: background 0.3s, box-shadow 0.3s;
+            -moz-transition: background 0.3s, box-shadow 0.3s;
+            transition: background 0.3s, box-shadow 0.3s;
+
+            td {
+                padding: 6px 4px;
+
+                p {
+                    background-color: #f3ecec;
+                    font-weight: 600;
+                    font-size: 1.7rem;
+                    max-width: 54px;
+                    text-align: center;
+                    border-radius: 15px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+                }
+            }
+        }
+        .tr-1 {
+            background-color: #ffdb2b;
+        }
+        .tr-2 {
+            background-color: #2bff59;
+        }
+        .tr-3 {
+            background-color: #09f1d1;
+        }
+        .tr-4 {
+            background-color: #9d707f;
+        }
+    }
+}
