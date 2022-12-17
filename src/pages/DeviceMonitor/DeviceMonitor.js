@@ -9,12 +9,11 @@ import styles from './DeviceMonitor.module.scss';
 import { database } from '~/fribase';
 import SelectLocation from '~/components/SelectLocation';
 import SelectDevice from '~/components/SelectDevice';
-import { async } from '@firebase/util';
 const cx = classNames.bind(styles);
 const dbRef = ref(database);
 function DeviceMonitor() {
     document.title = 'LUXAS-Device Monitor';
-    const userId = JSON.parse(localStorage.getItem('user')).userInfo.id ||0;
+    const userId = JSON.parse(localStorage.getItem('user')).userInfo.id || 0;
     const [message, setMessage] = useState();
     const [errCode, setErrCode] = useState(0);
     const [locationDeviceId, setLocationDeviceId] = useState(null);
@@ -64,13 +63,13 @@ function DeviceMonitor() {
             timeError = [];
 
         for (let i = 0; i < value.length; i++) {
-            if (value[i].status === 'on') {
+            if (value[i].status === 'ON') {
                 timeOn.push(value[i].statusTime);
             }
-            if (value[i].status === 'off') {
+            if (value[i].status === 'OFF') {
                 timeOff.push(value[i].statusTime);
             }
-            if (value[i].status === 'error') {
+            if (value[i].status === 'ERROR') {
                 timeError.push(value[i].statusTime);
             }
         }
@@ -141,7 +140,7 @@ function DeviceMonitor() {
         }
     }, [timeMode]);
     useEffect(() => {
-        onValue(child(dbRef, `statusDevice/${locationDeviceId}`), (snapshot) => {
+        onValue(child(dbRef, `statusDevice/${locationDeviceName}/${deviceName}/status`), (snapshot) => {
             const dataFb = snapshot.val();
 
             setStatusDevicce(dataFb);

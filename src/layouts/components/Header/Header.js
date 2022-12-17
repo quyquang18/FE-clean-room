@@ -69,7 +69,7 @@ function Header() {
         {
             icon: <AiOutlineUser />,
             title: 'View profile',
-            to: '/@quang',
+            to: `/@${user.userInfo.username}`,
         },
         {
             icon: <FiSettings />,

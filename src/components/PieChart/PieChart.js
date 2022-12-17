@@ -109,7 +109,7 @@ function PieChart({ data = [], type, valuePeriod }) {
                                   name: 'Status Error',
                                   y: handleData(data.error),
                                   color: '#e4bc0d',
-                                  time: handleUnit(data.off),
+                                  time: handleUnit(data.error),
                               },
                           ],
                       },

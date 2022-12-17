@@ -5,7 +5,6 @@ import { handleGetAllUser, handleUpdateRole } from '~/services/userService';
 import styles from './AccList.module.scss';
 import { useEffect, useState } from 'react';
 import Modal from '~/components/Modal/Modal';
-import { async } from '@firebase/util';
 
 const cx = classNames.bind(styles);
 
