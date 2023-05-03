@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { BiHide, BiShow } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 
+import * as actions from '~/store/actions';
 import { handleLoginApi } from '~/services/userService';
 import config from '~/config';
 import styles from './Login.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
 function Login() {
@@ -14,48 +16,33 @@ function Login() {
     const [password, setPassword] = useState('');
     const [hidePassword, setHidePassword] = useState(true);
     const [errMessage, setErrMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state);
     const handleLogin = async (e) => {
         setErrMessage('');
         e.preventDefault();
+        setErrMessage('');
         try {
-            setIsLoading(true);
+            dispatch(actions.changeStatusReactLoading(true));
             let data = await handleLoginApi(email, password);
-            setIsLoading(false);
+            // console.log(data);
             if (data && data.errCode !== 0) {
+                dispatch(actions.changeStatusReactLoading(false));
+                dispatch(actions.userLoginFail());
                 setErrMessage(data.message);
             }
             if (data && data.errCode === 0) {
-                alert('Logged in successfully');
-                localStorage.setItem(
-                    'user',
-                    JSON.stringify({
-                        isLoggedIn: true,
-                        userInfo: data.user,
-                    }),
-                );
-                navigate('/', { replace: true });
+                dispatch(actions.changeStatusReactLoading(false));
+                dispatch(actions.userLoginSuccess(data.user));
+                navigate('/home');
             }
         } catch (error) {
-            if (error.response) {
-                if (error.response.data) {
-                    setErrMessage(error.response.data.message);
-                    console.log(error.response);
-                }
-            }
             console.log(error);
         }
     };
     return (
         <div className={cx('wapper-login')}>
-            {isLoading && (
-                <div className={cx('loader-container')}>
-                    <div className={cx('spinner')}></div>
-                    <p> Loading. please await</p>
-                </div>
-            )}
             <div className={cx('header')}>
                 <h1 className={cx('form-heading')}>Đăng nhập</h1>
             </div>

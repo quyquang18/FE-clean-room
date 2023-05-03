@@ -1,0 +1,220 @@
+//status
+.select-mode {
+    display: flex;
+    flex-direction: column;
+}
+.status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .start,
+    .stop {
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        font-size: 1.6rem;
+        font-weight: 700;
+        background-color: #ebf2f7;
+        border: 1px solid #e3e3e3;
+        padding: 3px 8px;
+        border-radius: 10px;
+        .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 3px;
+        }
+        &.active {
+            color: #9faab7;
+        }
+    }
+    .start {
+        color: #20b820;
+    }
+    .stop {
+        color: rgb(172, 29, 29);
+        margin-left: 32px;
+    }
+}
+
+.wrapper-content {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.select-mode {
+    margin-left: 24px;
+
+    .sample {
+        background-color: #fefeff;
+        box-shadow: 1px 1px 7px #888888;
+        border-radius: 15px;
+        padding: 12px;
+        margin-bottom: 24px;
+
+        .head {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .input {
+            padding: 4px 4px 4px 8px;
+            max-width: 50px;
+            border: 1px solid #96a9c1;
+            text-align: center;
+        }
+        .unit {
+            margin-left: 12px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        .btn {
+            user-select: none;
+            cursor: pointer;
+            margin-left: 22px;
+            color: #fff;
+            font-weight: 600;
+            padding: 4px 12px;
+            background-color: var(--primary);
+            border-radius: 10px;
+        }
+    }
+}
+
+.select-sensor {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    background-color: #fefeff;
+    box-shadow: 1px 1px 7px #888888;
+    border-radius: 15px;
+}
+.wrapper-input {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+}
+.title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-left: 8px;
+    .init {
+        font-weight: 500;
+        margin-left: 6px;
+    }
+}
+.option-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    position: relative;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    transition: all 0.15s ease-out 0s;
+    background: #b2b7bd;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    outline: none;
+    border-radius: 5px;
+}
+.option-input:hover {
+    background: #9faab7;
+}
+.option-input:checked {
+    background: var(--primary);
+}
+.option-input:checked::before {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    content: '✓';
+    font-size: 1.8rem;
+    font-weight: bold;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+}
+.option-input:checked::after {
+    -webkit-animation: click-wave 0.45s;
+    -moz-animation: click-wave 0.45s;
+    animation: click-wave 0.45s;
+    background: var(--primary);
+    content: '';
+    display: block;
+    position: relative;
+    border-radius: 50%;
+}
+@keyframes click-wave {
+    0% {
+        height: 20px;
+        width: 20px;
+        opacity: 0.35;
+        position: relative;
+    }
+    100% {
+        height: 100px;
+        width: 100px;
+        margin-left: -40px;
+        margin-top: -40px;
+        opacity: 0;
+    }
+}
+
+//note
+.note {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    margin-top: 24px;
+    border: 2px solid var(--primary);
+    .item {
+        margin: 6px 0;
+        display: flex;
+        align-items: center;
+        font-size: 1.4rem;
+        font-weight: 500;
+        .line {
+            width: 28px;
+            height: 3px;
+            margin-right: 12px;
+
+            &.Temperature {
+                background-color: #990000;
+            }
+            &.Humidity {
+                background-color: #00ff00;
+            }
+            &.Dust_2_5 {
+                background-color: #6699ff;
+            }
+            &.Dust_10 {
+                background-color: #ffcc33;
+            }
+            &.PressureIn {
+                background-color: #006699;
+            }
+            &.PressureOut {
+                background-color: #000011;
+            }
+        }
+    }
+}
+.chart {
+    .conten {
+        margin: 0 4px 22px 4px;
+        background: linear-gradient(-5deg, rgba(146, 202, 146, 0.8), rgba(211, 205, 124, 0.8));
+        padding: 12px 0px;
+    }
+}
+.chart-container {
+    margin-bottom: 24px;
+    background-color: rgba(0, 0, 0, 0.75);
+}

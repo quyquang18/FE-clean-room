@@ -1,20 +1,39 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+
+// // // TODO: Add SDKs for Firebase products that you want to use
+// // // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
-    authDomain: 'api-fribase.firebaseapp.com',
-    projectId: 'api-fribase',
-    storageBucket: 'api-fribase.appspot.com',
-    messagingSenderId: '864730271378',
-    appId: '1:864730271378:web:c50466b72f9a0e67c2604b',
+    authDomain: 'fir-clean-room.firebaseapp.com',
+    databaseURL: 'https://fir-clean-room-default-rtdb.asia-southeast1.firebasedatabase.app',
+    projectId: 'fir-clean-room',
+    storageBucket: 'fir-clean-room.appspot.com',
+    messagingSenderId: '552996116920',
+    appId: '1:552996116920:web:54a124a509ccf35e3e174d',
 };
 
+
+
+// import firebase from 'firebase/compat/app';
+// import 'firebase/compat/messaging';
+
+// const firebaseConfig = {
+//     apiKey: 'AIzaSyCCRwQC2cAvZkF8ieO4GDqvI3BeiDXx_4E',
+//     authDomain: 'fir-clean-room.firebaseapp.com',
+//     databaseURL: 'https://fir-clean-room-default-rtdb.asia-southeast1.firebasedatabase.app',
+//     projectId: 'fir-clean-room',
+//     storageBucket: 'fir-clean-room.appspot.com',
+//     messagingSenderId: '552996116920',
+//     appId: '1:552996116920:web:54a124a509ccf35e3e174d',
+//     measurementId: 'G-SRL6TYLZN8',
+// };
+
+//  firebase.initializeApp(firebaseConfig);
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 // Initialize Realtime Database and get a reference to the service
 export const database = getDatabase(app);

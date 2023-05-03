@@ -3,24 +3,24 @@ import { handleGetLocation } from '~/services/deviceService';
 import styles from './Selects.module.scss';
 
 function SelectLocation({ change = () => {}, isEnable = false }) {
-    const userId = JSON.parse(localStorage.getItem('user')).userInfo.id || 0;
+    // const userId = JSON.parse(localStorage.getItem('user')).userInfo.id || 0;
 
-    const [listLocation, setListLocation] = useState([]);
-    useEffect(() => {
-        async function fetchData() {
-            const response = await handleGetLocation(userId);
-            if (response.errCode === 0) {
-                setListLocation(response.data);
-            }
-        }
-        fetchData();
-    }, [userId]);
-    const handleChangeSelect = (value) => {
-        change(JSON.parse(value));
-    };
+    // const [listLocation, setListLocation] = useState([]);
+    // useEffect(() => {
+    //     async function fetchData() {
+    //         const response = await handleGetLocation(userId);
+    //         if (response.errCode === 0) {
+    //             setListLocation(response.data);
+    //         }
+    //     }
+    //     fetchData();
+    // }, [userId]);
+    // const handleChangeSelect = (value) => {
+    //     change(JSON.parse(value));
+    // };
     return (
         <div className={styles['wrapper']}>
-            <select
+            {/* <select
                 className={styles['select']}
                 disabled={isEnable}
                 onChange={(e) => handleChangeSelect(e.target.value)}
@@ -35,7 +35,7 @@ function SelectLocation({ change = () => {}, isEnable = false }) {
                             {item.location}
                         </option>
                     ))}
-            </select>
+            </select> */}
         </div>
     );
 }

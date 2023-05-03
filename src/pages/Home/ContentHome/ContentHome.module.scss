@@ -1,0 +1,87 @@
+.section-about {
+    margin: 32px 0;
+    .container {
+        display: flex;
+        width: 100%;
+        .title {
+            font-size: 3.2rem;
+            color: #444444;
+            font-weight: 600;
+            letter-spacing: 0px;
+            text-transform: uppercase;
+        }
+        .main-container {
+            width: 41.666667%;
+            padding: 0 15px;
+
+            .section-desc {
+                margin-top: 20px;
+                font-size: 2rem;
+                line-height: 1.7;
+                color: #777777;
+            }
+        }
+        .sub-container {
+            width: 58.333333%;
+            padding: 0 15px;
+            .section-about-content {
+                padding-left: 30px;
+                font-size: 1.6rem;
+                line-height: 1.7;
+                color: #777777;
+                p + p {
+                    margin: 15px 0;
+                }
+            }
+        }
+    }
+}
+.title-section {
+    font-size: 3.2rem;
+    line-height: 44px;
+    font-style: normal;
+    font-weight: 900;
+    margin: 0 0 22px;
+    text-align: center;
+    transition: 0.5s ease;
+}
+.why-luxas {
+    padding: 30px 0 50px;
+    width: 100%;
+    margin: 0 auto;
+
+    .why-luxas__list {
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin: 0 -10px;
+        padding-inline-start: 40px;
+        .why-luxas__items {
+            flex: 1 1 25%;
+            flex-direction: column;
+            padding: 0 10px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            margin: 0 0 24px;
+            transition: 0.3s linear;
+            .why-luxas__icon {
+                color: var(--primary);
+            }
+            .why-luxas__descr {
+                font-size: 1.6rem;
+                line-height: 1.25;
+                color: gray;
+                text-align: left;
+
+                .why-luxas__title {
+                    margin-bottom: 12px;
+                    font-size: 2rem;
+                    line-height: 24px;
+                    font-weight: 700;
+                    color: #000;
+                }
+            }
+        }
+    }
+}

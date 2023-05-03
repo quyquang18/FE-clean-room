@@ -1,0 +1,30 @@
+.select-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 22px;
+    .select-view-mode{
+        width: 30%;
+    }
+    .select-time{
+        // width: 65%;
+    }
+}
+.btn-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-see {
+    padding: 6px;
+    margin: 0 12px;
+    float: right;
+    color: #ffffff;
+    font-weight: 600;
+    background-color: var(--primary);
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+        background-color: rgb(230, 108, 22);
+    }
+}

@@ -1,0 +1,45 @@
+.wrapper {
+    display: flex;
+    background-color: rgb(17, 17, 17);
+    li {
+        list-style: none;
+    }
+    .sub-footer-1 {
+        flex-basis: 40%;
+        padding: 8px 10px;
+        color: #ccc;
+        h2 {
+            display: block;
+            font-size: 2.8rem;
+            line-height: 32px;
+            color: #f1ebe5;
+            text-shadow: 0 2.36px 3.896px #c4b59d, 0 -1px 1px #fff;
+            margin-bottom: 6px;
+        }
+        .service {
+            font-size: 1.3rem;
+            margin-left: 12px;
+            li {
+                list-style: inside;
+            }
+        }
+    }
+    .sub-footer-2 {
+        flex-basis: 25%;
+        padding: 8px 10px;
+        color: #ccc;
+        a {
+            color: #ccc;
+            font-size: 1.3rem;
+        }
+    }
+    .sub-footer-3 {
+        flex-basis: 35%;
+        padding: 8px 10px;
+        color: #ccc;
+        address {
+            color: #ccc;
+            font-size: 1.3rem;
+        }
+    }
+}

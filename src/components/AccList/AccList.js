@@ -4,47 +4,61 @@ import { MdDeleteForever } from 'react-icons/md';
 import { handleGetAllUser, handleUpdateRole } from '~/services/userService';
 import styles from './AccList.module.scss';
 import { useEffect, useState } from 'react';
-import Modal from '~/components/Modal/Modal';
-
+import ModalEditUser from './ModalEditUser';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actions from '~/store/actions';
+import _ from 'lodash';
+import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 
 function AccList() {
-    const [arrAcc, setArrAcc] = useState([]);
-    const [roleID, setRoleID] = useState();
+    // const [roleID, setRoleID] = useState();
+    const [dataUserEdit, setDataUserEdit] = useState();
+    const [isOpenModalEditUser, setIsOpenModalEditUser] = useState(false);
+    const listUser = useSelector((state) => state.admin.arrUser);
+    const listRole = useSelector((state) => state.admin.roles);
+
+    const dispatch = useDispatch();
     useEffect(() => {
-        callApi();
-    }, []);
-    const callApi = async () => {
+        dispatch(actions.fechAllUser());
+        dispatch(actions.fetchRole());
+    }, [dispatch]);
+
+    const handleDeleteUser = (item) => {};
+    const handleEditUser = (item) => {
+        setIsOpenModalEditUser(true);
+        setDataUserEdit(item);
+    };
+    const toggleEditUserModal = () => {
+        setIsOpenModalEditUser(!isOpenModalEditUser);
+    };
+    const editUser = async (data) => {
         try {
-            let data = await handleGetAllUser('ALL');
-            if (data && data.errCode !== 0) {
-                console.log(data.message);
-            }
-            if (data && data.errCode === 0) {
-                setArrAcc(data.user);
+            console.log(data);
+            let response = await handleUpdateRole({ type: 'role', id: dataUserEdit.id, role: data.value });
+            if (response.errCode !== 0) {
+                toast.error(response.message);
+            } else {
+                dispatch(actions.fechAllUser());
+                setIsOpenModalEditUser(false);
+                toast.success('Update Role User Succeed !');
+                // emitter.emit('EVENT_CLEAR_MODAL_DATA');
             }
         } catch (error) {
-            if (error.response) {
-                if (error.response.data) {
-                    console.log(error.response);
-                }
-            }
+            console.log(error);
         }
-    };
-    const toggleAction = async (value, item) => {
-        if (value === 'confirm') {
-            let respon = await handleUpdateRole({ type: 'role', role: roleID, id: item.id });
-            callApi();
-        } else {
-            return;
-        }
-    };
-    const handleChangeRole = (value) => {
-        setRoleID(value);
     };
     return (
         <div className={cx('wrapper')}>
             <h3>Account List</h3>
+            {isOpenModalEditUser && (
+                <ModalEditUser
+                    isOpen={isOpenModalEditUser}
+                    toggleEditUserModal={toggleEditUserModal}
+                    dataUserEdit={dataUserEdit}
+                    editUser={editUser}
+                />
+            )}
             <div className={cx('acc-table')}>
                 <table className={cx('table')} id="customers">
                     <thead>
@@ -57,40 +71,39 @@ function AccList() {
                         </tr>
                     </thead>
                     <tbody>
-                        {arrAcc.map((item, index) => (
-                            <tr className={cx('tr')} key={index}>
-                                <td>{item.username}</td>
-                                <td>{item.email}</td>
-                                <td>{item.phonenumber}</td>
-                                <td>{item.roleID}</td>
-                                <td>
-                                    <Modal
-                                        child={
-                                            <div className={cx('form-input')}>
-                                                <select
-                                                    onChange={(e) => {
-                                                        handleChangeRole(e.target.value);
-                                                    }}
-                                                    name="role"
-                                                    id="role"
-                                                >
-                                                    {' '}
-                                                    <option value="">Select Role</option>
-                                                    <option value="R2">ADMIN</option>
-                                                    <option value="R3">USER</option>
-                                                </select>
-                                            </div>
-                                        }
-                                        childBtn={<HiPencilAlt className={cx('icon-btn-1')} />}
-                                        colorBtn="green"
-                                        titleModal="Edit Role User"
-                                        toggleFromParent={toggleAction}
-                                        item={item}
-                                    />
-                                    <Modal colorBtn="red" childBtn={<MdDeleteForever className={cx('icon-btn-2')} />} />
-                                </td>
-                            </tr>
-                        ))}
+                        {listUser &&
+                            listUser.length > 0 &&
+                            listUser.map((item, index) => {
+                                let role = '';
+                                item.role = {};
+                                if (listRole && listRole.length > 0) {
+                                    role = listRole.find((itemGender) => itemGender.keyMap === item.roleID);
+                                    if (role && !_.isEmpty(role)) {
+                                        item.role.value = item.roleID;
+                                        item.role.label = role.valueVI;
+                                    }
+                                }
+                                return (
+                                    <tr className={cx('tr')} key={index}>
+                                        <td>{item.username}</td>
+                                        <td>{item.email}</td>
+                                        <td>{item.phonenumber}</td>
+                                        <td>{item.role.label}</td>
+                                        <td>
+                                            <button className={cx('btn-action')}>
+                                                <HiPencilAlt
+                                                    className={cx('icon-btn-edit')}
+                                                    onClick={() => handleEditUser(item)}
+                                                />
+                                                <MdDeleteForever
+                                                    className={cx('icon-btn-delete')}
+                                                    onClick={() => handleDeleteUser(item)}
+                                                />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                     </tbody>
                 </table>
             </div>

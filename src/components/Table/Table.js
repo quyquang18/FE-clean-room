@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { format } from 'date-fns';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
@@ -18,8 +19,8 @@ function Table({
         'Pressure In',
         'Pressure Out',
         'Time',
-        'Date',
-        'Location',
+        'Year - Month - Day',
+        'Location ID',
     ],
 }) {
     const fileExtension = '.xlsx';
@@ -36,7 +37,6 @@ function Table({
         header = ['ID', 'Location', 'Device', 'Status', 'State Start Time', 'State End Time', 'Status Time', 'Date'];
         filename = 'Status device';
     }
-
     const renderTableHeader = () => {
         return header.map((item, index) => {
             return (
@@ -46,23 +46,26 @@ function Table({
             );
         });
     };
-
+    console.log(data);
     const renderTableData = () => {
         if (type === 'valuesensor') {
+            console.log(data);
             return data.map((item, index) => {
-                const { temperature, humidity, dust2_5, dust10, pressureIn, pressureOut, date, time, location } = item;
+                const { temperature, humidity, dust25, dust10, pressIn, pressOut, date, roomId } = item;
+                let formatedDate = format(+date, 'dd:MM:yyyy');
+                let formatedTime = format(+date, 'HH:mm:ss');
                 return (
                     <tr key={index}>
                         <td>{index}</td>
                         <td>{temperature}</td>
                         <td>{humidity}</td>
-                        <td>{dust2_5}</td>
+                        <td>{dust25}</td>
                         <td>{dust10}</td>
-                        <td>{pressureIn}</td>
-                        <td>{pressureOut}</td>
-                        <td>{time}</td>
-                        <td>{date}</td>
-                        <td>{location}</td>
+                        <td>{pressIn}</td>
+                        <td>{pressOut}</td>
+                        <td>{formatedTime}</td>
+                        <td>{formatedDate}</td>
+                        <td>{roomId}</td>
                     </tr>
                 );
             });

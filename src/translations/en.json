@@ -1,0 +1,192 @@
+{
+    "menu-user": {
+        "profile": "Account information",
+        "settings": "Settings",
+        "setting-account": "Account Settings",
+        "setting-connect": "Connection settings",
+        "language": "Language",
+        "current -value-language": "English",
+        "help": "Help and Feedback",
+        "contribute": "Contribute ideas",
+        "logout": "Log out"
+    },
+    "home-sidebar": {
+        "home": "Home",
+        "monitor-room": "Monitor the rooms",
+        "monitor-device": "Device monitoring",
+        "device-control": "Device Drivers",
+        "manage-acc": "Account Management",
+        "device-manager": "Device Management"
+    },
+    "home-options-service": {
+        "title1": "Specialized examination",
+        "title2": "Remote examination",
+        "title3": "General examination",
+        "title4": "Medical test",
+        "title5": "Mental health",
+        "title6": "Dental examination",
+        "title7": "Surgery pack",
+        "title8": "Medical products",
+        "title9": "Corporate health"
+    },
+    "homepage": {
+        "outstanding-doctor": "Last week's featured doctor",
+        "outstanding-specialty": "Popular specialties",
+        "outstanding-clinic": "Outstanding medical facility",
+        "more-info": "More"
+    },
+    "menu": {
+        "admin": {
+            "manage-user": "User management",
+            "manage-admin": "Admin management",
+            "manage-doctor": "Doctor management",
+            "crud": "CRUD User",
+            "crud-redux": "CRUD Redux",
+            "clinic": "Clinic",
+            "manage-clinic": "Clinic Manage",
+            "specialty": "Specialty",
+            "manage-specialty": "Specialty manage",
+            "handbook": "Handbook",
+            "manage-handbook": "Handbook manage",
+            "endow": "Endow",
+            "manage-endow": "Offer management"
+        },
+        "doctor": {
+            "manage-schedule": "Manage doctor's schedule",
+            "manage-patient": "Manage doctor's patient"
+        }
+    },
+    "manage-user": {
+        "add": "Add new user",
+        "email": "Email",
+        "password": "Password",
+        "firstname": "First Name",
+        "lastname": "Last Name",
+        "phonenumber": "Phone Number",
+        "address": "Address",
+        "gender": "Gender",
+        "position": "Position",
+        "role-id": "RoleID",
+        "actions": "Actions",
+        "avatar": "Avatar",
+        "save": "Save User",
+        "edit": "Save changes",
+        "choose": "Choose",
+        "upload-photos": "Upload photos"
+    },
+    "manage-schedule": {
+        "title": "Manage doctor's examination plan",
+        "choose-doctor": "Choose a doctor",
+        "choose-date": "Choose a date",
+        "save-infor": "Save information"
+    },
+    "manage-clinic": {
+        "title": "Clinic Management",
+        "name-clinic": "Clinic name",
+        "avatar-clinic": "Clinic Avatar",
+        "cover-image-clinic": "Clinic cover image",
+        "create": "Create new",
+        "edit": "Edit",
+        "endow": "Endow",
+        "intro": "Introduce",
+        "strengths": "Professional strengths",
+        "location": "Location",
+        "process": "Examination procedure",
+        "equiment": "Equipment",
+        "add": "Add new Clinic",
+        "save": "Save information"
+    },
+    "manage-specialty": {
+        "title": "Specialized management",
+        "name-specialty-vn": "Professional name in Vietnamese",
+        "image-specialty-en": "English specialty name",
+        "image-specialty": "Professional photo",
+        "des-vn": "Professional description in Vietnamese",
+        "des-en": "Professional Description English",
+        "name": "Specialist name",
+        "image": "Image",
+        "actions": "Actions",
+        "previous": "Previous",
+        "next": "Next",
+        "add": "Add new professional",
+        "save": "Lưu thông tin chuyên khoa",
+        "create": "Create new",
+        "edit": "Edit"
+    },
+    "manage-patient": {
+        "title": "Patient management",
+        "choose-date": "Choose a date of examination"
+    },
+    "patient": {
+        "detail-doctor": {
+            "like": "Like",
+            "share": "Share",
+            "schedule": "schedule",
+            "message-no-schedule": "The doctor has no appointment scheduled for this day. Please select another date or contact us for assistance. Thank you",
+            "choose": "Choose",
+            "book-free": "and book (Booking fee 0"
+        },
+        "extra-info-doctor": {
+            "address-clinic": "Clinic address",
+            "price": "Examination price",
+            "more-infor": "See details",
+            "note": "Note",
+            "hide-price": "Hide price list",
+            "text-payment": "The patient can pay the cost in the form of: "
+        },
+        "booking-modal": {
+            "title": "Information to book a medical appointment",
+            "book-yourself": "Book for yourself",
+            "book-relatives": "Book for a loved one",
+            "name-patient": "Patient's name",
+            "sub-name": "Please write your First and Last Name, capitalizing the first letter.",
+            "phone": "Contact phone number",
+            "birthday": "Year of Birth",
+            "email": "Email address",
+            "gender": "Gender",
+            "reason": "Reason for examination",
+            "payment": "Payments",
+            "pay-medical-facility": "Pay later at the medical facility",
+            "examination-price": "Examination price",
+            "booking-fee": "Schedule fee",
+            "free": "Free of charge",
+            "total": "Total",
+            "note-1": "Please fill in the information completely to save time for examination procedures",
+            "warning": "NOTE",
+            "warning-1": "The information you provide will be used as medical examination records, when filling in your information, please:",
+            "warning-2": "Specify the first and last name, capitalize the first letters, for example: Tran Van Phu",
+            "warning-3": "Fill it out completely and correctly and please double check the information before pressing 'Confirm'",
+            "confirm": " Confirmation of booking",
+            "cancel": "Cancel",
+            "free-schedule": "Free Schedule",
+            "province": "Province / City",
+            "district": "Distric",
+            "address": "Address"
+        },
+        "detail-clinic": {
+            "listDoctor": "Book an appointment",
+            "desIntroHtml": "Introduce",
+            "desStrengthsHtml": "Professional strengths",
+            "desEquipmentHtml": "Equipment",
+            "desAddressHtml": "Location",
+            "desProcedureHtml": "Examination procedure"
+        }
+    },
+    "admin": {
+        "manage-doctor": {
+            "select": "Select...",
+            "title": "Create more doctor information",
+            "select-doctor": "Choose a doctor",
+            "intro": "Introduction information",
+            "add": "Create information",
+            "save": "Save information",
+            "select-price": "Choose a price (USD)",
+            "select-payment": "Select a payment method",
+            "select-province": "Select Province/City",
+            "name-clinic": "Clinic name",
+            "address-clinic": "Clinic address",
+            "name-specialty": "Specialist name",
+            "note": "Note"
+        }
+    }
+}

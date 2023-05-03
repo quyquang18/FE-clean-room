@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import classNames from 'classnames/bind';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
-
 import exporting from 'highcharts/modules/exporting';
 import fullscreen from 'highcharts/modules/full-screen';
-
+import { format, fromUnixTime, getTime } from 'date-fns';
+import viLocale from 'date-fns/locale/vi';
 import styles from './HightChart.module.scss';
 
 exporting(Highcharts);
@@ -20,17 +20,18 @@ const optionsModule = [
     { type: 'pressure', label: 'Pressure ', active: false },
 ];
 
-function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
+function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
+    console.log(data);
     const [typesensor, setTypeSensor] = useState('all');
     const [statusResultApi, setStatusResultApi] = useState(true);
     const [newData, setNewData] = useState({
         temper: {
             value: [],
         },
-        humi: {
+        humidity: {
             value: [],
         },
-        dust2_5: {
+        dust25: {
             value: [],
         },
         dust10: {
@@ -55,10 +56,10 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
             temper: {
                 value: [],
             },
-            humi: {
+            humidity: {
                 value: [],
             },
-            dust2_5: {
+            dust25: {
                 value: [],
             },
             dust10: {
@@ -83,10 +84,10 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
                 temper: {
                     value: [],
                 },
-                humi: {
+                humidity: {
                     value: [],
                 },
-                dust2_5: {
+                dust25: {
                     value: [],
                 },
                 dust10: {
@@ -107,16 +108,18 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
             };
         } else {
             setStatusResultApi(true);
-            data.forEach((item) => {
-                dataDraw.temper.value.push(Number(item.temperature));
-                dataDraw.humi.value.push(Number(item.humidity));
-                dataDraw.dust2_5.value.push(Number(item.dust2_5));
-                dataDraw.dust10.value.push(Number(item.dust10));
-                dataDraw.pressIn.value.push(Number(item.pressureIn));
-                dataDraw.pressOut.value.push(Number(item.pressureOut));
-                dataDraw.times.value.push(item.time.slice(0, 5));
-                dataDraw.dates.value.push(item.date.split('-')[2] + '-' + item.date.split('-')[1]);
-            });
+            if (data && data.length > 0) {
+                data.forEach((item) => {
+                    dataDraw.temper.value.push(Number(item.temperature));
+                    dataDraw.humidity.value.push(Number(item.humidity));
+                    dataDraw.dust25.value.push(Number(item.dust25));
+                    dataDraw.dust10.value.push(Number(item.dust10));
+                    dataDraw.pressIn.value.push(Number(item.pressIn));
+                    dataDraw.pressOut.value.push(Number(item.pressOut));
+                    dataDraw.times.value.push(format(+item.date, 'HH:mm'));
+                    dataDraw.dates.value.push(format(+item.date, 'dd/MM'));
+                });
+            }
         }
         setNewData(dataDraw);
     }, [data]);
@@ -127,11 +130,11 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
         },
         {
             name: 'Humidity (%)',
-            data: newData.humi.value,
+            data: newData.humidity.value,
         },
         {
             name: 'Dust 2.5 (µm)',
-            data: newData.dust2_5.value,
+            data: newData.dust25.value,
         },
         {
             name: 'Dust 10 (µm',
@@ -147,15 +150,15 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
         },
     ];
     const seriesChart = () => {
-        var [temp, humi, dust25, dust10, pressIn, pressOut] = datachart;
+        var [temp, humidity, dust25, dust10, pressIn, pressOut] = datachart;
 
         switch (typesensor) {
             case 'all':
-                return [temp, humi, dust25, dust10, pressIn, pressOut];
+                return [temp, humidity, dust25, dust10, pressIn, pressOut];
             case 'temp-humi':
                 return [
                     temp,
-                    humi,
+                    humidity,
                     (dust25 = {
                         name: '',
                         data: [],
@@ -179,7 +182,7 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
                         name: '',
                         data: [],
                     }),
-                    (humi = {
+                    (humidity = {
                         name: '',
                         data: [],
                     }),
@@ -208,7 +211,7 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
                         name: '',
                         data: [],
                     }),
-                    (humi = {
+                    (humidity = {
                         name: '',
                         data: [],
                     }),
@@ -224,6 +227,31 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
             return (e.active = false);
         });
         optionsModule[index].active = true;
+    };
+    const renderSubText = () => {
+        let subText = '';
+        if (valueTime) {
+            if (valueTime.length > 1) {
+                if (mode === 'range') {
+                    subText = `Date: From ${format(getTime(valueTime[0]), 'dd/MM/yyyy')} to ${format(
+                        getTime(valueTime[1]),
+                        'dd/MM/yyyy',
+                    )}`;
+                }
+            } else {
+                switch (mode) {
+                    case 'date':
+                        subText = `Date: ${format(getTime(valueTime), 'iiii-dd/MM/yyyy', { locale: viLocale })}`;
+                        break;
+                    case 'month':
+                        subText = `Month: ${format(getTime(valueTime), 'MM/yyyy')}`;
+                        break;
+                    default:
+                    // code block
+                }
+            }
+        }
+        return subText;
     };
     const chartConfig = {
         chart: {
@@ -241,7 +269,7 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
         },
 
         subtitle: {
-            text: mode + ' ' + valueTimeFrom + (valueTimeTo || ''),
+            text: renderSubText(),
             style: {
                 fontSize: '14px',
                 fontFamily: 'Times New Roman',
@@ -333,6 +361,7 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
         },
         series: seriesChart(),
     };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('menu-mode')}>
@@ -364,4 +393,4 @@ function HightChart({ data = [], mode, valueTimeFrom, valueTimeTo }) {
         </div>
     );
 }
-export default HightChart;
+export default memo(HightChart);

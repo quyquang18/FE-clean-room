@@ -17,7 +17,7 @@ function Header({ title, onBack }) {
 }
 
 Header.propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.object.isRequired,
     onBack: PropTypes.func.isRequired,
 };
 

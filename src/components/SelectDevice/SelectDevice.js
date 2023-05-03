@@ -1,14 +1,14 @@
 import { useEffect, useState, memo } from 'react';
+import { useSelector } from 'react-redux';
 import { handleGetDeviceAPI } from '~/services/deviceService';
 import styles from './SelectDevice.module.scss';
 
 function SelectDevice({ change = () => {}, isEnable = false, locationId }) {
-    const userId = JSON.parse(localStorage.getItem('user')).userInfo.id || 0;
-
+    const user = useSelector((state) => state.user);
     const [listDevice, setListDevice] = useState([]);
     useEffect(() => {
         async function fetchData() {
-            const response = await handleGetDeviceAPI(userId, locationId);
+            const response = await handleGetDeviceAPI(user.userInfor.roleID, locationId);
             if (response.errCode === 0) {
                 let arrData = [];
                 for (let i = 0; i < response.data.length; i++) {
@@ -18,7 +18,7 @@ function SelectDevice({ change = () => {}, isEnable = false, locationId }) {
             }
         }
         fetchData();
-    }, [locationId, userId]);
+    }, [locationId, user]);
     const handleChangeSelect = (value) => {
         change(JSON.parse(value));
     };

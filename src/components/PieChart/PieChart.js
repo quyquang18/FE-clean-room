@@ -1,7 +1,9 @@
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
-
-function PieChart({ data = [], type, valuePeriod }) {
+import { format, getTime } from 'date-fns';
+import { toast } from 'react-toastify';
+function PieChart({ data = [], type, dateRange }) {
+    // const [dataDraw, setDataDraw] = useState({});
     var subtitle = '';
     var today = new Date();
     var yesterday = today.getDate() - 1 + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
@@ -21,26 +23,68 @@ function PieChart({ data = [], type, valuePeriod }) {
         case 'lastmonth':
             subtitle = 'Month :  ' + lastmonth;
             break;
-        case 'Period':
-            subtitle = ` From Date ${valuePeriod.from} To Date ${valuePeriod.to}`;
+        case 'range':
+            subtitle = `Date: From ${format(getTime(dateRange[0]), 'dd/MM/yyyy')} to ${format(
+                getTime(dateRange[1]),
+                'dd/MM/yyyy',
+            )}`;
             break;
         default:
             break;
     }
-    const handleData = (dataInput) => {
-        if (dataInput !== undefined) {
-            let times = dataInput.split(':');
-            return +times[0] * 3600 + +times[1] * 60 + +times[2];
+    const handleConvertTimeToString = (inputTimeMiliSecons) => {
+        let dateObj = new Date(inputTimeMiliSecons);
+        if (inputTimeMiliSecons) {
+            let hour = dateObj.toISOString().substr(11, 2);
+            let min = dateObj.toISOString().substr(14, 2);
+            let secons = dateObj.toISOString().substr(17, 2);
+            return `${hour}:Hour - ${min}:Min - ${secons}:Secons`;
+        }
+    };
+    const handleData = () => {
+        let dataDraw = {
+            on: {
+                totalMiliSecons: 0,
+                stringTime: '',
+            },
+            off: {
+                totalMiliSecons: 0,
+                stringTime: '',
+            },
+            error: {
+                totalMiliSecons: 0,
+                stringTime: '',
+            },
+        };
+        if (data && data.length > 0) {
+            data.map((item, index) => {
+                let startTime = new Date(+item.stateStartTime);
+                let endTime = new Date(+item.stateEndTime);
+                let miliSecons = endTime - startTime;
+                switch (item.status) {
+                    case 'S1':
+                        dataDraw.on.totalMiliSecons += miliSecons;
+                        dataDraw.on.stringTime = handleConvertTimeToString(dataDraw.on.totalMiliSecons);
+                        break;
+                    case 'S2':
+                        dataDraw.off.totalMiliSecons += miliSecons;
+                        dataDraw.off.stringTime = handleConvertTimeToString(dataDraw.off.totalMiliSecons);
+                        break;
+                    case 'S3':
+                        dataDraw.error.totalMiliSecons += miliSecons;
+                        dataDraw.error.stringTime = handleConvertTimeToString(dataDraw.error.totalMiliSecons);
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            });
+            return dataDraw;
         } else {
             return;
         }
     };
-    const handleUnit = (dataInput) => {
-        if (dataInput !== undefined) {
-            let times = dataInput.split(':');
-            return times[0] + ':hour / ' + times[1] + ':min / ' + times[2] + ':sec';
-        }
-    };
+
     const chartConfig = {
         chart: {
             plotBackgroundColor: null,
@@ -68,7 +112,7 @@ function PieChart({ data = [], type, valuePeriod }) {
             },
         },
         tooltip: {
-            pointFormat: '{series.name} <b>{point.time:.1f}</b>',
+            pointFormat: '<b>{point.time:.1f}</b>',
         },
         accessibility: {
             point: {
@@ -86,53 +130,35 @@ function PieChart({ data = [], type, valuePeriod }) {
             },
         },
 
-        series:
-            data.on !== undefined
-                ? [
-                      {
-                          name: 'Total Time',
-                          colorByPoint: true,
-                          data: [
-                              {
-                                  name: 'Active Status',
-                                  y: handleData(data.on),
-                                  color: '#06db06',
-                                  time: handleUnit(data.on),
-                              },
-                              {
-                                  name: 'Status Off',
-                                  y: handleData(data.off),
-                                  color: '#db0606',
-                                  time: handleUnit(data.off),
-                              },
-                              {
-                                  name: 'Status Error',
-                                  y: handleData(data.error),
-                                  color: '#e4bc0d',
-                                  time: handleUnit(data.error),
-                              },
-                          ],
-                      },
-                  ]
-                : [],
+        series: {
+            name: 'Total Time',
+            colorByPoint: true,
+            data: [
+                {
+                    name: 'Status On',
+                    y: handleData() && handleData().on.totalMiliSecons,
+                    color: '#06db06',
+                    time: handleData() && handleData().on.stringTime,
+                },
+                {
+                    name: 'Status Off',
+                    y: handleData() && handleData().off.totalMiliSecons,
+                    color: '#db0606',
+                    time: handleData() && handleData().off.stringTime,
+                },
+                {
+                    name: 'Status Error',
+                    y: handleData() && handleData().error.totalMiliSecons,
+                    color: '#e4bc0d',
+                    time: handleData() && handleData().error.stringTime,
+                },
+            ],
+        },
     };
-    const styleNofity = {
-        color: 'red',
-        fontSize: '1.7rem',
-        fontWeight: 500,
-        padding: '12px 12px',
-        position: 'absolute',
-        zIndex: 1,
-        top: '35%',
-        left: '23%',
-    };
+
     return (
         <div>
             <div>
-                {data.on === undefined && (
-                    <span style={styleNofity}>No data for this time. Please choose another time. thank !!!</span>
-                )}
-
                 <HighchartsReact
                     highcharts={Highcharts}
                     options={chartConfig}

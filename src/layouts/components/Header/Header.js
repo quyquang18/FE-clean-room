@@ -6,7 +6,9 @@ import { TbMessageLanguage } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+import * as actions from '~/store/actions';
 import config from '~/config';
 import Button from '~/components/Button';
 import styles from './Header.module.scss';
@@ -18,65 +20,74 @@ import { DarkModeIcon, NotificationIcon, ThreeDotsIcon } from '~/components/Icon
 
 const cx = classNames.bind(styles);
 
-const MENU_ITEMS = [
-    {
-        icon: <TbMessageLanguage />,
-        title: 'English',
-        children: {
-            title: 'Language',
-            data: [
-                {
-                    type: 'Ngôn ngữ',
-                    code: 'en',
-                    title: 'English',
-                },
-                {
-                    type: 'Language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
-                },
-            ],
-        },
-    },
-    {
-        icon: <FiHelpCircle width="2.2rem" height="2.2rem" />,
-        title: 'Help and Feedback',
-        to: '/feedback',
-    },
-    {
-        icon: <BiMessageEdit />,
-        title: 'Contribute ideas',
-    },
-];
-
 function Header() {
-    const user = JSON.parse(localStorage.getItem('user')) || {
-        isLoggedIn: false,
-        userInfo: {},
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const logout = () => {
+        dispatch(actions.processLogout());
     };
-
-    // Handle logic
+    let userName = '';
+    let userId = '';
+    let avatar = '';
+    if (user) {
+        let isLoggedIn = user.isLoggedIn;
+        if (isLoggedIn) {
+            userName = user.userInfo.username;
+            userId = user.userInfo.id;
+            avatar = user.userInfo.image;
+        }
+    }
     const handleMenuChange = (menuItem) => {
         switch (menuItem.type) {
-            case 'language':
-                // Handle change language
+            case 'Language':
+                dispatch(actions.changeLanguage(menuItem.code));
                 break;
             default:
         }
     };
+    const MENU_ITEMS = [
+        {
+            icon: <TbMessageLanguage />,
+            title: <FormattedMessage id="menu-user.current -value-language" />,
+            children: {
+                title: <FormattedMessage id="menu-user.language" />,
+                data: [
+                    {
+                        type: 'Language',
+                        code: 'en',
+                        title: 'English',
+                    },
+                    {
+                        type: 'Language',
+                        code: 'vi',
+                        title: 'Tiếng Việt',
+                    },
+                ],
+            },
+        },
+        {
+            icon: <FiHelpCircle width="2.2rem" height="2.2rem" />,
+            title: <FormattedMessage id="menu-user.help" />,
+            to: '/feedback',
+        },
+        {
+            icon: <BiMessageEdit />,
+            title: <FormattedMessage id="menu-user.contribute" />,
+        },
+    ];
 
     const userMenu = [
         {
             icon: <AiOutlineUser />,
-            title: 'View profile',
-            to: `/@${user.userInfo.username}`,
+            title: <FormattedMessage id="menu-user.profile" />,
+            to: `/${userName}/${userId}`,
         },
         {
             icon: <FiSettings />,
-            title: 'Settings',
+            title: <FormattedMessage id="menu-user.settings" />,
 
             children: {
-                title: 'Settings',
+                title: <FormattedMessage id="menu-user.settings" />,
                 data: [
                     {
                         type: 'Settings',
@@ -96,10 +107,10 @@ function Header() {
         ...MENU_ITEMS,
         {
             icon: <AiOutlineLogout />,
-            title: 'Log out',
+            title: <FormattedMessage id="menu-user.logout" />,
             to: '/login',
             separate: true,
-            onclick: true,
+            onclick: () => logout(),
         },
     ];
     return (
@@ -139,11 +150,7 @@ function Header() {
 
                     <Menu items={user.isLoggedIn ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
                         {user.isLoggedIn ? (
-                            <Image
-                                className={cx('user-avatar')}
-                                src="https://cdn.dienthoaivui.com.vn/wp-content/uploads/2022/03/Cach-xoa-hinh-dai-dien-avatar-tren-facebook-bang-dien-thoai-may-tinh-thumb-min.jpg"
-                                alt="Nguyen Van A"
-                            />
+                            <Image className={cx('user-avatar')} src={avatar} alt="Nguyen Van A" />
                         ) : (
                             <button className={cx('more-btn')}>
                                 <ThreeDotsIcon width="2.8rem" height="2.8rem" />
