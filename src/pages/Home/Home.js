@@ -1,5 +1,4 @@
 import classNames from 'classnames/bind';
-
 import styles from './Home.module.scss';
 import Slider from './Slider';
 import Footer from './Footer';

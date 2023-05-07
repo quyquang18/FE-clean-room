@@ -18,22 +18,34 @@
         "manage-acc": "Account Management",
         "device-manager": "Device Management"
     },
-    "home-options-service": {
-        "title1": "Specialized examination",
-        "title2": "Remote examination",
-        "title3": "General examination",
-        "title4": "Medical test",
-        "title5": "Mental health",
-        "title6": "Dental examination",
-        "title7": "Surgery pack",
-        "title8": "Medical products",
-        "title9": "Corporate health"
-    },
     "homepage": {
-        "outstanding-doctor": "Last week's featured doctor",
-        "outstanding-specialty": "Popular specialties",
-        "outstanding-clinic": "Outstanding medical facility",
-        "more-info": "More"
+        "about-us": "About us",
+        "section-desc": "LUXAS is a supplier of equipment and spare parts in the factory. Consulting and installing IoT systems for all customers around the world.",
+        "section-about1": "Building and developing with the motto of ethical, professional and creative activities, we create a meaningful working environment for employees, bring customers innovative values and excellent services, towards enhance shareholder value and be responsible to the community.",
+        "section-about2": "With the operating strategy: “” – LUXAS aspires to become a leading company in Vietnam and the region in terms of service quality and efficiency in industrial equipment operations.",
+        "why-luxas-title": "Why choose LUXAS ?",
+        "why-luxas-content1": "Easy to use",
+        "why-luxas-content2": "Reasonable price",
+        "why-luxas-content3": "Device durability",
+        "why-luxas-content4": "Convenient",
+        "why-luxas-sub1": "Clear, easy-to-follow instructions for use",
+        "why-luxas-sub2": "Equipment prices with many incentives",
+        "why-luxas-sub3": "The equipment is always up to the standard quality",
+        "why-luxas-sub4": "Service done completely online ?"
+    },
+    "homepage-footer": {
+        "service1": "Installation, repair and maintenance services",
+        "service2": "Trading in machinery, equipment and spare parts in the factory",
+        "service3": "Supply of components for industrial machinery and equipment",
+        "service4": "Consumables in production",
+        "service5": "Consulting on installation of IoT systems",
+        "info": "Information",
+        "contact": "Contact",
+        "address": "Address",
+        "address-tt1": "Head Office",
+        "address-sub1": "38/5 Van Kiep Street Ward 3, Binh Thanh District, Ho Chí Minh City, Viet Nam.",
+        "address-tt2": "Representative Office ",
+        "address-sub2": "111 N13 Street, Phu Hoa Residential Area 1, Phu Hoa Ward, Thu Dau Mot City, Binh Duong Province, Viet Nam."
     },
     "menu": {
         "admin": {

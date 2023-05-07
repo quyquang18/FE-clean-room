@@ -70,7 +70,6 @@ function TimeTracking({ roomId, userId }) {
             setSelectedDate(date);
         }
     };
-    console.log(data);
     return (
         <div>
             <div className={cx('select-wrapper')}>

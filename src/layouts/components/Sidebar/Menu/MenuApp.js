@@ -19,7 +19,7 @@ export const adminSystemMenu = [
     },
     {
         title: <FormattedMessage id="home-sidebar.device-control" />,
-        to: config.routes.monitorcontrol,
+        to: config.routes.monitorcontroler,
         icon: <DashboardIcon />,
     },
     {
@@ -51,11 +51,11 @@ export const adminMenu = [
     },
     {
         title: <FormattedMessage id="home-sidebar.device-control" />,
-        to: config.routes.monitorcontrol,
+        to: config.routes.monitorcontroler,
         icon: <DashboardIcon />,
     },
     {
-        title: <FormattedMessage id="home-sidebar.setting" />,
+        title: <FormattedMessage id="home-sidebar.device-manager" />,
         to: config.routes.devicemanager,
         icon: <DeviceIcon />,
     },

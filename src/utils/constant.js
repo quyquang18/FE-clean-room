@@ -2,12 +2,19 @@ export const path = {
     HOME: '/',
     HOMEPAGE: '/home',
     LOGIN: '/login',
+    REGISTER: '/register',
     LOG_OUT: '/logout',
-    SYSTEM: '/system',
-    DETAIL_DOCTOR: '/detail-doctor/:id',
-    VERIFY_BOOKING: '/patient/:id/verify-booking/:token',
-    DETAIL_SPECIALTY: '/detail-specialty/:id',
-    DETAIL_CLINIC: '/detail-clinic/:id',
+    DASHBOARD: '/dashboard',
+    DEVICEMONITOR: '/devicemonitor',
+    MONITORCONTROLER: '/monitorcontroler',
+    SETTINGS_CONTROLER: '/monitorcontroler/settings-controler',
+    PROFILE_USER: '/:nickname/:id',
+    MONITOR_ROOM: '/monitor-room',
+    MANAGE_ACCOUNT: '/manage-account',
+    DEVICE_MANAGER: '/devicemanager',
+    ADD_DEVICE: '/devicemanager/add-device',
+    VERIFY_EMAIL: '/user/:id/verify/:token',
+    OTHER: '*',
 };
 
 export const LANGUAGES = {
@@ -32,8 +39,9 @@ export const YesNoObj = {
     NO: 'N',
 };
 export const USER_ROLE = {
-    ADMIN: 'R1',
-    USER: 'R2',
+    MANAGE_SYSTEM: 'R1',
+    ADMIN: 'R2',
+    USER: 'R3',
 };
 export const INFOR_USER = {
     GENDER: 'GENDER',
@@ -44,7 +52,19 @@ export const INFOR_USER = {
     TYPE_DEVICE: 'TYPE_DEVICE',
     TIME: 'TIME',
     NAME: 'NAME',
-    SPECIALTY: 'SPECIALTY',
-    CLINIC: 'CLINIC',
-    PROMOTION: 'PROMOTION',
+};
+export const TYPE_DISPLAY = {
+    TEMPERATURE_HUMIDITY: 'TEMPERATURE_HUMIDITY',
+    PRESSURE: 'PRESSURE',
+    DUST: 'DUST',
+    OXY: 'OXY',
+};
+export const TYPE_SENSOR = {
+    TEMPERATURE: 'TEMPERATURE',
+    HUMIDITY: 'HUMIDITY',
+    PRESSURE_IN: 'PRESSURE_IN',
+    PRESSURE_OUT: 'PRESSURE_OUT',
+    DUST_25: 'DUST_25',
+    DUST_10: 'DUST_10',
+    OXY: 'OXY',
 };

@@ -7,7 +7,6 @@ import images from '~/assets/images';
 
 const Image = forwardRef(({ src, alt, className, fallback: customFallback = images.noImage, ...props }, ref) => {
     const [fallback, setFallback] = useState('');
-
     const handleError = () => {
         setFallback(customFallback);
     };
@@ -15,7 +14,7 @@ const Image = forwardRef(({ src, alt, className, fallback: customFallback = imag
     return (
         <img
             className={classNames(styles.Wrapper, className)}
-            src={fallback || src}
+            src={src || fallback}
             alt={alt}
             ref={ref}
             {...props}

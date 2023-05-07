@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import styles from './AddDevice.module.scss';
 import { handleCreateNewDevice } from '~/services/deviceService';
 import Select from 'react-select';
-import { CRUD_ACTIONS } from '~/utils';
+import { CRUD_ACTIONS, path } from '~/utils';
 import { toast } from 'react-toastify';
 import Button from '~/components/Button';
 import { BackWard } from '~/components/Icons';
@@ -59,7 +59,7 @@ function AddDevice() {
         dataCreate.idDevice = data.id;
         dataCreate.status = 'OFF';
         onValue(
-            child(dbRef, `statusDevice/` + dataCreate.idDevice),
+            child(dbRef, `${userId}/statusDevice/` + dataCreate.idDevice),
             (snapshot) => {
                 var exists = snapshot.exists();
                 let resData = snapshot.val();
@@ -73,12 +73,12 @@ function AddDevice() {
                         return true;
                     } else {
                         const updates = {};
-                        updates['/statusDevice/' + dataCreate.idDevice] = dataCreate;
+                        updates[userId + '/statusDevice/' + dataCreate.idDevice] = dataCreate;
                         update(dbRef, updates);
                     }
                 } else {
                     const updates = {};
-                    updates['/statusDevice/' + dataCreate.idDevice] = dataCreate;
+                    updates[userId + '/statusDevice/' + dataCreate.idDevice] = dataCreate;
                     update(dbRef, updates);
                 }
             },
@@ -134,7 +134,7 @@ function AddDevice() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('btn-back')}>
-                <Button leftIcon={<BackWard />} to="/devicemanager" primary>
+                <Button leftIcon={<BackWard />} to={path.DEVICE_MANAGER} primary>
                     Back
                 </Button>
             </div>

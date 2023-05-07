@@ -5,6 +5,7 @@ import styles from './EmailVerify.module.scss';
 import { handleVerifyEmail } from '~/services/userService';
 import images from '~/assets/images';
 import { CloseIcon } from '~/components/Icons';
+import { path } from '~/utils';
 const cx = className.bind(styles);
 const EmailVerify = () => {
     const [validUrl, setValidUrl] = useState(true);
@@ -34,7 +35,7 @@ const EmailVerify = () => {
                     <div className={cx('sub-content')}>
                         <h4>Email đã được xác thực thành công !</h4>
                         <p>Bạn có thể quay trở lại trang đăng nhập để bắt đầu tiến hành sử dụng dịch vụ nhé</p>
-                        <Link to="/login">
+                        <Link to={path.LOGIN}>
                             <button className={cx('btn-login')}>Login</button>
                         </Link>
                     </div>

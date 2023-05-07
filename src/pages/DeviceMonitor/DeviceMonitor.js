@@ -13,6 +13,7 @@ import CustomDatePicker from '~/components/CustomDatePicker';
 import { getTime, startOfDay, startOfMonth, sub } from 'date-fns';
 import { toast } from 'react-toastify';
 import TableStatusDevice from './TableStatusDevice';
+import { LANGUAGES } from '~/utils';
 const cx = classNames.bind(styles);
 const dbRef = ref(database);
 function DeviceMonitor() {
@@ -53,6 +54,8 @@ function DeviceMonitor() {
     listRoom = buildDataInputSelect(listRoom, 'room');
     let listDevice = useSelector((state) => state.admin.arrDevice);
     listDevice = buildDataInputSelect(listDevice, 'device');
+    let listStatus = useSelector((state) => state.admin.arrStatus);
+    let language = useSelector((state) => state.app.language);
     useEffect(() => {
         dispatch(actions.fetchAllRoom(userId));
     }, []);
@@ -78,12 +81,12 @@ function DeviceMonitor() {
 
     useEffect(() => {
         if (selectedRoom && selectedDevice) {
-            onValue(child(dbRef, `statusDevice/${selectedDevice.value}/status`), (snapshot) => {
+            onValue(child(dbRef, `${userId}/statusDevice/${selectedDevice.value}/status`), (snapshot) => {
                 const dataFb = snapshot.val();
                 setStatusDevicce(dataFb);
             });
         }
-    }, [selectedRoom, selectedDevice]);
+    }, [selectedRoom, selectedDevice, userId]);
     const handleSelectTimeMode = (key) => {
         setTimeMode(key);
     };
@@ -120,7 +123,7 @@ function DeviceMonitor() {
             case 'yesterday':
                 handleCallApi('date', getTime(startOfDay(sub(new Date(), { days: 1 }))));
                 break;
-            case 'currentday':
+            case 'today':
                 handleCallApi('date', getTime(startOfDay(new Date())));
                 break;
             case 'thismonth':
@@ -143,6 +146,7 @@ function DeviceMonitor() {
             </button>
         );
     });
+    let labelStatusDevice = listStatus && listStatus.find((elment) => elment.keyMap === statusDevicce);
     return (
         <div className={cx('wrapper')}>
             <h2 className={cx('header-page')}>Device Monitor</h2>
@@ -154,12 +158,16 @@ function DeviceMonitor() {
                 <h4 className={cx('head-content')}>Current device status</h4>
                 <div className={cx('status-content')}>
                     <div className={cx('status-light')}>
-                        <div className={cx({ on: statusDevicce === 'ON' ? true : false })}></div>
-                        <div className={cx({ error: statusDevicce === 'ERROR' ? true : false })}></div>
-                        <div className={cx({ off: statusDevicce === 'OFF' ? true : false })}></div>
+                        <div className={cx({ on: statusDevicce === 'S1' ? true : false })}></div>
+                        <div className={cx({ error: statusDevicce === 'S3' ? true : false })}></div>
+                        <div className={cx({ off: statusDevicce === 'S2' ? true : false })}></div>
                     </div>
                     <div className={cx('staust-name')}>
-                        Status : <p>{statusDevicce}</p>
+                        Status :{' '}
+                        <p>
+                            {labelStatusDevice &&
+                                (language === LANGUAGES.VI ? labelStatusDevice.valueVI : labelStatusDevice.valueEN)}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -173,10 +181,10 @@ function DeviceMonitor() {
                         Yesterday
                     </button>
                     <button
-                        className={cx('item', { active: timeMode === 'currentday' ? true : false })}
-                        onClick={() => handleSelectTimeMode('currentday')}
+                        className={cx('item', { active: timeMode === 'today' ? true : false })}
+                        onClick={() => handleSelectTimeMode('today')}
                     >
-                        CurrentDay
+                        Today
                     </button>
 
                     <button

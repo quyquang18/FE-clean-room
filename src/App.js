@@ -7,14 +7,11 @@ import { useSelector } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { path, USER_ROLE } from '~/utils';
 
-import { userRouter, adminRouter } from '~/routes';
+import { userRouter, adminRouter, notLogged } from '~/routes';
 import * as actions from '~/store/actions';
 import DefaultLayout from '~/layouts';
-import config from '~/config';
 import './App.scss';
-import { HeaderOnly } from '~/layouts';
-import Login from '~/pages/Login';
-import { _ } from 'lodash';
+import LoadingOverlay from 'react-loading-overlay';
 function App() {
     const [menuApp, setMenuApp] = useState([]);
     const user = useSelector((state) => state.user);
@@ -31,51 +28,55 @@ function App() {
                     menu = userRouter;
                 }
             } else {
-                menu = [{ path: config.routes.login, component: Login, layout: HeaderOnly }];
+                menu = notLogged;
             }
             setMenuApp(menu);
         }
     }, [user]);
+    const isShowReactLoading = useSelector((state) => state.app.isShowReactLoading);
+    LoadingOverlay.propTypes = undefined;
     return (
-        <Router>
-            <div className="App">
-                <Routes>
-                    {menuApp.length > 0 &&
-                        menuApp.map((route, index) => {
-                            let Layout = DefaultLayout;
-                            if (route.layout) {
-                                Layout = route.layout;
-                            } else if (route.layout === null) {
-                                Layout = Fragment;
-                            }
-                            const Page = route.component;
-                            return (
-                                <Route
-                                    key={index}
-                                    path={route.path}
-                                    element={
-                                        <Layout>
-                                            <Page />
-                                        </Layout>
-                                    }
-                                />
-                            );
-                        })}
-                </Routes>
-                <ToastContainer
-                    position="bottom-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                />
-            </div>
-        </Router>
+        <LoadingOverlay active={isShowReactLoading} spinner text="please wait...">
+            <Router>
+                <div className="App">
+                    <Routes>
+                        {menuApp.length > 0 &&
+                            menuApp.map((route, index) => {
+                                let Layout = DefaultLayout;
+                                if (route.layout) {
+                                    Layout = route.layout;
+                                } else if (route.layout === null) {
+                                    Layout = Fragment;
+                                }
+                                const Page = route.component;
+                                return (
+                                    <Route
+                                        key={index}
+                                        path={route.path}
+                                        element={
+                                            <Layout>
+                                                <Page />
+                                            </Layout>
+                                        }
+                                    />
+                                );
+                            })}
+                    </Routes>
+                    <ToastContainer
+                        position="bottom-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
+                    />
+                </div>
+            </Router>
+        </LoadingOverlay>
     );
 }
 

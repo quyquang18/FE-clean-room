@@ -21,10 +21,33 @@
     },
 
     "homepage": {
-        "outstanding-doctor": "Last week's featured doctor",
-        "outstanding-specialty": "Popular specialties",
-        "outstanding-clinic": "Outstanding medical facility",
-        "more-info": "More"
+        "about-us": "Về Chúng tôi",
+        "section-desc": "LUXAS là nhà cung cấp các thiết bị, phụ tùng trong nhà máy. Tư vấn lắp đặt hệ thốngIoT cho mọi khách hàng trên toàn thế giới.",
+        "section-about1": "Xây dựng và phát triển với phương châm hoạt động đạo đức, chuyên nghiệp và sáng tạo,chúng tôi tạo ra môi trường làm việc ý nghĩa cho nhân viên, mang đến khách hàng các giá trị cách tân và dịch vụ tuyệt hảo, hướng tới nâng cao giá trị cho cổ đông và có trách nhiệm với cộng đồng.",
+        "section-about2": "Với chiến lược hoạt động: “” – LUXAS mong muốn trở thành một công ty dẫn đầu tại Việt Nam và khu vực về chất lượng dịch vụ và hiệu quả trong các hoạt động thiết bị công nghiệp.",
+        "why-luxas-title": "Tại sao chọn LUXAS ?",
+        "why-luxas-content1": "Dễ dàng sử dụng",
+        "why-luxas-content2": "Giá cả hợp lí",
+        "why-luxas-content3": "Độ bền thiết bị",
+        "why-luxas-content4": "Tiện lợi",
+        "why-luxas-sub1": "Hướng dẫn sử dụng rõ ràng, dễ thực hiện",
+        "why-luxas-sub2": "Giá cả thiết bị nhiều ưu đãi",
+        "why-luxas-sub3": "Các thiết bị luôn đạt chất lượng tiêu chuẩn",
+        "why-luxas-sub4": "Dịch vụ thực hiện hoàn toàn trực tuyến ?"
+    },
+    "homepage-footer": {
+        "service1": "Dịch vụ lắp đặt, sửa chữa, bảo trì",
+        "service2": "Kinh doanh máy móc, thiết bị và phụ tùng trong nhà máy",
+        "service3": "Cung cấp linh kiện máy móc thiết bị công nghiệp",
+        "service4": "Vật tư tiêu hao trong sản xuất",
+        "service5": "Tư vấn lắp đặt hệ thống IoT",
+        "info": "Thông tin",
+        "contact": "Liên hệ",
+        "address": "Địa chỉ",
+        "address-tt1": "Trụ sở chính",
+        "address-sub1": "38/5 Vạn Kiếp, Phường 3, Quận Bình Thạnh, Thành phố Hồ Chí Minh, Việt Nam.",
+        "address-tt2": "Văn phòng đại diện",
+        "address-sub2": "111 Đường N13, Khu dân cư Phú Hòa 1, Phường Phú Hòa, Thành phố Thủ Dầu Một, Tỉnh Bình Dương, Việt Nam."
     },
     "menu": {
         "admin": {

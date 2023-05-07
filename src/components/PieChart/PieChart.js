@@ -14,7 +14,7 @@ function PieChart({ data = [], type, dateRange }) {
         case 'yesterday':
             subtitle = 'Day :  ' + yesterday;
             break;
-        case 'currentday':
+        case 'today':
             subtitle = 'Day :  ' + currentday;
             break;
         case 'thismonth':

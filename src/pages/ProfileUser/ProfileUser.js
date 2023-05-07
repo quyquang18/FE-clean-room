@@ -30,7 +30,7 @@ function ProfileUser() {
             let data = res.data;
             data.valueGender = {};
             data.valueGender.value = data.gender;
-            data.valueGender.label = data.genderData.valueVi;
+            data.valueGender.label = data.genderData.valueVI;
             setInforUser(data);
             setSelectedGender(data.valueGender);
             setEmail(data.email);
@@ -107,6 +107,7 @@ function ProfileUser() {
         setIsOpenModalEditPassword(!isOpenModalEditPassword);
         getInforUser();
     };
+
     return (
         <div className={cx('profile-user-container')}>
             <h2 className={cx('title-page')}>You Profile</h2>

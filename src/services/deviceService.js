@@ -29,6 +29,14 @@ const handleGetStatusDevice = (userId, deviceId, roomId, type, date) => {
         `/api/get-status-device?userId=${userId}&deviceId=${deviceId}&roomId=${roomId}&type=${type}&date=${date}`,
     );
 };
+const handleGetValueThreshold = (data) => {
+    return axios.get(
+        `/api/get-value-threshold?userId=${data.userId}&roomId=${data.roomId}&Type_sensor=${data.Type_sensor}`,
+    );
+};
+const handleUpdateValueThreshold = (data) => {
+    return axios.post(`/api/update-value-threshold`, data);
+};
 export {
     getDeviceInRoom,
     handleUpdateDevice,
@@ -38,4 +46,6 @@ export {
     handleGetStatusDevice,
     handleGetValueSensor,
     getAllInfoDeviceByUser,
+    handleGetValueThreshold,
+    handleUpdateValueThreshold,
 };

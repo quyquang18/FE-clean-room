@@ -1,15 +1,25 @@
 import classNames from 'classnames/bind';
-import { useState, useRef, useEffect, useReducer } from 'react';
-import axios from 'axios';
-import { getDatabase, child, ref, onValue } from 'firebase/database';
+import { useState, useMemo, useEffect, useReducer } from 'react';
 
-import { database } from '~/fribase';
+import Select from 'react-select';
+
 import ProgressBar from '~/components/ProgressBar';
-import Selects from '~/components/SelectLocation';
-import styles from './MonitorControl.module.scss';
-import { FanIcon, RoomIcon, MinusIcon, PlusIcon, DashedCircleIcon, DewIcon } from '~/components/Icons';
+import * as actions from '~/store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from './MonitorControler.module.scss';
+import { FanIcon, RoomIcon, MinusIcon, PlusIcon, DashedCircleIcon, DewIcon, SettingsIcon } from '~/components/Icons';
 import InfomationSensor from '~/components/InfomationSensor';
+import Button from '~/components/Button';
+import { TYPE_DISPLAY } from '~/utils';
+
 const cx = classNames.bind(styles);
+const listSensorDisplay = [
+    { label: 'T-H', value: TYPE_DISPLAY.TEMPERATURE_HUMIDITY },
+    { label: 'Dust', value: TYPE_DISPLAY.DUST },
+    { label: 'Press', value: TYPE_DISPLAY.PRESSURE },
+    { label: 'Oxy', value: TYPE_DISPLAY.OXY },
+];
+
 const reducer = (state, action) => {
     switch (action) {
         case 'PLUS':
@@ -28,54 +38,62 @@ const reducer = (state, action) => {
             throw new Error('Invalid action');
     }
 };
-const dbRef = ref(database);
 
-function MonitorControl() {
+function MonitorControler() {
     const [valueFan, dispatchFan] = useReducer(reducer, 10);
     const [valueDew, dispatchDew] = useReducer(reducer, 20);
-    const [curentValueTemp, setCurrentValueTemp] = useState(10);
-    const [curentValueHumi, setCurrentValueHumi] = useState(10);
-    const [curentValueDust25, setCurrentValueDust25] = useState(10);
-    const [curentValueDust10, setCurrentValueDust10] = useState(10);
-    const [curentValuePresIn, setCurrentValuePresIn] = useState(10);
-    const [curentValuePresOut, setCurrentValuePresOut] = useState(10);
-
+    const [selectedDisplay, setSelectedDisplay] = useState();
     document.title = 'LUXAS-Monitor Control';
 
+    const buildDataInputSelect = (inputData, type) => {
+        let result = [];
+        if (inputData && inputData.length > 0) {
+            inputData.map((item, index) => {
+                let object = {};
+                object.value = item.id;
+                object.label = item.name;
+                result.push(object);
+                return true;
+            });
+            return result;
+        }
+    };
+    let listRoom = useSelector((state) => state.admin.arrRoom);
+    listRoom = buildDataInputSelect(listRoom);
+    const initSelectedRoom = useMemo(() => listRoom && listRoom.length > 0 && listRoom[0], [listRoom]);
+    const [selectedRoom, setSelectedRoom] = useState(initSelectedRoom);
+    const dispatch = useDispatch();
+    const userId = useSelector((state) => state.user.userInfo.id);
     useEffect(() => {
-        onValue(child(dbRef, `valueSensor/workShop1/temperature`), (snapshot) => {
-            const dataFb = snapshot.val();
-            setCurrentValueTemp(dataFb);
-        });
-        onValue(child(dbRef, `valueSensor/workShop1/humidity`), (snapshot) => {
-            const dataFb = snapshot.val();
-            setCurrentValueHumi(dataFb);
-        });
-        onValue(child(dbRef, `valueSensor/workShop1/dust2_5`), (snapshot) => {
-            const dataFb = snapshot.val();
-            setCurrentValueDust25(dataFb);
-        });
-        onValue(child(dbRef, `valueSensor/workShop1/dust10`), (snapshot) => {
-            const dataFb = snapshot.val();
-            setCurrentValueDust10(dataFb);
-        });
-        onValue(child(dbRef, `valueSensor/workShop1/pressure_in`), (snapshot) => {
-            const dataFb = snapshot.val();
-            setCurrentValuePresIn(dataFb);
-        });
-        onValue(child(dbRef, `valueSensor/workShop1/pressure_out`), (snapshot) => {
-            const dataFb = snapshot.val();
-            setCurrentValuePresOut(dataFb);
-        });
-    }, []);
+        dispatch(actions.fetchAllRoom(userId));
+    }, [dispatch, userId]);
+    useEffect(() => {
+        if (listRoom && listRoom.length > 0 && !selectedRoom) {
+            setSelectedRoom(initSelectedRoom);
+        }
+    }, [listRoom, selectedRoom, initSelectedRoom]);
+
+    const handleChangeRoom = (value) => {
+        setSelectedRoom(value);
+    };
+    const handleChangeDisplay = (value) => {
+        setSelectedDisplay(value);
+    };
     return (
         <div className={cx('wrapper')}>
             <h2 className={cx('header-page')}>Monitor Control </h2>
             <div className={cx('select-location')}>
-                <Selects defaultOPtion={'Select Location'} />
+                <Select value={selectedRoom} onChange={(event) => handleChangeRoom(event)} options={listRoom} />
             </div>
-            <div className={cx('room-name')}>
-                <RoomIcon /> <p>Clean Room 1</p>
+            <div className={cx('room-header')}>
+                <div className={cx('room-name')}>
+                    <RoomIcon /> <p>{selectedRoom && selectedRoom.label}</p>
+                </div>
+                <div className={cx('btn-settings')}>
+                    <Button primary leftIcon={<SettingsIcon />} to="./settings-controler">
+                        Settings
+                    </Button>
+                </div>
             </div>
             <div className={cx('conten-wrapper')}>
                 <div className={cx('control')}>
@@ -149,34 +167,28 @@ function MonitorControl() {
                 </div>
                 <div className={cx('monitor')}>
                     <h4 className={cx('header')}>Monitor</h4>
-                    <InfomationSensor
-                        ssName="Temperature"
-                        valueCurrent={{ value1: curentValueTemp, value2: curentValueHumi }}
-                        status={{
-                            ss1: curentValueTemp <= 37 && curentValueTemp >= 15 ? 'OK' : 'Warrning',
-                            ss2: curentValueHumi <= 100 && curentValueHumi >= 50 ? 'OK' : 'Warrning',
-                        }}
+                    <Select
+                        value={selectedDisplay}
+                        onChange={(event) => handleChangeDisplay(event)}
+                        options={listSensorDisplay}
+                        isMulti
                     />
-                    <InfomationSensor
-                        ssName="dust"
-                        status={{
-                            ss1: curentValueDust25 <= 100 ? 'OK' : 'Warrning',
-                            ss2: curentValueDust10 <= 99 ? 'OK' : 'Warrning',
-                        }}
-                        valueCurrent={{ value1: curentValueDust25, value2: curentValueDust10 }}
-                    />
-                    <InfomationSensor
-                        ssName="pressure"
-                        status={{
-                            ss1: curentValuePresIn <= 130 ? 'OK' : 'Warrning',
-                            ss2: curentValuePresOut <= 130 ? 'OK' : 'Warrning',
-                        }}
-                        valueCurrent={{ value1: curentValuePresIn, value2: curentValuePresOut }}
-                    />
+                    {selectedDisplay &&
+                        selectedDisplay.length > 0 &&
+                        selectedDisplay.map((item, index) => {
+                            return (
+                                <InfomationSensor
+                                    key={index}
+                                    userId={userId}
+                                    typeDisplay={item.value}
+                                    roomId={selectedRoom && selectedRoom.value}
+                                />
+                            );
+                        })}
                 </div>
             </div>
         </div>
     );
 }
 
-export default MonitorControl;
+export default MonitorControler;

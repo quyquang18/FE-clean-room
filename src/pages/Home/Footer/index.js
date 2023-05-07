@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-
+import { FormattedMessage } from 'react-intl';
 import styles from './Footer.module.scss';
 
 const cx = classNames.bind(styles);
@@ -11,23 +11,35 @@ function Footer() {
                 <div className={cx('service')}>
                     <span>LUXAS CO., LTD</span>
                     <ul>
-                        <li>Installation, repair and maintenance services</li>
-                        <li>Trading in machinery, equipment and spare parts in the factory</li>
-                        <li>Supply of components for industrial machinery and equipment</li>
-                        <li>Consumables in production</li>
-                        <li>Consulting on installation of IoT systems</li>
+                        <li>
+                            <FormattedMessage id="homepage-footer.service1" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="homepage-footer.service2" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="homepage-footer.service3" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="homepage-footer.service4" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="homepage-footer.service5" />
+                        </li>
                     </ul>
                 </div>
             </div>
             <div className={cx('sub-footer-2')}>
                 <h2>
-                    <span>Information</span>
+                    <span>
+                        <FormattedMessage id="homepage-footer.info" />
+                    </span>
                 </h2>
                 <ul>
                     <li>
-                        <a href="Contact.aspx">
+                        <div>
                             <span>Contact</span>
-                        </a>
+                        </div>
                     </li>
                     <li>
                         <a href="tel:0937511617">Hotline: 0937511617</a>
@@ -39,20 +51,31 @@ function Footer() {
             </div>
             <div className={cx('sub-footer-3')}>
                 <h2>
-                    <span>Address</span>
+                    <span>
+                        <FormattedMessage id="homepage-footer.address" />
+                    </span>
                 </h2>
                 <ul>
                     <li>
-                        -<span>Head Office</span> :
+                        -
+                        <span>
+                            <FormattedMessage id="homepage-footer.address-tt1" />
+                        </span>{' '}
+                        :
                         <address>
-                            <span>38/5 Van Kiep Street Ward 3, Binh Thanh District, Ho Chí Minh City, Viet Nam.</span>
+                            <span>
+                                <FormattedMessage id="homepage-footer.address-sub1" />
+                            </span>
                         </address>
                     </li>
                     <li>
-                        -<span>Representative Office</span> :
+                        -
+                        <span>
+                            <FormattedMessage id="homepage-footer.address-tt2" />
+                        </span>{' '}
+                        :
                         <address>
-                            111 N13 Street, Phu Hoa Residential Area 1, Phu Hoa Ward, Thu Dau Mot City, Binh Duong
-                            Province, Viet Nam.
+                            <FormattedMessage id="homepage-footer.address-sub2" />
                         </address>
                     </li>
                 </ul>

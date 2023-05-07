@@ -17,6 +17,7 @@ import Menu from '~/components/Popper/Menu';
 import Image from '~/components/Image';
 import Search from '../Search';
 import { DarkModeIcon, NotificationIcon, ThreeDotsIcon } from '~/components/Icons';
+import { path } from '~/utils';
 
 const cx = classNames.bind(styles);
 
@@ -108,7 +109,7 @@ function Header() {
         {
             icon: <AiOutlineLogout />,
             title: <FormattedMessage id="menu-user.logout" />,
-            to: '/login',
+            to: path.LOGIN,
             separate: true,
             onclick: () => logout(),
         },
@@ -139,10 +140,10 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Button to="/register" text>
+                            <Button to={path.REGISTER} text>
                                 Sign up
                             </Button>
-                            <Button to="/login" primary>
+                            <Button to={path.LOGIN} primary>
                                 Sign in
                             </Button>
                         </>
@@ -150,7 +151,7 @@ function Header() {
 
                     <Menu items={user.isLoggedIn ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
                         {user.isLoggedIn ? (
-                            <Image className={cx('user-avatar')} src={avatar} alt="Nguyen Van A" />
+                            <Image className={cx('user-avatar')} src={avatar || images.noAvatar} alt="Nguyen Van A" />
                         ) : (
                             <button className={cx('more-btn')}>
                                 <ThreeDotsIcon width="2.8rem" height="2.8rem" />

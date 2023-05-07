@@ -18,10 +18,10 @@ const optionsModule = [
     { type: 'temp-humi', label: 'Temper-Humi', active: false },
     { type: 'dust', label: 'Dust', active: false },
     { type: 'pressure', label: 'Pressure ', active: false },
+    { type: 'oxy', label: 'Oxy ', active: false },
 ];
 
 function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
-    console.log(data);
     const [typesensor, setTypeSensor] = useState('all');
     const [statusResultApi, setStatusResultApi] = useState(true);
     const [newData, setNewData] = useState({
@@ -41,6 +41,9 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
             value: [],
         },
         pressOut: {
+            value: [],
+        },
+        oxy: {
             value: [],
         },
         times: {
@@ -71,6 +74,9 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
             pressOut: {
                 value: [],
             },
+            oxy: {
+                value: [],
+            },
             times: {
                 value: [],
             },
@@ -99,6 +105,9 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
                 pressOut: {
                     value: [],
                 },
+                oxy: {
+                    value: [],
+                },
                 times: {
                     value: [],
                 },
@@ -114,8 +123,9 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
                     dataDraw.humidity.value.push(Number(item.humidity));
                     dataDraw.dust25.value.push(Number(item.dust25));
                     dataDraw.dust10.value.push(Number(item.dust10));
-                    dataDraw.pressIn.value.push(Number(item.pressIn));
-                    dataDraw.pressOut.value.push(Number(item.pressOut));
+                    dataDraw.pressIn.value.push(Number(item.pressIn / 1000));
+                    dataDraw.pressOut.value.push(Number(item.pressOut / 1000));
+                    dataDraw.oxy.value.push(Number(item.oxy));
                     dataDraw.times.value.push(format(+item.date, 'HH:mm'));
                     dataDraw.dates.value.push(format(+item.date, 'dd/MM'));
                 });
@@ -148,13 +158,17 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
             name: 'Pressure Out (kPa)',
             data: newData.pressOut.value,
         },
+        {
+            name: 'Oxy (%)',
+            data: newData.oxy.value,
+        },
     ];
     const seriesChart = () => {
-        var [temp, humidity, dust25, dust10, pressIn, pressOut] = datachart;
+        var [temp, humidity, dust25, dust10, pressIn, pressOut, oxy] = datachart;
 
         switch (typesensor) {
             case 'all':
-                return [temp, humidity, dust25, dust10, pressIn, pressOut];
+                return [temp, humidity, dust25, dust10, pressIn, pressOut, oxy];
             case 'temp-humi':
                 return [
                     temp,
@@ -172,6 +186,10 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
                         data: [],
                     }),
                     (pressOut = {
+                        name: '',
+                        data: [],
+                    }),
+                    (oxy = {
                         name: '',
                         data: [],
                     }),
@@ -196,6 +214,10 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
                         name: '',
                         data: [],
                     }),
+                    (oxy = {
+                        name: '',
+                        data: [],
+                    }),
                 ];
             case 'pressure':
                 return [
@@ -215,8 +237,40 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
                         name: '',
                         data: [],
                     }),
+                    (oxy = {
+                        name: '',
+                        data: [],
+                    }),
                     pressIn,
                     pressOut,
+                ];
+            case 'oxy':
+                return [
+                    (dust25 = {
+                        name: '',
+                        data: [],
+                    }),
+                    (dust10 = {
+                        name: '',
+                        data: [],
+                    }),
+                    (temp = {
+                        name: '',
+                        data: [],
+                    }),
+                    (humidity = {
+                        name: '',
+                        data: [],
+                    }),
+                    (pressIn = {
+                        name: '',
+                        data: [],
+                    }),
+                    (pressOut = {
+                        name: '',
+                        data: [],
+                    }),
+                    oxy,
                 ];
             default:
                 return;

@@ -1,5 +1,5 @@
 import actionTypes from '../actions/actionTypes';
-import { LANGUAGES } from '~/utils/constant';
+import { LANGUAGES, path } from '~/utils/constant';
 const initContentOfConfirmModal = {
     isOpen: false,
     messageId: '',
@@ -10,7 +10,7 @@ const initContentOfConfirmModal = {
 const initialState = {
     started: true,
     language: LANGUAGES.VI,
-    systemMenuPath: '/home',
+    systemMenuPath: path.HOMEPAGE,
     contentOfConfirmModal: {
         ...initContentOfConfirmModal,
     },

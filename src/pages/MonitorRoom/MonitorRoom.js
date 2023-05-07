@@ -81,7 +81,7 @@ function MonitorRoom() {
                     </span>
                 ))}
             </div>
-            {display === 'current' && <MonitorRealtime roomId={selectedRoom && selectedRoom.value} />}
+            {display === 'current' && <MonitorRealtime roomId={selectedRoom && selectedRoom.value} userId={userId} />}
             {display === 'old' && <TimeTracking roomId={selectedRoom && selectedRoom.value} userId={userId} />}
         </div>
     );

@@ -66,26 +66,25 @@ function DeviceManager() {
         data.userId = userId;
         data.status = 'OFF';
         onValue(
-            child(dbRef, `statusDevice/` + data.idDevice),
+            child(dbRef, `${userId}/statusDevice/` + data.idDevice),
             (snapshot) => {
                 var exists = snapshot.exists();
                 let resData = snapshot.val();
                 if (exists) {
                     if (
                         resData.deviceName === data.deviceName &&
-                        resData.userId === data.userId &&
                         resData.roomId === data.roomId &&
                         resData.typeDevice === data.typeDevice
                     ) {
                         return true;
                     } else {
                         const updates = {};
-                        updates['/statusDevice/' + data.idDevice] = data;
+                        updates[userId + '/statusDevice/' + data.idDevice] = data;
                         update(dbRef, updates);
                     }
                 } else {
                     const updates = {};
-                    updates['/statusDevice/' + data.idDevice] = data;
+                    updates[userId + '/statusDevice/' + data.idDevice] = data;
                     update(dbRef, updates);
                 }
             },

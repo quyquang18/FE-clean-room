@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import styles from './PageNotFound.module.scss';
 import { Link } from 'react-router-dom';
 import images from '~/assets/images';
+import { path } from '~/utils';
 const cx = classNames.bind(styles);
 
 function NotFoundPage() {
@@ -15,7 +16,7 @@ function NotFoundPage() {
                     <em>. . . like your social life.</em>
                 </p>
                 <span className={cx('btn-go-home')}>
-                    <Link to={'/home'}>Go to Home Page!</Link>
+                    <Link to={path.HOMEPAGE}>Go to Home Page!</Link>
                 </span>
             </div>
         </div>

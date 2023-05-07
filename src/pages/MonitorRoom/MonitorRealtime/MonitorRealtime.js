@@ -14,7 +14,7 @@ import { format } from 'date-fns';
 
 const cx = classNames.bind(styles);
 
-function MonitorRealtime({ roomId }) {
+function MonitorRealtime({ roomId, userId }) {
     var dataSeeChar = [];
 
     const [listIsDisplay, setListIsDisplay] = useState([
@@ -96,12 +96,13 @@ function MonitorRealtime({ roomId }) {
     const [pressIn, setPressIn] = useState([]);
     const [pressOut, setPressOut] = useState([]);
     const [realTime, setRealTime] = useState([]);
+    const [oxy, setOxy] = useState([]);
     const dbRef = ref(database);
     const handleStart = () => {
         setStatus({ value: 'start', activeStop: false, activeStart: true });
 
         statusRef.current = setInterval(() => {
-            get(child(dbRef, `valueSensor/${roomId}`))
+            get(child(dbRef, `${userId}/${roomId}/valueSensor`))
                 .then((snapshot) => {
                     if (snapshot.exists()) {
                         let currentTime = format(new Date(), 'HH:MM:ss');
@@ -109,8 +110,9 @@ function MonitorRealtime({ roomId }) {
                         setHumi((prev) => [...prev, Number(snapshot.val().Humidity)]);
                         setDust2_5((prev) => [...prev, Number(snapshot.val().Dust_2_5)]);
                         setDust10((prev) => [...prev, Number(snapshot.val().Dust_10)]);
-                        setPressIn((prev) => [...prev, Number(snapshot.val().PressureIn)]);
-                        setPressOut((prev) => [...prev, Number(snapshot.val().PressureOut)]);
+                        setPressIn((prev) => [...prev, Number(snapshot.val().PressureIn / 1000)]);
+                        setPressOut((prev) => [...prev, Number(snapshot.val().PressureOut / 1000)]);
+                        setOxy((prev) => [...prev, Number(snapshot.val().Oxy)]);
                         setRealTime((prev) => [...prev, currentTime]);
                     } else {
                         console.log('No data available');
@@ -137,9 +139,10 @@ function MonitorRealtime({ roomId }) {
             dust10.shift();
             pressIn.shift();
             pressOut.shift();
+            oxy.shift();
             realTime.shift();
         }
-    }, [temp, humi, dust2_5, dust10, pressIn, pressOut, realTime]);
+    }, [temp, humi, dust2_5, dust10, pressIn, pressOut, oxy, realTime]);
     const handleChangeCheckboxs = (id) => {
         setListIsDisplay((prev) => {
             if (id === 0) {
@@ -208,6 +211,13 @@ function MonitorRealtime({ roomId }) {
                                 name: 'Pressure Out',
                                 data: pressOut,
                                 color: '#000011',
+                            });
+                            break;
+                        case 'Oxygen':
+                            dataSeeChar.push({
+                                name: 'Oxygen',
+                                data: oxy,
+                                color: '#EA18C1',
                             });
                             break;
                         default:

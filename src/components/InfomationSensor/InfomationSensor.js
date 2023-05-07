@@ -1,63 +1,93 @@
 import classNames from 'classnames/bind';
-
+import { SettingsIcon } from '../Icons';
+import { child, ref, onValue } from 'firebase/database';
+import { database } from '~/fribase';
+import { useState, useEffect } from 'react';
 import styles from './InfomationSensor.module.scss';
+import { TYPE_DISPLAY, TYPE_SENSOR } from '~/utils';
+import { handleGetValueThreshold } from '~/services/deviceService';
 
 const cx = classNames.bind(styles);
+const dbRef = ref(database);
 
-var settingValue = {
-    name: '',
-    valueUpper: [],
-    valueLow: [],
-    unit: [],
-    title: ['', ''],
-};
+function InfomationSensor({ userId, roomId, typeDisplay }) {
+    const [curentValue1, setCurrentValue1] = useState(0);
+    const [curentValue2, setCurrentValue2] = useState(0);
+    const [valueUp, setValueUp] = useState(0);
+    const [valueDown, setValueDown] = useState(0);
 
-function InfomationSensor({
-    ssName,
-    status = { ss1: 'OK', ss2: 'OK' },
-    valueCurrent = { value1: null, value2: null },
-}) {
-    switch (ssName) {
-        case 'Temperature':
-            settingValue.name = ['Temperature', 'Humidity'];
-            settingValue.title = ['Temper ', 'Humidy'];
-            settingValue.valueUpper = [37, 100];
-            settingValue.valueLow = [15, 50];
-            settingValue.unit = ['(°C)', '(%)'];
+    const [nameSensor, setNameSensor] = useState(['', '']);
 
-            break;
-
-        case 'dust':
-            settingValue.name = ['Dust 2.5 µm', 'Dust 10 µm'];
-            settingValue.unit = ['(hạt/m³)', '(hạt/m³)'];
-            settingValue.title = ['Dust 2.5', 'Dust 10'];
-            settingValue.valueUpper = [100, 99];
-            settingValue.valueLow = false;
-            break;
-        case 'pressure':
-            settingValue.name = ['Pressure In', 'Pressure Out'];
-            settingValue.valueUpper = [130, 130];
-            settingValue.valueLow = false;
-            settingValue.unit = ['(kPa)', '(kPa)'];
-            settingValue.title = ['Press In', 'Press Out'];
-            break;
-        default:
-            return;
-    }
+    const getValueThreshold = async (typeSensor) => {
+        let dataReq = {};
+        dataReq.Type_sensor = typeSensor;
+        dataReq.userId = userId;
+        dataReq.roomId = roomId;
+        let res = await handleGetValueThreshold(dataReq);
+        console.log(res);
+    };
+    useEffect(() => {
+        switch (typeDisplay) {
+            case TYPE_DISPLAY.TEMPERATURE_HUMIDITY:
+                getValueThreshold(TYPE_SENSOR.TEMPERATURE);
+                getValueThreshold(TYPE_SENSOR.HUMIDITY);
+                setNameSensor(['Temperature', 'Humidity']);
+                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/Temperature`), (snapshot) => {
+                    const dataFb = snapshot.val();
+                    setCurrentValue1(dataFb);
+                });
+                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/Humidity`), (snapshot) => {
+                    const dataFb = snapshot.val();
+                    setCurrentValue2(dataFb);
+                });
+                break;
+            case TYPE_DISPLAY.DUST:
+                setNameSensor(['Dust 2.5', 'Dust 10']);
+                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/Dust_2_5`), (snapshot) => {
+                    const dataFb = snapshot.val();
+                    setCurrentValue1(dataFb);
+                });
+                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/Dust_10`), (snapshot) => {
+                    const dataFb = snapshot.val();
+                    setCurrentValue2(dataFb);
+                });
+                break;
+            case TYPE_DISPLAY.PRESSURE:
+                setNameSensor(['Pressure In', 'Pressure Out']);
+                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/PressureIn`), (snapshot) => {
+                    const dataFb = snapshot.val() / 1000;
+                    setCurrentValue1(dataFb);
+                });
+                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/PressureOut`), (snapshot) => {
+                    const dataFb = snapshot.val() / 1000;
+                    setCurrentValue2(dataFb);
+                });
+                break;
+            case TYPE_DISPLAY.OXY:
+                setNameSensor(['Oxy']);
+                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/Oxy`), (snapshot) => {
+                    const dataFb = snapshot.val();
+                    setCurrentValue1(dataFb);
+                });
+                break;
+            default:
+                break;
+        }
+    }, [roomId, userId, typeDisplay]);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
                 <h2 className={cx('sensor-name')}>
-                    <p>{settingValue.name[0]}</p>
-                    <p>{settingValue.name[1]}</p>
+                    <p>{nameSensor[0]}</p>
+                    {nameSensor[1] && <p>{nameSensor[1]}</p>}
                 </h2>
                 <span className={cx('sensor-status')}>
-                    <p className={cx(status.ss1 === 'OK' ? 'ok' : 'warrning')}>{status.ss1}</p>
-                    <p className={cx(status.ss2 === 'OK' ? 'ok' : 'warrning')}>{status.ss2}</p>
+                    {/* <p className={cx(status.ss1 === 'OK' ? 'ok' : 'warrning')}>{status.ss1}</p>
+                    <p className={cx(status.ss2 === 'OK' ? 'ok' : 'warrning')}>{status.ss2}</p> */}
                 </span>
             </div>
             <div className={cx('wrapper-table')}>
-                <table className={cx('flat-table')}>
+                {/* <table className={cx('flat-table')}>
                     <thead className={cx('thead')}>
                         <tr>
                             <th>Parameters</th>
@@ -73,7 +103,14 @@ function InfomationSensor({
                     </thead>
                     <tbody className={cx('tbody')}>
                         <tr className={cx('tr-1', 'tr')}>
-                            <td>Upper setting</td>
+                            <td className={cx('title-row')}>
+                                <span>Up</span>
+                                {
+                                    <span className={cx('icon')}>
+                                        <SettingsIcon width="1.8rem" height="1.8rem" />
+                                    </span>
+                                }
+                            </td>
                             <td>
                                 <p>{settingValue.valueUpper[0]}</p>
                             </td>
@@ -83,7 +120,14 @@ function InfomationSensor({
                         </tr>
                         {settingValue.valueLow && (
                             <tr className={cx('tr-2', 'tr')}>
-                                <td>Low setting</td>
+                                <td className={cx('title-row')}>
+                                    <span>Down</span>
+                                    {
+                                        <span className={cx('icon')}>
+                                            <SettingsIcon width="1.8rem" height="1.8rem" />
+                                        </span>
+                                    }
+                                </td>
                                 <td>
                                     <p>{settingValue.valueLow[0]}</p>
                                 </td>
@@ -111,7 +155,7 @@ function InfomationSensor({
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table> */}
             </div>
         </div>
     );
