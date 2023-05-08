@@ -38,6 +38,10 @@ export const YesNoObj = {
     YES: 'Y',
     NO: 'N',
 };
+export const StatusOnOff = {
+    ON: 'ON',
+    OFF: 'OFF',
+};
 export const USER_ROLE = {
     MANAGE_SYSTEM: 'R1',
     ADMIN: 'R2',

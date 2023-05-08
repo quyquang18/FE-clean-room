@@ -1,17 +1,27 @@
 import classNames from 'classnames/bind';
 import { useState, useMemo, useEffect, useReducer } from 'react';
-
+import { ref, set, get, child, onValue, update } from 'firebase/database';
 import Select from 'react-select';
-
+import { database } from '~/fribase';
 import ProgressBar from '~/components/ProgressBar';
 import * as actions from '~/store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './MonitorControler.module.scss';
-import { FanIcon, RoomIcon, MinusIcon, PlusIcon, DashedCircleIcon, DewIcon, SettingsIcon } from '~/components/Icons';
+import {
+    FanIcon,
+    RoomIcon,
+    MinusIcon,
+    PlusIcon,
+    DashedCircleIcon,
+    DewIcon,
+    SettingsIcon,
+    PowerIcon,
+} from '~/components/Icons';
 import InfomationSensor from '~/components/InfomationSensor';
 import Button from '~/components/Button';
-import { TYPE_DISPLAY } from '~/utils';
+import { StatusOnOff, TYPE_DISPLAY } from '~/utils';
 
+const dbRef = ref(database);
 const cx = classNames.bind(styles);
 const listSensorDisplay = [
     { label: 'T-H', value: TYPE_DISPLAY.TEMPERATURE_HUMIDITY },
@@ -20,28 +30,9 @@ const listSensorDisplay = [
     { label: 'Oxy', value: TYPE_DISPLAY.OXY },
 ];
 
-const reducer = (state, action) => {
-    switch (action) {
-        case 'PLUS':
-            if (state < 40) {
-                return state + 1;
-            } else {
-                return (state = 0);
-            }
-        case 'MINUS':
-            if (state > 0) {
-                return state - 1;
-            } else {
-                return (state = 0);
-            }
-        default:
-            throw new Error('Invalid action');
-    }
-};
-
 function MonitorControler() {
-    const [valueFan, dispatchFan] = useReducer(reducer, 10);
-    const [valueDew, dispatchDew] = useReducer(reducer, 20);
+    const [valueDew, dispatchDew] = useReducer(20);
+    const [statusFan, setStatusFan] = useState(StatusOnOff.OFF);
     const [selectedDisplay, setSelectedDisplay] = useState();
     document.title = 'LUXAS-Monitor Control';
 
@@ -79,6 +70,71 @@ function MonitorControler() {
     const handleChangeDisplay = (value) => {
         setSelectedDisplay(value);
     };
+    useEffect(() => {
+        if (userId && selectedRoom) {
+            onValue(
+                child(dbRef, `${userId}/${selectedRoom.value}/valueDevice/Fan`),
+                (snapshot) => {
+                    if (snapshot.val() && snapshot.val().Speed && snapshot.val().Status) {
+                        setValueFan(snapshot.val().Speed);
+                        setStatusFan(snapshot.val().Status);
+                    }
+                },
+                { onlyOnce: true },
+            );
+        }
+    }, [userId, selectedRoom]);
+
+    const [valueFan, setValueFan] = useState(10);
+    const handleChangeSpeedFan = (action) => {
+        let coppyValueFan = valueFan;
+        switch (action) {
+            case 'PLUS':
+                if (coppyValueFan < 40) {
+                    coppyValueFan += 1;
+                    break;
+                } else {
+                    coppyValueFan = 40;
+                    break;
+                }
+            case 'MINUS':
+                if (coppyValueFan > 0) {
+                    coppyValueFan -= 1;
+                    break;
+                } else {
+                    coppyValueFan = 0;
+                    break;
+                }
+            default:
+                break;
+        }
+        setValueFan(coppyValueFan);
+        const updates = {};
+        if (userId && selectedRoom) {
+            updates[`${userId}/${selectedRoom.value}/valueDevice/Fan/` + 'Speed'] = coppyValueFan;
+            update(dbRef, updates);
+        }
+    };
+    const handleChangeStatusFan = () => {
+        if (statusFan === StatusOnOff.ON) {
+            setStatusFan(StatusOnOff.OFF);
+            if (userId && selectedRoom) {
+                const updates = {};
+                // eslint-disable-next-line no-useless-concat
+                updates[`${userId}/${selectedRoom.value}/valueDevice/Fan/` + 'Status'] = StatusOnOff.OFF;
+                update(dbRef, updates);
+            }
+        }
+        if (statusFan === StatusOnOff.OFF) {
+            setStatusFan(StatusOnOff.ON);
+            if (userId && selectedRoom) {
+                const updates = {};
+                // eslint-disable-next-line no-useless-concat
+                updates[`${userId}/${selectedRoom.value}/valueDevice/Fan/` + 'Status'] = StatusOnOff.ON;
+                update(dbRef, updates);
+            }
+        }
+    };
     return (
         <div className={cx('wrapper')}>
             <h2 className={cx('header-page')}>Monitor Control </h2>
@@ -99,14 +155,23 @@ function MonitorControler() {
                 <div className={cx('control')}>
                     <h4 className={cx('header')}>Control</h4>
                     <div className={cx('control-wrapper')}>
-                        <span className={cx('title-control')}>
-                            <FanIcon width="22px" height="22px" />
-                            <p>speed fan</p>
-                        </span>
+                        <div className={cx('header-control')}>
+                            <span className={cx('title-control')}>
+                                <FanIcon width="22px" height="22px" />
+                                <p>speed fan</p>
+                            </span>
+                            <span
+                                className={cx('btn-control', statusFan === StatusOnOff.ON ? 'on' : 'off')}
+                                onClick={() => handleChangeStatusFan()}
+                            >
+                                <PowerIcon width="22px" height="22px" />
+                                <p>{statusFan}</p>
+                            </span>
+                        </div>
                         <div>
                             <span className={cx('speed-control')}>
                                 <span className={cx('control-value')}>
-                                    <span onClick={() => dispatchFan('MINUS')}>
+                                    <span onClick={() => handleChangeSpeedFan('MINUS')}>
                                         <MinusIcon className={cx('icon-btn')} />
                                     </span>
                                     <p className={cx('text-value')}>05</p>
@@ -120,14 +185,10 @@ function MonitorControler() {
                                 </span>
                                 <span className={cx('control-value')}>
                                     <p className={cx('text-value')}>25</p>
-                                    <span onClick={() => dispatchFan('PLUS')}>
+                                    <span onClick={() => handleChangeSpeedFan('PLUS')}>
                                         <PlusIcon className={cx('icon-btn')} />
                                     </span>
                                 </span>
-                            </span>
-
-                            <span className={cx('input-value')}>
-                                <input type="number" placeholder="Input values"></input>
                             </span>
                         </div>
                     </div>
@@ -140,7 +201,7 @@ function MonitorControler() {
                         <div>
                             <span className={cx('speed-control')}>
                                 <span className={cx('control-value')}>
-                                    <span onClick={() => dispatchDew('MINUS')}>
+                                    <span>
                                         <MinusIcon className={cx('icon-btn')} />
                                     </span>
                                     <p className={cx('text-value')}>05</p>
@@ -154,7 +215,7 @@ function MonitorControler() {
                                 </span>
                                 <span className={cx('control-value')}>
                                     <p className={cx('text-value')}>25</p>
-                                    <span onClick={() => dispatchDew('PLUS')}>
+                                    <span>
                                         <PlusIcon className={cx('icon-btn')} />
                                     </span>
                                 </span>
