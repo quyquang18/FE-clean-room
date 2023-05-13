@@ -1,8 +1,8 @@
 import classNames from 'classnames/bind';
 import { useState, useMemo, useEffect, useReducer } from 'react';
-import { ref, set, get, child, onValue, update } from 'firebase/database';
+import { ref, child, onValue, update } from 'firebase/database';
 import Select from 'react-select';
-import { database } from '~/fribase';
+import { database } from '~/firebase';
 import ProgressBar from '~/components/ProgressBar';
 import * as actions from '~/store/actions';
 import { useDispatch, useSelector } from 'react-redux';

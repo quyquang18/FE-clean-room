@@ -10,13 +10,12 @@
     border-radius: 4px;
     padding: 5px;
     border: 1px solid #ccc;
-    &.react-datepicker-ignore-onclickoutside{
-    }
-    
+   
 }
 .react-datepicker__view-calendar-icon {
     input {
         padding: 6px 10px 5px 35px;
+        width: 100%;
     }
 }
 .react-datepicker__input-container {
@@ -33,14 +32,14 @@
 .react-datepicker__month-text--today,
 .react-datepicker__quarter-text--today,
 .react-datepicker__year-text--today {
-  color: rgb(233, 224, 224);
-  background-color: rgb(103, 202, 37);
-  border-radius: 12px;
+    color: rgb(233, 224, 224);
+    background-color: rgb(103, 202, 37);
+    border-radius: 12px;
 }
-.custom-select-style{
+.custom-select-style {
     font-size: 0.9rem;
 }
-.header-custom{
+.header-custom {
     display: flex;
     align-items: center;
     justify-content: space-between;

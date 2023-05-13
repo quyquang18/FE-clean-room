@@ -1,7 +1,21 @@
 .wrapper {
     width: var(--default-layout-sidebar-width);
-    padding: 20px 0 26px 8px;
-    position: fixed;
-    top: var(--default-layout-header-height);
     left: auto;
+    background-color: var(--white);
+    animation: slideIn 0.3s forwards;
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@media (max-width: 1023px) {
+    .wrapper {
+        position: fixed;
+        top: var(--default-layout-header-height);
+        z-index: 9999;
+    }
 }

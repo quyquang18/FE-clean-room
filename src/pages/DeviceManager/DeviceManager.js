@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { HiPencilAlt } from 'react-icons/hi';
 import { MdDeleteForever } from 'react-icons/md';
 
-// import AddDevice from '../AddDevice';
 import Button from '~/components/Button';
 import { PlusIcon } from '~/components/Icons';
 import { getAllInfoDeviceByUser } from '~/services/deviceService';
@@ -15,7 +14,7 @@ import { format } from 'date-fns';
 import { LANGUAGES } from '~/utils';
 import ModalDeleteDevice from './ModalDeleteDevice';
 import { onValue, ref, child, update } from 'firebase/database';
-import { database } from '~/fribase';
+import { database } from '~/firebase';
 const cx = className.bind(styles);
 const dbRef = ref(database);
 function DeviceManager() {

@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import Button from '~/components/Button';
 import { BackWard } from '~/components/Icons';
 import { onValue, ref, child, update } from 'firebase/database';
-import { database } from '~/fribase';
+import { database } from '~/firebase';
 const dbRef = ref(database);
 const cx = classNames.bind(styles);
 function AddDevice() {
@@ -38,7 +38,6 @@ function AddDevice() {
         }
     };
     const userId = useSelector((state) => state.user.userInfo.id);
-    let language = useSelector((state) => state.app.language);
     let lisTypeDevice = useSelector((state) => state.admin.arrTypeDevice);
     let listRoom = useSelector((state) => state.admin.arrRoom);
     listRoom = buildDataInputSelect(listRoom, 'room');
