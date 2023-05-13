@@ -6,31 +6,29 @@ import { getDatabase } from 'firebase/database';
 // // // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
-    apiKey: process.env.FIREBASE_API_KEY,
-    authDomain: 'fir-clean-room.firebaseapp.com',
-    databaseURL: 'https://fir-clean-room-default-rtdb.asia-southeast1.firebasedatabase.app',
-    projectId: 'fir-clean-room',
-    storageBucket: 'fir-clean-room.appspot.com',
-    messagingSenderId: '552996116920',
-    appId: '1:552996116920:web:54a124a509ccf35e3e174d',
-};
-
-
-
-// import firebase from 'firebase/compat/app';
-// import 'firebase/compat/messaging';
-
 // const firebaseConfig = {
-//     apiKey: 'AIzaSyCCRwQC2cAvZkF8ieO4GDqvI3BeiDXx_4E',
+//     apiKey: process.env.FIREBASE_API_KEY,
 //     authDomain: 'fir-clean-room.firebaseapp.com',
 //     databaseURL: 'https://fir-clean-room-default-rtdb.asia-southeast1.firebasedatabase.app',
 //     projectId: 'fir-clean-room',
 //     storageBucket: 'fir-clean-room.appspot.com',
 //     messagingSenderId: '552996116920',
 //     appId: '1:552996116920:web:54a124a509ccf35e3e174d',
-//     measurementId: 'G-SRL6TYLZN8',
 // };
+
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/messaging';
+
+const firebaseConfig = {
+    apiKey: 'AIzaSyCCRwQC2cAvZkF8ieO4GDqvI3BeiDXx_4E',
+    authDomain: 'fir-clean-room.firebaseapp.com',
+    databaseURL: 'https://fir-clean-room-default-rtdb.asia-southeast1.firebasedatabase.app',
+    projectId: 'fir-clean-room',
+    storageBucket: 'fir-clean-room.appspot.com',
+    messagingSenderId: '552996116920',
+    appId: '1:552996116920:web:54a124a509ccf35e3e174d',
+    measurementId: 'G-SRL6TYLZN8',
+};
 
 //  firebase.initializeApp(firebaseConfig);
 // Initialize Firebase

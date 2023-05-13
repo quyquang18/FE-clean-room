@@ -1,7 +1,6 @@
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import { format, getTime } from 'date-fns';
-import { toast } from 'react-toastify';
 function PieChart({ data = [], type, dateRange }) {
     // const [dataDraw, setDataDraw] = useState({});
     var subtitle = '';
@@ -151,6 +150,20 @@ function PieChart({ data = [], type, dateRange }) {
                     y: handleData() && handleData().error.totalMiliSecons,
                     color: '#e4bc0d',
                     time: handleData() && handleData().error.stringTime,
+                },
+            ],
+        },
+        responsive: {
+            rules: [
+                {
+                    condition: {
+                        maxWidth: 500,
+                    },
+                    chartOptions: {
+                        legend: {
+                            enabled: false,
+                        },
+                    },
                 },
             ],
         },

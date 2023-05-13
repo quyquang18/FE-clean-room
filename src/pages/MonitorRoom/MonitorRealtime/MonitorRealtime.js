@@ -7,7 +7,7 @@ import { ref, child, get } from 'firebase/database';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 
-import { database } from '~/fribase';
+import { database } from '~/firebase';
 
 import styles from './MonitorRealtime.module.scss';
 import { format } from 'date-fns';
@@ -60,18 +60,10 @@ function MonitorRealtime({ roomId, userId }) {
         },
         {
             id: 5,
-            key: 'PressureIn',
-            name: 'Pressure In',
-            init: '(kPa)',
+            key: 'DifferentialPress',
+            name: 'DifferPress',
+            init: '(Pa)',
             color: '#006699',
-            isCheck: false,
-        },
-        {
-            id: 6,
-            key: 'PressureOut',
-            name: 'Pressure Out',
-            init: '(kPa)',
-            color: '#000011',
             isCheck: false,
         },
         {
@@ -93,8 +85,7 @@ function MonitorRealtime({ roomId, userId }) {
     const [humi, setHumi] = useState([]);
     const [dust2_5, setDust2_5] = useState([]);
     const [dust10, setDust10] = useState([]);
-    const [pressIn, setPressIn] = useState([]);
-    const [pressOut, setPressOut] = useState([]);
+    const [differPress, setDifferPress] = useState([]);
     const [realTime, setRealTime] = useState([]);
     const [oxy, setOxy] = useState([]);
     const dbRef = ref(database);
@@ -110,8 +101,7 @@ function MonitorRealtime({ roomId, userId }) {
                         setHumi((prev) => [...prev, Number(snapshot.val().Humidity)]);
                         setDust2_5((prev) => [...prev, Number(snapshot.val().Dust_2_5)]);
                         setDust10((prev) => [...prev, Number(snapshot.val().Dust_10)]);
-                        setPressIn((prev) => [...prev, Number(snapshot.val().PressureIn / 1000)]);
-                        setPressOut((prev) => [...prev, Number(snapshot.val().PressureOut / 1000)]);
+                        setDifferPress((prev) => [...prev, Number(snapshot.val().DifferPress)]);
                         setOxy((prev) => [...prev, Number(snapshot.val().Oxy)]);
                         setRealTime((prev) => [...prev, currentTime]);
                     } else {
@@ -137,12 +127,11 @@ function MonitorRealtime({ roomId, userId }) {
             humi.shift();
             dust2_5.shift();
             dust10.shift();
-            pressIn.shift();
-            pressOut.shift();
+            differPress.shift();
             oxy.shift();
             realTime.shift();
         }
-    }, [temp, humi, dust2_5, dust10, pressIn, pressOut, oxy, realTime]);
+    }, [temp, humi, dust2_5, dust10, differPress, oxy, realTime]);
     const handleChangeCheckboxs = (id) => {
         setListIsDisplay((prev) => {
             if (id === 0) {
@@ -202,15 +191,8 @@ function MonitorRealtime({ roomId, userId }) {
                         case 'PressureIn':
                             dataSeeChar.push({
                                 name: 'Pressure In',
-                                data: pressIn,
+                                data: differPress,
                                 color: '#006699',
-                            });
-                            break;
-                        case 'PressureOut':
-                            dataSeeChar.push({
-                                name: 'Pressure Out',
-                                data: pressOut,
-                                color: '#000011',
                             });
                             break;
                         case 'Oxygen':
@@ -240,6 +222,7 @@ function MonitorRealtime({ roomId, userId }) {
                 options={{
                     chart: {
                         type: 'spline',
+                        reflow: true, // Thêm thuộc tính reflow
                     },
                     title: {
                         text: `Chart RealTime`,
@@ -303,6 +286,21 @@ function MonitorRealtime({ roomId, userId }) {
                         borderWidth: 0,
                     },
                     series: seriesChart(),
+                    responsive: {
+                        rules: [
+                            {
+                                condition: {
+                                    maxWidth: 500,
+                                },
+                                chartOptions: {
+                                    legend: {
+                                        enabled: false,
+                                    },
+                                    height: 300,
+                                },
+                            },
+                        ],
+                    },
                 }}
                 containerProps={{ className: cx('chart-container') }}
             />
@@ -323,10 +321,35 @@ function MonitorRealtime({ roomId, userId }) {
         setDust10([]);
         setHumi([]);
         setTemp([]);
-        setPressIn([]);
+        setDifferPress([]);
         setDust2_5([]);
-        setPressOut([]);
     }, [roomId]);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [windowWidth]);
+    const chartRef = useRef(null);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const chart = chartRef.current?.chart;
+            if (chart) {
+                chart.setSize(null, null, false);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         <>
             <div className={cx('status')}>
@@ -349,9 +372,10 @@ function MonitorRealtime({ roomId, userId }) {
                     STOP
                 </span>
             </div>
-            <div className={cx('wrapper-content')}>
-                <div className={cx('select-mode')}>
-                    <div className={cx('sample')}>
+            <div className={cx('wrapper-content', 'row')}>
+                <div className={cx('chart', 'col l-9 m-12 c-12')}>{renderChart()}</div>
+                <div className={cx('select-mode', 'col l-3 m-12 c-12')}>
+                    <div className={cx('sample', ' c-8 c-o-2 m-5 l-12')}>
                         <h2 className={cx('head')}> Sample</h2>
                         <span>
                             <input
@@ -369,39 +393,26 @@ function MonitorRealtime({ roomId, userId }) {
                             </button>
                         </span>
                     </div>
-                    <div className={cx('select-sensor')}>
-                        {listIsDisplay.map((e) => (
-                            <span key={e.id} className={cx('wrapper-input')}>
-                                <input
-                                    type="checkbox"
-                                    checked={e.isCheck}
-                                    className={cx('option-input')}
-                                    value={e.key}
-                                    onChange={() => handleChangeCheckboxs(e.id)}
-                                />
-                                <label className={cx('title')}>
-                                    {e.name}
-                                    <span className={cx('init')}>{e.init}</span>
-                                </label>
-                            </span>
-                        ))}
+                    <div className={cx('select-sensor', 'col c-12 m-12 l-12')}>
+                        <div className="row">
+                            {listIsDisplay.map((e) => (
+                                <span key={e.id} className={cx('wrapper-input', 'row', 'col c-6  m-3 l-12')}>
+                                    <input
+                                        type="checkbox"
+                                        checked={e.isCheck}
+                                        className={cx('option-input')}
+                                        value={e.key}
+                                        onChange={() => handleChangeCheckboxs(e.id)}
+                                    />
+                                    <label className={cx('title')}>
+                                        {e.name}
+                                        <span className={cx('init')}>{e.init}</span>
+                                    </label>
+                                </span>
+                            ))}
+                        </div>
                     </div>
-                    {/* <div className={cx('note')}>
-                        {typesensor.map((item) => (
-                            <span key={item.id}>
-                                <div className={cx('item')}>
-                                    <div className={cx('line', item.child.child1.type)}></div>
-                                    {item.child.child1.type}
-                                </div>
-                                <div className={cx('item')}>
-                                    <div className={cx('line', item.child.child2.type)}></div>
-                                    {item.child.child2.type}
-                                </div>
-                            </span>
-                        ))}
-                    </div> */}
                 </div>
-                <div className={cx('chart')}> {renderChart()}</div>
             </div>
         </>
     );

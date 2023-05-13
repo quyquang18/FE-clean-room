@@ -5,7 +5,7 @@ import { useState, useEffect, useMemo, useCallback, forwardRef } from 'react';
 import { handleGetStatusDevice } from '~/services/deviceService';
 import PieChart from '~/components/PieChart';
 import styles from './DeviceMonitor.module.scss';
-import { database } from '~/fribase';
+import { database } from '~/firebase';
 import Select from 'react-select';
 import * as actions from '~/store/actions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,7 +58,7 @@ function DeviceMonitor() {
     let language = useSelector((state) => state.app.language);
     useEffect(() => {
         dispatch(actions.fetchAllRoom(userId));
-    }, []);
+    }, [dispatch, userId]);
     const initSelectedRoom = useMemo(() => listRoom && listRoom.length > 0 && listRoom[0], [listRoom]);
     const [selectedRoom, setSelectedRoom] = useState(initSelectedRoom);
     const [selectedDevice, setSelectedDevice] = useState();
@@ -141,7 +141,11 @@ function DeviceMonitor() {
             value = 'Select Range Time...';
         }
         return (
-            <button className={cx('item', { active: timeMode === 'range' ? true : false })} onClick={onClick} ref={ref}>
+            <button
+                className={cx('item', 'item-range', { active: timeMode === 'range' ? true : false })}
+                onClick={onClick}
+                ref={ref}
+            >
                 {value}
             </button>
         );
@@ -150,9 +154,19 @@ function DeviceMonitor() {
     return (
         <div className={cx('wrapper')}>
             <h2 className={cx('header-page')}>Device Monitor</h2>
-            <div className={cx('select-location')}>
-                <Select value={selectedRoom} onChange={(event) => handleChangeRoom(event)} options={listRoom} />
-                <Select value={selectedDevice} onChange={(event) => handleChangeDevice(event)} options={listDevice} />
+            <div className={cx('select-location', 'row')}>
+                <Select
+                    className="col c-5"
+                    value={selectedRoom}
+                    onChange={(event) => handleChangeRoom(event)}
+                    options={listRoom}
+                />
+                <Select
+                    className="col c-5"
+                    value={selectedDevice}
+                    onChange={(event) => handleChangeDevice(event)}
+                    options={listDevice}
+                />
             </div>
             <div className={cx('status-device')}>
                 <h4 className={cx('head-content')}>Current device status</h4>
@@ -199,13 +213,15 @@ function DeviceMonitor() {
                     >
                         Last Month
                     </button>
-                    <CustomDatePicker
-                        selected={selectedDate}
-                        onChange={(date, type) => handleChangeDatePicker(date, type)}
-                        typeShow={'range'}
-                        maxDate={startOfDay(new Date()).getTime()}
-                        customInput={<CustomInputDatePicker />}
-                    />
+                    <div>
+                        <CustomDatePicker
+                            selected={selectedDate}
+                            onChange={(date, type) => handleChangeDatePicker(date, type)}
+                            typeShow={'range'}
+                            maxDate={startOfDay(new Date()).getTime()}
+                            customInput={<CustomInputDatePicker />}
+                        />
+                    </div>
                 </div>
                 <PieChart data={data} type={timeMode} dateRange={selectedDate} />
                 <div className={cx('list-status')}>

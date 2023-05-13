@@ -16,12 +16,12 @@ import images from '~/assets/images';
 import Menu from '~/components/Popper/Menu';
 import Image from '~/components/Image';
 import Search from '../Search';
-import { DarkModeIcon, NotificationIcon, ThreeDotsIcon } from '~/components/Icons';
+import { DarkModeIcon, MenuIcon, NotificationIcon, ThreeDotsIcon } from '~/components/Icons';
 import { path } from '~/utils';
 
 const cx = classNames.bind(styles);
 
-function Header() {
+function Header({ toggleNavBar }) {
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const logout = () => {
@@ -114,9 +114,15 @@ function Header() {
             onclick: () => logout(),
         },
     ];
+    const handleClickNavBar = () => {
+        toggleNavBar();
+    };
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
+                <div forhtml="nav-mobile-input" onClick={() => handleClickNavBar()}>
+                    <MenuIcon width="2.6rem" height="2.6rem" className={cx('nav-bars-btn')} />
+                </div>
                 <Link to={config.routes.home} className={cx('logo-link')}>
                     <img className={cx('img-logo')} src={images.logo} alt="Logo" />
                 </Link>

@@ -19,7 +19,7 @@
         "date-fns": "^2.29.3",
         "file-saver": "^2.0.5",
         "firebase": "^9.9.1",
-        "highcharts": "^10.2.0",
+        "highcharts": "^11.0.1",
         "highcharts-react-official": "^3.1.0",
         "lodash": "^4.17.21",
         "moment": "^2.29.0",

@@ -71,9 +71,9 @@ function TimeTracking({ roomId, userId }) {
         }
     };
     return (
-        <div>
-            <div className={cx('select-wrapper')}>
-                <div className={cx('select-view-mode')}>
+        <>
+            <div className={cx('select-wrapper', 'row')}>
+                <div className={cx('select-view-mode', 'col c-5 m-3 l-3')}>
                     <Select
                         value={selectedViewMode}
                         onChange={(event) => handleChangeViewMode(event)}
@@ -81,7 +81,7 @@ function TimeTracking({ roomId, userId }) {
                         isClearable
                     />
                 </div>
-                <div className={cx('select-time')}>
+                <div className={cx('select-time', 'col c-7 m-4 l-4')}>
                     <CustomDatePicker
                         showIcon
                         selected={selectedDate}
@@ -90,13 +90,15 @@ function TimeTracking({ roomId, userId }) {
                         maxDate={startOfDay(new Date()).getTime()}
                     />
                 </div>
-                <div className={cx('btn-wrapper')}>
-                    <button className={cx('btn-see')} onClick={handleSeeChart}>
-                        See Chart
-                    </button>
-                    <button className={cx('btn-see')} onClick={handleSeeTable}>
-                        See Table
-                    </button>
+                <div className={cx('btn-wrapper', 'col c-12 m-5 l-5')}>
+                    <div className="row">
+                        <button className={cx('btn-see', 'col c-4 m-4 l-4')} onClick={handleSeeChart}>
+                            See Chart
+                        </button>
+                        <button className={cx('btn-see', 'col c-4 m-4 l-4')} onClick={handleSeeTable}>
+                            See Table
+                        </button>
+                    </div>
                 </div>
             </div>
             {typeSee.char && (
@@ -113,7 +115,7 @@ function TimeTracking({ roomId, userId }) {
                     <Table data={data} />
                 </>
             )}
-        </div>
+        </>
     );
 }
 

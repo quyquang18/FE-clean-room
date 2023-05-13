@@ -59,8 +59,10 @@ function MonitorRoom() {
     };
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('select-room')}>
-                <Select value={selectedRoom} onChange={(event) => handleChangeRoom(event)} options={listRoom} />
+            <div className={cx('select-room', 'row')}>
+                <div className="col l-3 m-4 c-5">
+                    <Select value={selectedRoom} onChange={(event) => handleChangeRoom(event)} options={listRoom} />
+                </div>
             </div>
 
             <div className={cx('display-list')}>

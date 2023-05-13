@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { SettingsIcon } from '../Icons';
 import { child, ref, onValue } from 'firebase/database';
-import { database } from '~/fribase';
+import { database } from '~/firebase';
 import { useState, useEffect, useCallback } from 'react';
 import styles from './InfomationSensor.module.scss';
 import { TYPE_DISPLAY, TYPE_SENSOR } from '~/utils';

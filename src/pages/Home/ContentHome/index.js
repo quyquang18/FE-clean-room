@@ -8,8 +8,8 @@ function ContentHome() {
     return (
         <div className={cx('wrapper')}>
             <section className={cx('section-about')}>
-                <div className={cx('container')}>
-                    <div className={cx('main-container')}>
+                <div className={cx('container', 'row')}>
+                    <div className={cx('main-container', 'col l-5 m-5 c-11')}>
                         <div>
                             <h2 className={cx('title')}>
                                 <FormattedMessage id="homepage.about-us" />
@@ -22,7 +22,7 @@ function ContentHome() {
                         </div>
                     </div>
 
-                    <div className={cx('sub-container')}>
+                    <div className={cx('sub-container', 'col l-7 m-7 c-10 c-o-1')}>
                         <div className={cx('section-about-content')}>
                             <p>
                                 <FormattedMessage id="homepage.section-about1" />
@@ -39,8 +39,8 @@ function ContentHome() {
                     <h2 className={cx('title-section')}>
                         <FormattedMessage id="homepage.why-luxas-title" />
                     </h2>
-                    <ul className={cx('why-luxas__list')}>
-                        <li className={cx('why-luxas__items')}>
+                    <ul className={cx('row')}>
+                        <li className={cx('why-luxas__items', 'col l-3 m-4 c-10 c-o-1')}>
                             <i className={cx('why-luxas__icon')}>
                                 <UseDeviceIcon width="5.6rem" height="5.6rem" />
                             </i>
@@ -53,7 +53,7 @@ function ContentHome() {
                                 </p>
                             </div>
                         </li>
-                        <li className={cx('why-luxas__items')}>
+                        <li className={cx('why-luxas__items', 'col l-3 m-4 c-10 c-o-1')}>
                             <i className={cx('why-luxas__icon')}>
                                 <MoneyIcon width="5.6rem" height="5.6rem" />
                             </i>
@@ -66,7 +66,7 @@ function ContentHome() {
                                 </p>
                             </div>
                         </li>
-                        <li className={cx('why-luxas__items')}>
+                        <li className={cx('why-luxas__items', 'col l-3 m-4 c-10 c-o-1')}>
                             <i className={cx('why-luxas__icon')}>
                                 <ImpactIcon width="5.6rem" height="5.6rem" />
                             </i>
@@ -79,7 +79,7 @@ function ContentHome() {
                                 </p>
                             </div>
                         </li>
-                        <li className={cx('why-luxas__items')}>
+                        <li className={cx('why-luxas__items', 'col l-3 m-4  c-10 c-o-1')}>
                             <i className={cx('why-luxas__icon')}>
                                 <MapLocationIcon width="5.6rem" height="5.6rem" />
                             </i>

@@ -12,15 +12,14 @@ function Table({
     type = 'valuesensor',
     header = [
         'ID',
-        'Temperatu',
-        'Humidi',
+        'Temperature',
+        'Humidity',
         'Dust 2.5µm',
         'Dust 10µm',
-        'Pressure In',
-        'Pressure Out',
+        'Difire Pressure ',
         'Time',
-        'Year - Month - Day',
-        'Location ID',
+        'Date',
+        'Room ID',
     ],
 }) {
     const fileExtension = '.xlsx';
@@ -46,66 +45,76 @@ function Table({
             );
         });
     };
-    console.log(data);
     const renderTableData = () => {
-        if (type === 'valuesensor') {
-            console.log(data);
-            return data.map((item, index) => {
-                const { temperature, humidity, dust25, dust10, pressIn, pressOut, date, roomId } = item;
-                let formatedDate = format(+date, 'dd:MM:yyyy');
-                let formatedTime = format(+date, 'HH:mm:ss');
-                return (
-                    <tr key={index}>
-                        <td>{index}</td>
-                        <td>{temperature}</td>
-                        <td>{humidity}</td>
-                        <td>{dust25}</td>
-                        <td>{dust10}</td>
-                        <td>{pressIn}</td>
-                        <td>{pressOut}</td>
-                        <td>{formatedTime}</td>
-                        <td>{formatedDate}</td>
-                        <td>{roomId}</td>
-                    </tr>
-                );
-            });
-        }
-        if (type === 'value-status') {
-            return data.map((item, index) => {
-                const { date, device, location, stateEndTime, stateStartTime, status, statusTime } = item;
-                return (
-                    <tr key={index}>
-                        <td>{index}</td>
-                        <td>{location}</td>
-                        <td>{device}</td>
-                        <td>{status}</td>
-                        <td>{stateStartTime}</td>
-                        <td>{stateEndTime}</td>
-                        <td>{statusTime}</td>
-                        <td>{date}</td>
-                    </tr>
-                );
-            });
-        }
-        if (type === 'value') {
-            return data.map((item, index) => {
-                const { location, status, date, start_status_time, end_state_time, status_time } = item;
-                return (
-                    <tr key={index}>
-                        <td>{index}</td>
-                        <td>{location}</td>
-                        <td>{status}</td>
-                        <td>{start_status_time}</td>
-                        <td>{end_state_time}</td>
-                        <td>{status_time}</td>
-                        <td>{date}</td>
-                    </tr>
-                );
-            });
+        if (data && data.length > 0) {
+            if (type === 'valuesensor') {
+                return data.map((item, index) => {
+                    const { temperature, humidity, dust25, dust10, pressIn, date, roomId } = item;
+                    let formatedDate = format(+date, 'dd:MM:yyyy');
+                    let formatedTime = format(+date, 'HH:mm:ss');
+                    return (
+                        <tr key={index}>
+                            <td>{index}</td>
+                            <td>{temperature}</td>
+                            <td>{humidity}</td>
+                            <td>{dust25}</td>
+                            <td>{dust10}</td>
+                            <td>{pressIn}</td>
+                            <td>{formatedTime}</td>
+                            <td>{formatedDate}</td>
+                            <td>{roomId}</td>
+                        </tr>
+                    );
+                });
+            }
+            if (type === 'value-status') {
+                return data.map((item, index) => {
+                    const { date, device, location, stateEndTime, stateStartTime, status, statusTime } = item;
+                    return (
+                        <tr key={index}>
+                            <td>{index}</td>
+                            <td>{location}</td>
+                            <td>{device}</td>
+                            <td>{status}</td>
+                            <td>{stateStartTime}</td>
+                            <td>{stateEndTime}</td>
+                            <td>{statusTime}</td>
+                            <td>{date}</td>
+                        </tr>
+                    );
+                });
+            }
+            if (type === 'value') {
+                return data.map((item, index) => {
+                    const { location, status, date, start_status_time, end_state_time, status_time } = item;
+                    return (
+                        <tr key={index}>
+                            <td>{index}</td>
+                            <td>{location}</td>
+                            <td>{status}</td>
+                            <td>{start_status_time}</td>
+                            <td>{end_state_time}</td>
+                            <td>{status_time}</td>
+                            <td>{date}</td>
+                        </tr>
+                    );
+                });
+            }
+        } else {
+            return (
+                <tr>
+                    <td
+                        style={{ textAlign: 'center', fontSize: '1.6rem', color: 'red', fontWeight: 'bold' }}
+                        colSpan="8"
+                    >
+                        {'No data'}
+                    </td>
+                </tr>
+            );
         }
     };
     return (
-        <div className={cx('wrapper')}>
+        <>
             <div className={cx('table')}>
                 <table className={cx('fl-table')}>
                     <tbody>
@@ -119,7 +128,7 @@ function Table({
                     Export Excel
                 </button>
             </div>
-        </div>
+        </>
     );
 }
 

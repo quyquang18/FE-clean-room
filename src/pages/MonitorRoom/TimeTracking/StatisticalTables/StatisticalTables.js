@@ -37,7 +37,6 @@ function StatisticalTables({ data }) {
             let maxValue = findMax(key);
             let minValue = findMin(key);
             let averagevalue = averageValue(key);
-            console.log(maxValue);
             setValueBiggest({
                 value: maxValue[key],
                 time: format(+maxValue.date, 'HH:mm:ss'),
@@ -45,8 +44,8 @@ function StatisticalTables({ data }) {
             });
             setValueAverage({
                 value: minValue[key],
-                time: format(+maxValue.date, 'HH:mm:ss'),
-                date: format(+maxValue.date, 'dd/MM/yyyy'),
+                time: format(+minValue.date, 'HH:mm:ss'),
+                date: format(+minValue.date, 'dd/MM/yyyy'),
             });
             setValueSmallest({ value: averagevalue, time: '', date: '' });
         }
@@ -87,53 +86,55 @@ function StatisticalTables({ data }) {
         }
     };
     return (
-        <table className={cx('table')} id="customers">
-            <thead>
-                <tr className={cx('tr')}>
-                    <th>
-                        <select
-                            value={typeValue}
-                            className={cx('selects-type')}
-                            onChange={(e) => {
-                                handleChangeSelect(e.target.value);
-                                setTypeValue(e.target.value);
-                            }}
-                        >
-                            <option value="null">Select Value Type...</option>
-                            <option value="tempre">Temperature</option>
-                            <option value="humi">Humidity</option>
-                            <option value="dust_25">Dust 2.5</option>
-                            <option value="dust_10">Dust 10</option>
-                            <option value="press_in">Pressure In</option>
-                            <option value="press_out">Pressure Out</option>
-                        </select>
-                    </th>
-                    <th>Value</th>
-                    <th>Time</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr className={cx('tr')}>
-                    <td>Biggest</td>
-                    <td>{valueBiggest.value}</td>
-                    <td>{valueBiggest.time}</td>
-                    <td>{valueBiggest.date}</td>
-                </tr>
-                <tr className={cx('tr')}>
-                    <td>Average </td>
-                    <td>{valueAverage.value}</td>
-                    <td>{valueAverage.time}</td>
-                    <td>{valueAverage.date}</td>
-                </tr>
-                <tr className={cx('tr')}>
-                    <td>Smallest</td>
-                    <td>{valueSmallest.value}</td>
-                    <td>{valueSmallest.time}</td>
-                    <td>{valueSmallest.date}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div className={cx('table-wrapper')}>
+            <table className={cx('table')} id="customers">
+                <thead>
+                    <tr className={cx('tr')}>
+                        <th>
+                            <select
+                                value={typeValue}
+                                className={cx('selects-type')}
+                                onChange={(e) => {
+                                    handleChangeSelect(e.target.value);
+                                    setTypeValue(e.target.value);
+                                }}
+                            >
+                                <option value="null">Select Type...</option>
+                                <option value="tempre">Temperature</option>
+                                <option value="humi">Humidity</option>
+                                <option value="dust_25">Dust 2.5</option>
+                                <option value="dust_10">Dust 10</option>
+                                <option value="press_in">Pressure In</option>
+                                <option value="press_out">Pressure Out</option>
+                            </select>
+                        </th>
+                        <th>Value</th>
+                        <th>Time</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr className={cx('tr')}>
+                        <td>Biggest</td>
+                        <td>{valueBiggest.value}</td>
+                        <td>{valueBiggest.time}</td>
+                        <td>{valueBiggest.date}</td>
+                    </tr>
+                    <tr className={cx('tr')}>
+                        <td>Average </td>
+                        <td>{valueAverage.value}</td>
+                        <td>{valueAverage.time}</td>
+                        <td>{valueAverage.date}</td>
+                    </tr>
+                    <tr className={cx('tr')}>
+                        <td>Smallest</td>
+                        <td>{valueSmallest.value}</td>
+                        <td>{valueSmallest.time}</td>
+                        <td>{valueSmallest.date}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     );
 }
 
