@@ -17,7 +17,6 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
     const [history, setHistory] = useState([{ data: items }]);
     const currentMenu = history[history.length - 1];
     const user = useSelector((state) => state.user);
-
     //Reset to first page
     const handleReset = () => {
         setHistory((prev) => prev.slice(0, 1));

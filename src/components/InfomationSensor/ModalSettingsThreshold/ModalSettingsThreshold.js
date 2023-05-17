@@ -76,12 +76,12 @@ function ModalSettingsThreshold({ ...props }) {
                 <>
                     <form>
                         <div className="row">
-                            <span className="col-12" style={{ fontWeight: 'bold' }}>
+                            <span className="col c-12" style={{ fontWeight: 'bold' }}>
                                 {props.valueThreshold1.Type_sensor}
                             </span>
                         </div>
                         <div className="row">
-                            <div className="col-4">
+                            <div className="col c-6 m-4 l-4">
                                 <div className="form-group">
                                     <label className="lable-input">Value Up:</label>
                                     <input
@@ -92,7 +92,7 @@ function ModalSettingsThreshold({ ...props }) {
                                     />
                                 </div>
                             </div>
-                            <div className="col-4">
+                            <div className="col c-6 m-4 l-4">
                                 <div className="form-group">
                                     <label className="lable-input">Value Down:</label>
                                     <input
@@ -103,9 +103,9 @@ function ModalSettingsThreshold({ ...props }) {
                                     />
                                 </div>
                             </div>
-                            <div className="col-4">
+                            <div className="col c-12 m-4 l-4">
                                 <div className="form-group">
-                                    <label className="lable-input">Init:</label>
+                                    <label className="lable-input">Unit:</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -118,12 +118,12 @@ function ModalSettingsThreshold({ ...props }) {
                         {props.valueThreshold2 && props.valueThreshold2.Type_sensor && (
                             <>
                                 <div className="row">
-                                    <span className="col-12" style={{ fontWeight: 'bold' }}>
+                                    <span className="col c-12 m-12 l-12" style={{ fontWeight: 'bold' }}>
                                         {props.valueThreshold2.Type_sensor}
                                     </span>
                                 </div>
                                 <div className="row">
-                                    <div className="col-4">
+                                    <div className="col c-6 m-4 l-4">
                                         <div className="form-group">
                                             <label className="lable-input">Value Up:</label>
                                             <input
@@ -134,7 +134,7 @@ function ModalSettingsThreshold({ ...props }) {
                                             />
                                         </div>
                                     </div>
-                                    <div className="col-4">
+                                    <div className="col c-6 m-4 l-4">
                                         <div className="form-group">
                                             <label className="lable-input">Value Down:</label>
                                             <input
@@ -145,9 +145,9 @@ function ModalSettingsThreshold({ ...props }) {
                                             />
                                         </div>
                                     </div>
-                                    <div className="col-4">
+                                    <div className="col c-12 m-4 l-4">
                                         <div className="form-group">
-                                            <label className="lable-input">Value Down:</label>
+                                            <label className="lable-input">Unit:</label>
                                             <input
                                                 type="text"
                                                 className="form-control"

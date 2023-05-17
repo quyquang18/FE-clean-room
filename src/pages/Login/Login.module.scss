@@ -1,15 +1,12 @@
 .wapper-login {
-    margin-top: 60px;
-    max-height: 100%;
-    max-width: 100%;
-    width: 478px;
+    margin: 25% auto 15%;
+    
+}
+.login-container{
     background-color: #fff;
+    padding: 22px;
     border: 1px solid #e3e3e3;
     border-radius: 16px;
-    position: absolute;
-    left: 25%;
-    padding: 48px;
-    top: 10%;
 }
 .header {
     text-align: center;
@@ -21,13 +18,10 @@
         color: var(--primary);
     }
 }
-.form-username,
-.form-pass {
-    margin: 12px 0;
-}
+
 
 .fif_wrap {
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
     label {
         font-weight: 600;

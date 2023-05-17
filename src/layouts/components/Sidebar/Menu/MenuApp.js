@@ -8,26 +8,6 @@ export const adminSystemMenu = [
         icon: <HomeIcon />,
     },
     {
-        title: <FormattedMessage id="home-sidebar.monitor-room" />,
-        to: config.routes.monitorRoom,
-        icon: <SeeChartIcon />,
-    },
-    {
-        title: <FormattedMessage id="home-sidebar.monitor-device" />,
-        to: config.routes.devicemonitor,
-        icon: <MonitorIcon />,
-    },
-    {
-        title: <FormattedMessage id="home-sidebar.device-control" />,
-        to: config.routes.monitorcontroler,
-        icon: <DashboardIcon />,
-    },
-    {
-        title: <FormattedMessage id="home-sidebar.device-manager" />,
-        to: config.routes.devicemanager,
-        icon: <DeviceIcon />,
-    },
-    {
         title: <FormattedMessage id="home-sidebar.manage-acc" />,
         to: config.routes.manage_account,
         icon: <AcountsIcon />,

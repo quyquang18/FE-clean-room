@@ -1,6 +1,5 @@
 .profile-user-container {
-    .title-page {
-    }
+
     .avatar-user {
         width: 100%;
         display: flex;
@@ -36,9 +35,14 @@
         }
     }
 }
-.you-infor{
-    padding: 0 20px;
-    margin: 0 auto;
+.sub-icon{
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    color: red;
+    svg{
+        width: 1.8rem;
+    }
 }
 .btn-edit-infor{
     text-align: center;

@@ -134,86 +134,88 @@ function ProfileUser() {
                     </span>
                 </div>
             </div>
-            <div className={cx('you-infor')}>
-                <div className="row">
-                    <div className="col-11">
-                        <div className={cx('form-group')}>
-                            <label className={cx('lable-input')}>Email:</label>
-                            <input
-                                className="form-control"
-                                type="text"
-                                disabled={!isEditInfo}
-                                value={email}
-                                onChange={(event) => handleChangeEmail(event)}
-                            />
+            <div className="row">
+                <div className={cx('col c-12')}>
+                    <div className="row">
+                        <div className="col c-10 c-o-1 m-8 m-o-2 l-6 l-o-3">
+                            <div className={cx('form-group')}>
+                                <label className={cx('lable-input')}>Email:</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    disabled={!isEditInfo}
+                                    value={email}
+                                    onChange={(event) => handleChangeEmail(event)}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-11">
-                        <div className={cx('form-group')}>
-                            <label className={cx('lable-input')}>User Name:</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                disabled={true}
-                                defaultValue={inforUser.username}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-11">
-                        <div className={cx('form-group')}>
-                            <label className={cx('lable-input')}>Phone Number:</label>
-                            <input
-                                className="form-control"
-                                type="text"
-                                disabled={!isEditInfo}
-                                value={phonenumber}
-                                onChange={(event) => handleChangePhonenumber(event)}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-11">
-                        <div className={cx('form-group')}>
-                            <label className={cx('lable-input')}>Gender:</label>
-                            {!isEditInfo ? (
+                    <div className="row">
+                        <div className="col c-10 c-o-1  m-8 m-o-2 l-6 l-o-3">
+                            <div className={cx('form-group')}>
+                                <label className={cx('lable-input')}>User Name:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     disabled={true}
-                                    defaultValue={inforUser.valueGender && inforUser.valueGender.label}
+                                    defaultValue={inforUser.username}
                                 />
-                            ) : (
-                                <Select
-                                    value={selectedGender}
-                                    onChange={(event) => handleChangeGender(event)}
-                                    options={listGender}
-                                />
-                            )}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-11">
-                        <div className={cx('form-group')}>
-                            <label className={cx('lable-input')}>Password:</label>
-                            <input type="password" className="form-control" disabled={true} value={'1111111111'} />
+                    <div className="row">
+                        <div className="col c-10 c-o-1  m-8 m-o-2 l-6 l-o-3">
+                            <div className={cx('form-group')}>
+                                <label className={cx('lable-input')}>Phone Number:</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    disabled={!isEditInfo}
+                                    value={phonenumber}
+                                    onChange={(event) => handleChangePhonenumber(event)}
+                                />
+                            </div>
                         </div>
                     </div>
-                    <div className="sub-icon" onClick={() => handleEditPassword()}>
-                        <EditIcon width="2.0rem" height="2.0rem" />
+                    <div className="row">
+                        <div className="col c-10 c-o-1  m-8 m-o-2 l-6 l-o-3">
+                            <div className={cx('form-group')}>
+                                <label className={cx('lable-input')}>Gender:</label>
+                                {!isEditInfo ? (
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        disabled={true}
+                                        defaultValue={inforUser.valueGender && inforUser.valueGender.label}
+                                    />
+                                ) : (
+                                    <Select
+                                        value={selectedGender}
+                                        onChange={(event) => handleChangeGender(event)}
+                                        options={listGender}
+                                    />
+                                )}
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className={cx('btn-edit-infor')}>
-                    {!isEditInfo ? (
-                        <button onClick={() => setIsEditInfo(true)}>Chỉnh sửa thông tin</button>
-                    ) : (
-                        <button onClick={() => saveInfoUser()}>Lưu</button>
-                    )}
+                    <div className="row">
+                        <div className="col c-10 c-o-1  m-8 m-o-2 l-6 l-o-3">
+                            <div className={cx('form-group')}>
+                                <label className={cx('lable-input')}>Password:</label>
+                                <input type="password" className="form-control" disabled={true} value={'1111111111'} />
+                            </div>
+                        </div>
+                        <div className={cx('sub-icon')} onClick={() => handleEditPassword()}>
+                            <EditIcon width="2.8rem" height="2.8rem" />
+                        </div>
+                    </div>
+                    <div className={cx('btn-edit-infor')}>
+                        {!isEditInfo ? (
+                            <button onClick={() => setIsEditInfo(true)}>Chỉnh sửa thông tin</button>
+                        ) : (
+                            <button onClick={() => saveInfoUser()}>Lưu</button>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

@@ -117,12 +117,15 @@ function Header({ toggleNavBar }) {
     const handleClickNavBar = () => {
         toggleNavBar();
     };
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <div forhtml="nav-mobile-input" onClick={() => handleClickNavBar()}>
-                    <MenuIcon width="2.6rem" height="2.6rem" className={cx('nav-bars-btn')} />
-                </div>
+                {user.isLoggedIn && (
+                    <div onClick={() => handleClickNavBar()}>
+                        <MenuIcon width="2.6rem" height="2.6rem" className={cx('nav-bars-btn')} />
+                    </div>
+                )}
                 <Link to={config.routes.home} className={cx('logo-link')}>
                     <img className={cx('img-logo')} src={images.logo} alt="Logo" />
                 </Link>

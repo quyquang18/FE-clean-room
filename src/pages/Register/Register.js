@@ -12,7 +12,6 @@ function Register() {
     const [error, setError] = useState(1);
     const [message, setMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
-    console.log('re');
     const handleRegister = async (data) => {
         setIsLoading(true);
         let response = await handleRegisterApi(data);

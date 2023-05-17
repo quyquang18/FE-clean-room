@@ -38,7 +38,7 @@
 
 .modal-container {
     position: absolute;
-    top: 47%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     line-height: 1.4;
@@ -46,16 +46,16 @@
     padding: 14px 28px;
     border-radius: 3px;
     &.xl {
-        width: 800px;
-        min-width: 300px;
+        width: 80%;
+        min-width:21.875em;
     }
     &.lg {
-        width: 600px;
-        min-width: 300px;
+        width: 60%;
+        min-width:21.875em;
     }
     &.sm {
-        width: 400px;
-        min-width: 300px;
+        width: 40%;
+        min-width:21.875em;
     }
     .custom {
     }

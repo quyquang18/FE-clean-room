@@ -1,5 +1,6 @@
 .btn-back{
     width: 100px;
+    margin-top: 12px;
 }
 .title {
     text-align: center;
@@ -9,10 +10,10 @@
     text-shadow: 0 2px 3px rgb(0 0 0 / 10%);
 }
 .form {
-    margin: 12px 20%;
-    border-radius: 10px;
-    box-shadow: 0 3px 25px rgb(0 0 0 / 20%);
-    padding: 12px;
+    // margin: 12px 20%;
+    // border-radius: 10px;
+    // box-shadow: 0 3px 25px rgb(0 0 0 / 20%);
+    // padding: 12px;
 }
 
 .form-group {
@@ -186,14 +187,6 @@
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     border-radius: 8px;
-}
-.message {
-    font-size: 1.4rem;
-    text-align: center;
-    &.err {
-        color: red;
-    }
-    &.success {
-        color: green;
-    }
+    margin-bottom: 22px;
+
 }

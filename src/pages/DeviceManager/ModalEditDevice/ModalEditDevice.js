@@ -84,7 +84,7 @@ function ModalEditDevice({ ...props }) {
                 <>
                     <form>
                         <div className="row">
-                            <div className="col-12">
+                            <div className="col c-12 m-12 l-12">
                                 <div className="form-group">
                                     <label className="lable-input">Name Device:</label>
                                     <input
@@ -97,7 +97,7 @@ function ModalEditDevice({ ...props }) {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-12">
+                            <div className="col c-12 m-12 l-12">
                                 <div className="form-group">
                                     <label className="lable-input">Locatin:</label>
                                     <Select
@@ -110,7 +110,7 @@ function ModalEditDevice({ ...props }) {
                         </div>
 
                         <div className="row">
-                            <div className="col-12">
+                            <div className="col c-12 m-12 l-12">
                                 <div className="form-group">
                                     <label className="lable-input">Type:</label>
                                     <Select

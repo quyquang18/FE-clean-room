@@ -138,73 +138,81 @@ function AddDevice() {
                 </Button>
             </div>
             <h2 className={cx('title')}>Add New Devices</h2>
-            <form method="post" className={cx('form')}>
-                <div className={cx('form-group')}>
-                    <label className={cx('form-label')}>Tên Thiết bị</label>
-                    <input
-                        placeholder="Ex: Lights"
-                        type="text"
-                        className={cx('form-input', 'input')}
-                        value={deviceName}
-                        onChange={(event) => handleChangeDeviceName(event)}
-                    />
-                </div>
-                <div className={cx('form-group')}>
-                    <label forhtml="device-type" className={cx('form-label')}>
-                        Loại thiết bị
-                    </label>
-                    <Select
-                        value={selecedTypeDevice}
-                        onChange={(event) => handleChangeTypeDevice(event)}
-                        options={lisTypeDevice}
-                    />
-                </div>
-                <div className={cx('form-group')}>
-                    <label forhtml="location" className={cx('form-label')}>
-                        Vị trí
-                    </label>
-                    <div className={cx('inputGroup')}>
-                        <input
-                            className={cx('input')}
-                            name="mode"
-                            type="radio"
-                            id="radio1"
-                            value={CRUD_ACTIONS.UPDATE}
-                            onChange={(e) => setModeLocation(e.target.value)}
-                        />
-                        <label htmlFor="radio1">Vị trí có sẵn</label>
-                    </div>
-                    {modeLocation === CRUD_ACTIONS.UPDATE && (
-                        <Select value={selecedRoom} onChange={(event) => handleChangeRoom(event)} options={listRoom} />
-                    )}
-                    <div className={cx('inputGroup')}>
-                        <input
-                            className={cx('input')}
-                            name="mode"
-                            type="radio"
-                            id="radio2"
-                            value={CRUD_ACTIONS.CREATE}
-                            onChange={(e) => setModeLocation(e.target.value)}
-                        />
-                        <label htmlFor="radio2">Vị trí mới</label>
-                    </div>
-                    {modeLocation === CRUD_ACTIONS.CREATE && (
-                        <span className={cx('location-input')}>
+            <div className="row">
+                <div className="col c-10 c-o-1 m-8 m-o-2 l-6 l-o-3">
+                    <form method="post" className={cx('form')}>
+                        <div className={cx('form-group')}>
+                            <label className={cx('form-label')}>Tên Thiết bị</label>
                             <input
-                                name="location"
-                                placeholder="Ex: Work Shop 1"
+                                placeholder="Ex: Lights"
                                 type="text"
                                 className={cx('form-input', 'input')}
-                                value={roomName}
-                                onChange={(e) => setroomName(e.target.value)}
+                                value={deviceName}
+                                onChange={(event) => handleChangeDeviceName(event)}
                             />
-                        </span>
-                    )}
+                        </div>
+                        <div className={cx('form-group')}>
+                            <label forhtml="device-type" className={cx('form-label')}>
+                                Loại thiết bị
+                            </label>
+                            <Select
+                                value={selecedTypeDevice}
+                                onChange={(event) => handleChangeTypeDevice(event)}
+                                options={lisTypeDevice}
+                            />
+                        </div>
+                        <div className={cx('form-group')}>
+                            <label forhtml="location" className={cx('form-label')}>
+                                Vị trí
+                            </label>
+                            <div className={cx('inputGroup')}>
+                                <input
+                                    className={cx('input')}
+                                    name="mode"
+                                    type="radio"
+                                    id="radio1"
+                                    value={CRUD_ACTIONS.UPDATE}
+                                    onChange={(e) => setModeLocation(e.target.value)}
+                                />
+                                <label htmlFor="radio1">Vị trí có sẵn</label>
+                            </div>
+                            {modeLocation === CRUD_ACTIONS.UPDATE && (
+                                <Select
+                                    value={selecedRoom}
+                                    onChange={(event) => handleChangeRoom(event)}
+                                    options={listRoom}
+                                />
+                            )}
+                            <div className={cx('inputGroup')}>
+                                <input
+                                    className={cx('input')}
+                                    name="mode"
+                                    type="radio"
+                                    id="radio2"
+                                    value={CRUD_ACTIONS.CREATE}
+                                    onChange={(e) => setModeLocation(e.target.value)}
+                                />
+                                <label htmlFor="radio2">Vị trí mới</label>
+                            </div>
+                            {modeLocation === CRUD_ACTIONS.CREATE && (
+                                <span className={cx('location-input')}>
+                                    <input
+                                        name="location"
+                                        placeholder="Ex: Work Shop 1"
+                                        type="text"
+                                        className={cx('form-input', 'input')}
+                                        value={roomName}
+                                        onChange={(e) => setroomName(e.target.value)}
+                                    />
+                                </span>
+                            )}
+                        </div>
+                        <button type="submit" className={cx('form-submit')} onClick={handleSubmit}>
+                            Thêm
+                        </button>
+                    </form>
                 </div>
-                <button type="submit" className={cx('form-submit')} onClick={handleSubmit}>
-                    Thêm
-                </button>
-            </form>
+            </div>
         </div>
     );
 }

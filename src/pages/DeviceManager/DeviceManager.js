@@ -128,7 +128,7 @@ function DeviceManager() {
             </div>
             <div className={cx('list-device')}>
                 <h3 className={cx('title')}>List Device</h3>
-                <div className={cx('acc-table')}>
+                <div className={cx('device-table')}>
                     <table className={cx('table')} id="customers">
                         <thead>
                             <tr className={cx('tr')}>

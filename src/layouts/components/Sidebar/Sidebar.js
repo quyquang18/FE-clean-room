@@ -4,6 +4,7 @@ import Menu, { MenuItem } from './Menu';
 import styles from './Sidebar.module.scss';
 import { adminSystemMenu, adminMenu, userMenu } from './Menu/MenuApp';
 import { useSelector } from 'react-redux';
+import { USER_ROLE } from '~/utils';
 const cx = className.bind(styles);
 function Sidebar() {
     const user = useSelector((state) => state.user);
@@ -12,19 +13,19 @@ function Sidebar() {
             <Menu>
                 {user &&
                     user.userInfo &&
-                    user.userInfo.roleID === 'R1' &&
+                    user.userInfo.roleID === USER_ROLE.MANAGE_SYSTEM &&
                     adminSystemMenu.map((item, index) => (
                         <MenuItem key={index} title={item.title} to={item.to} icon={item.icon} />
                     ))}
                 {user &&
                     user.userInfo &&
-                    user.userInfo.roleID === 'R2' &&
+                    user.userInfo.roleID === USER_ROLE.ADMIN &&
                     adminMenu.map((item, index) => (
                         <MenuItem key={index} title={item.title} to={item.to} icon={item.icon} />
                     ))}
                 {user &&
                     user.userInfo &&
-                    user.userInfo.roleID === 'R3' &&
+                    user.userInfo.roleID === USER_ROLE.USER &&
                     userMenu.map((item, index) => (
                         <MenuItem key={index} title={item.title} to={item.to} icon={item.icon} />
                     ))}

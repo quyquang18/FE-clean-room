@@ -151,8 +151,8 @@ function MonitorControler() {
                     </Button>
                 </div>
             </div>
-            <div className={cx('conten-wrapper')}>
-                <div className={cx('control')}>
+            <div className={cx('conten-wrapper', 'row')}>
+                <div className={cx('control', 'col c-12 m-6 l-6')}>
                     <h4 className={cx('header')}>Control</h4>
                     <div className={cx('control-wrapper')}>
                         <div className={cx('header-control')}>
@@ -226,7 +226,7 @@ function MonitorControler() {
                         </div>
                     </div>
                 </div>
-                <div className={cx('monitor')}>
+                <div className={cx('monitor', 'col c-12 m-5 l-5')}>
                     <h4 className={cx('header')}>Monitor</h4>
                     <Select
                         value={selectedDisplay}
