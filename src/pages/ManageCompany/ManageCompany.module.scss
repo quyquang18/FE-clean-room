@@ -1,0 +1,62 @@
+.wrapper {
+    font-size: 1.6rem;
+    padding: 9px 8px;
+    border-radius: 4px;
+    background-color: var(--white);
+    border: 1px solid transparent;
+}
+.select-option {
+    width: 50%;
+    margin-left: 25%;
+}
+.table {
+    font-family: 'Arial';
+    margin: 8px auto 25px;
+    border-collapse: collapse;
+    border: 1px solid #eee;
+    border-bottom: 2px solid var(--primary);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.05), 0px 20px 20px rgba(0, 0, 0, 0.05),
+        0px 30px 20px rgba(0, 0, 0, 0.05);
+    .tr {
+        &:hover {
+            background: #f4f4f4;
+
+            td {
+                color: #555;
+            }
+        }
+        th,
+        td {
+            color: #999;
+            border: 1px solid #eee;
+            padding: 12px 20px;
+            border-collapse: collapse;
+        }
+        th {
+            background: var(--primary);
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 12px;
+            &.last {
+                border-right: none;
+            }
+        }
+    }
+}
+.btn-action {
+    display: flex;
+    background-color: transparent;
+    .icon-btn-edit {
+        color: #e4e00d;
+        width: 1.8rem;
+        height: 1.8rem;
+        cursor: pointer;
+        margin-right: 12px;
+    }
+    .icon-btn-delete {
+        color: #e44a0d;
+        width: 1.8rem;
+        height: 1.8rem;
+        cursor: pointer;
+    }
+}

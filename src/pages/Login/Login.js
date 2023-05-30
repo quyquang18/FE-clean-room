@@ -7,7 +7,7 @@ import * as actions from '~/store/actions';
 import { handleLoginApi } from '~/services/userService';
 import config from '~/config';
 import styles from './Login.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { path } from '~/utils';
 const cx = classNames.bind(styles);
 
@@ -19,7 +19,6 @@ function Login() {
     const [errMessage, setErrMessage] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const user = useSelector((state) => state);
     const handleLogin = async (e) => {
         setErrMessage('');
         e.preventDefault();
@@ -27,7 +26,6 @@ function Login() {
         try {
             dispatch(actions.changeStatusReactLoading(true));
             let data = await handleLoginApi(email, password);
-            // console.log(data);
             if (data && data.errCode !== 0) {
                 dispatch(actions.changeStatusReactLoading(false));
                 dispatch(actions.userLoginFail());
@@ -35,8 +33,8 @@ function Login() {
             }
             if (data && data.errCode === 0) {
                 dispatch(actions.changeStatusReactLoading(false));
-                dispatch(actions.userLoginSuccess(data.user));
-                navigate(path.HOMEPAGE);
+                dispatch(actions.userLoginSuccess(data.user, data.accessToken, data.refreshToken));
+                navigate(path.HOME);
             }
         } catch (error) {
             console.log(error);
@@ -44,7 +42,7 @@ function Login() {
     };
     return (
         <div className={cx('wapper-login', 'row')}>
-            <div className={cx('col c-12 m-8 m-o-2 l-6 l-o-3')}>
+            <div className={cx('col c-12 m-6 m-o-3 l-4 l-o-4')}>
                 <div className={cx('login-container')}>
                     <div className={cx('header')}>
                         <h1 className={cx('form-heading')}>Đăng nhập</h1>

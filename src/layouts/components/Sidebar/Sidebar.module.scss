@@ -16,6 +16,6 @@
     .wrapper {
         position: fixed;
         top: var(--default-layout-header-height);
-        z-index: 9999;
+        z-index: 1;
     }
 }

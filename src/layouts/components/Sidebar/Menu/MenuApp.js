@@ -1,6 +1,14 @@
 import config from '~/config';
 import { FormattedMessage } from 'react-intl';
-import { HomeIcon, DashboardIcon, SeeChartIcon, AcountsIcon, MonitorIcon, DeviceIcon } from '~/components/Icons';
+import {
+    HomeIcon,
+    DashboardIcon,
+    SeeChartIcon,
+    AcountsIcon,
+    MonitorIcon,
+    DeviceIcon,
+    CompanyIcon,
+} from '~/components/Icons';
 export const adminSystemMenu = [
     {
         title: <FormattedMessage id="home-sidebar.home" />,
@@ -11,6 +19,11 @@ export const adminSystemMenu = [
         title: <FormattedMessage id="home-sidebar.manage-acc" />,
         to: config.routes.manage_account,
         icon: <AcountsIcon />,
+    },
+    {
+        title: <FormattedMessage id="home-sidebar.manage-company" />,
+        to: config.routes.manage_company,
+        icon: <CompanyIcon />,
     },
 ];
 export const adminMenu = [
@@ -38,6 +51,11 @@ export const adminMenu = [
         title: <FormattedMessage id="home-sidebar.device-manager" />,
         to: config.routes.devicemanager,
         icon: <DeviceIcon />,
+    },
+    {
+        title: <FormattedMessage id="home-sidebar.manage-acc" />,
+        to: config.routes.manage_account,
+        icon: <AcountsIcon />,
     },
 ];
 export const userMenu = [

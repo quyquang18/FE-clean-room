@@ -27,6 +27,36 @@ export const NotificationIcon = ({ width = '2.8rem', height = '2.8rem', classNam
         <path d="M12 18.5c.83 0 1.5-.67 1.5-1.5h-3c0 .83.67 1.5 1.5 1.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4-8.61c0-2.11-1.03-3.92-3-4.39v-.5c0-.57-.43-1-1-1s-1 .43-1 1V7c-1.97.47-3 2.27-3 4.39V14H7v2h10v-2h-1v-2.61zM14 14h-4v-3c0-1.1.9-2 2-2s2 .9 2 2v3z"></path>
     </svg>
 );
+export const SpeakerIcon = ({ width = '2.8rem', height = '2.8rem', className }) => (
+    <svg
+        className={className}
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 1024 1024"
+        height={width}
+        width={height}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M880 112c-3.8 0-7.7.7-11.6 2.3L292 345.9H128c-8.8 0-16 7.4-16 16.6v299c0 9.2 7.2 16.6 16 16.6h101.6c-3.7 11.6-5.6 23.9-5.6 36.4 0 65.9 53.8 119.5 120 119.5 55.4 0 102.1-37.6 115.9-88.4l408.6 164.2c3.9 1.5 7.8 2.3 11.6 2.3 16.9 0 32-14.2 32-33.2V145.2C912 126.2 897 112 880 112zM344 762.3c-26.5 0-48-21.4-48-47.8 0-11.2 3.9-21.9 11-30.4l84.9 34.1c-2 24.6-22.7 44.1-47.9 44.1z"></path>
+    </svg>
+);
+export const WarningIcon = ({ width = '2.8rem', height = '2.8rem', className }) => (
+    <svg
+        className={className}
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 24 24"
+        height={width}
+        width={height}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path>
+    </svg>
+);
+
 export const CloseIcon = ({ width = '2.8rem', height = '2.8rem', color = '#000', fontWeight = '2', className }) => (
     <svg
         stroke="currentColor"
@@ -82,6 +112,36 @@ export const ThreeDotsIcon = ({ width = '2.8rem', height = '2.8rem', className }
         xmlns="http://www.w3.org/2000/svg"
     >
         <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path>
+    </svg>
+);
+export const DoneIcon = ({ width = '2.8rem', height = '2.8rem', className }) => (
+    <svg
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 24 24"
+        className={className}
+        height={width}
+        width={height}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path>
+    </svg>
+);
+export const CancelIcon = ({ width = '2.8rem', height = '2.8rem', className }) => (
+    <svg
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 24 24"
+        className={className}
+        height={width}
+        width={height}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"></path>
     </svg>
 );
 export const HomeIcon = ({ width = '2.4rem', height = '2.4rem', className }) => (
@@ -197,6 +257,31 @@ export const AcountsIcon = ({ width = '2.4rem', height = '2.4rem', className }) 
     >
         <path fill="none" d="M0 0h24v24H0z"></path>
         <path d="M16.5 12c1.38 0 2.49-1.12 2.49-2.5S17.88 7 16.5 7a2.5 2.5 0 000 5zM9 11c1.66 0 2.99-1.34 2.99-3S10.66 5 9 5C7.34 5 6 6.34 6 8s1.34 3 3 3zm7.5 3c-1.83 0-5.5.92-5.5 2.75V19h11v-2.25c0-1.83-3.67-2.75-5.5-2.75zM9 13c-2.33 0-7 1.17-7 3.5V19h7v-2.25c0-.85.33-2.34 2.37-3.47C10.5 13.1 9.66 13 9 13z"></path>
+    </svg>
+);
+export const CompanyIcon = ({ width = '2.4rem', height = '2.4rem', className }) => (
+    <svg
+        stroke="currentColor"
+        fill="none"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        width={height}
+        height={width}
+        className={className}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M9 21v-6a2 2 0 0 1 2 -2h1.6"></path>
+        <path d="M20 11l-8 -8l-9 9h2v7a2 2 0 0 0 2 2h4.159"></path>
+        <path d="M18 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+        <path d="M18 14.5v1.5"></path>
+        <path d="M18 20v1.5"></path>
+        <path d="M21.032 16.25l-1.299 .75"></path>
+        <path d="M16.27 19l-1.3 .75"></path>
+        <path d="M14.97 16.25l1.3 .75"></path>
+        <path d="M19.733 19l1.3 .75"></path>
     </svg>
 );
 

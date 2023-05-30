@@ -3,25 +3,24 @@ import { MdNotStarted } from 'react-icons/md';
 import { IoStopCircle } from 'react-icons/io5';
 import { useState, useRef, useEffect } from 'react';
 import { ref, child, get } from 'firebase/database';
-
+import { FormattedMessage } from 'react-intl';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
+import { format } from 'date-fns';
 
 import { database } from '~/firebase';
-
 import styles from './MonitorRealtime.module.scss';
-import { format } from 'date-fns';
 
 const cx = classNames.bind(styles);
 
-function MonitorRealtime({ roomId, userId }) {
+function MonitorRealtime({ roomId, companyId }) {
     var dataSeeChar = [];
 
     const [listIsDisplay, setListIsDisplay] = useState([
         {
             id: 0,
             key: 'all',
-            name: 'All',
+            name: <FormattedMessage id="monitor-room.monitor-realtime.all" />,
             init: '',
             color: '',
             isCheck: false,
@@ -29,7 +28,7 @@ function MonitorRealtime({ roomId, userId }) {
         {
             id: 1,
             key: 'Temperature',
-            name: 'Temperature',
+            name: <FormattedMessage id="monitor-room.monitor-realtime.temperature" />,
             init: '(℃)',
             color: '#990000',
             isCheck: false,
@@ -37,7 +36,7 @@ function MonitorRealtime({ roomId, userId }) {
         {
             id: 2,
             key: 'Humidity',
-            name: 'Humidity',
+            name: <FormattedMessage id="monitor-room.monitor-realtime.humidity" />,
             init: '(%)',
             color: '#00FF00',
             isCheck: false,
@@ -45,7 +44,7 @@ function MonitorRealtime({ roomId, userId }) {
         {
             id: 3,
             key: 'Dust_2.5',
-            name: 'Dust 2.5',
+            name: <FormattedMessage id="monitor-room.monitor-realtime.dust-2.5" />,
             init: '(µm)',
             color: '#6699FF',
             isCheck: false,
@@ -53,7 +52,7 @@ function MonitorRealtime({ roomId, userId }) {
         {
             id: 4,
             key: 'Dust_10',
-            name: 'Dust 10',
+            name: <FormattedMessage id="monitor-room.monitor-realtime.dust-10" />,
             init: '(µm)',
             color: '#FFCC33',
             isCheck: false,
@@ -61,7 +60,7 @@ function MonitorRealtime({ roomId, userId }) {
         {
             id: 5,
             key: 'DifferentialPress',
-            name: 'DifferPress',
+            name: <FormattedMessage id="monitor-room.monitor-realtime.differ-press" />,
             init: '(Pa)',
             color: '#006699',
             isCheck: false,
@@ -69,7 +68,7 @@ function MonitorRealtime({ roomId, userId }) {
         {
             id: 7,
             key: 'Oxygen',
-            name: 'Oxygen',
+            name: <FormattedMessage id="monitor-room.monitor-realtime.oxy" />,
             init: '(%)',
             color: '#011011',
             isCheck: false,
@@ -93,7 +92,7 @@ function MonitorRealtime({ roomId, userId }) {
         setStatus({ value: 'start', activeStop: false, activeStart: true });
 
         statusRef.current = setInterval(() => {
-            get(child(dbRef, `${userId}/${roomId}/valueSensor`))
+            get(child(dbRef, `${companyId}/${roomId}/valueSensor`))
                 .then((snapshot) => {
                     if (snapshot.exists()) {
                         let currentTime = format(new Date(), 'HH:MM:ss');
@@ -188,9 +187,9 @@ function MonitorRealtime({ roomId, userId }) {
                                 color: '#FFCC33',
                             });
                             break;
-                        case 'PressureIn':
+                        case 'DifferentialPress':
                             dataSeeChar.push({
-                                name: 'Pressure In',
+                                name: 'Differential Press',
                                 data: differPress,
                                 color: '#006699',
                             });
@@ -324,31 +323,6 @@ function MonitorRealtime({ roomId, userId }) {
         setDifferPress([]);
         setDust2_5([]);
     }, [roomId]);
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [windowWidth]);
-    const chartRef = useRef(null);
-
-    useEffect(() => {
-        const handleResize = () => {
-            const chart = chartRef.current?.chart;
-            if (chart) {
-                chart.setSize(null, null, false);
-            }
-        };
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
 
     return (
         <>
@@ -360,7 +334,7 @@ function MonitorRealtime({ roomId, userId }) {
                     onClick={handleStart}
                 >
                     <MdNotStarted className={cx('icon')} />
-                    START
+                    <FormattedMessage id="monitor-room.monitor-realtime.start" />
                 </span>
                 <span
                     className={cx('stop', {
@@ -369,14 +343,16 @@ function MonitorRealtime({ roomId, userId }) {
                     onClick={handleStop}
                 >
                     <IoStopCircle className={cx('icon')} />
-                    STOP
+                    <FormattedMessage id="monitor-room.monitor-realtime.stop" />
                 </span>
             </div>
             <div className={cx('wrapper-content', 'row')}>
                 <div className={cx('chart', 'col l-9 m-12 c-12')}>{renderChart()}</div>
                 <div className={cx('select-mode', 'col l-3 m-12 c-12')}>
                     <div className={cx('sample', ' c-8 c-o-2 m-5 l-12')}>
-                        <h2 className={cx('head')}> Sample</h2>
+                        <h2 className={cx('head')}>
+                            <FormattedMessage id="monitor-room.monitor-realtime.sample" />
+                        </h2>
                         <span>
                             <input
                                 disabled={status.activeStart}

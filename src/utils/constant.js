@@ -1,16 +1,17 @@
 export const path = {
     HOME: '/',
-    HOMEPAGE: '/',
+    HOMEPAGE: '/home',
     LOGIN: '/login',
     REGISTER: '/register',
+    REGISTER_COMPANY: '/register-company',
     LOG_OUT: '/logout',
-    DASHBOARD: '/dashboard',
     DEVICEMONITOR: '/devicemonitor',
     MONITORCONTROLER: '/monitorcontroler',
     SETTINGS_CONTROLER: '/monitorcontroler/settings-controler',
     PROFILE_USER: '/:nickname/:id',
     MONITOR_ROOM: '/monitor-room',
     MANAGE_ACCOUNT: '/manage-account',
+    MANAGE_COMPANY: '/manage-company',
     DEVICE_MANAGER: '/devicemanager',
     ADD_DEVICE: '/devicemanager/add-device',
     VERIFY_EMAIL: '/user/:id/verify/:token',
@@ -66,9 +67,12 @@ export const TYPE_DISPLAY = {
 export const TYPE_SENSOR = {
     TEMPERATURE: 'TEMPERATURE',
     HUMIDITY: 'HUMIDITY',
-    PRESSURE_IN: 'PRESSURE_IN',
-    PRESSURE_OUT: 'PRESSURE_OUT',
+    DEFFERENTIAL_PRESS: 'DEFFERENTIAL_PRESS',
     DUST_25: 'DUST_25',
     DUST_10: 'DUST_10',
     OXY: 'OXY',
+};
+export const STAUTUS_COMPANY = {
+    UNCONFIMRED: 'UNCONFIMRED',
+    CONFIRMED: 'CONFIRMED',
 };

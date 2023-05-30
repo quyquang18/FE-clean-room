@@ -14,12 +14,11 @@ function ModalEditUser({ ...props }) {
     const buildDataInputSelect = (inputData, type) => {
         let result = [];
         if (inputData && inputData.length > 0) {
-            inputData.map((item, index) => {
-                let object = {};
-                object.value = item.keyMap;
-                object.label = item.valueVI;
-                result.push(object);
-                return true;
+            inputData.forEach((item) => {
+                result.push({
+                    value: item.keyMap,
+                    label: item.valueVI,
+                });
             });
             return result;
         }
@@ -48,7 +47,7 @@ function ModalEditUser({ ...props }) {
     return (
         <Modal
             isOpen={props.isOpen}
-            size="xl"
+            size="lg"
             toggle={() => toggle()}
             titleModal="Modal Edit User"
             clickOutside={false}
@@ -57,7 +56,7 @@ function ModalEditUser({ ...props }) {
                 <>
                     <form>
                         <div className="row">
-                            <div className="col-6">
+                            <div className="col c-6 m-6 l-6">
                                 <div className={cx('form-group')}>
                                     <label className={cx('lable-input')}>Email:</label>
                                     <input
@@ -68,7 +67,7 @@ function ModalEditUser({ ...props }) {
                                     />
                                 </div>
                             </div>
-                            <div className="col-6">
+                            <div className="col c-6 m-6 l-6">
                                 <div className={cx('form-group')}>
                                     <label className={cx('lable-input')}>User Name:</label>
                                     <input
@@ -82,7 +81,7 @@ function ModalEditUser({ ...props }) {
                         </div>
 
                         <div className="row">
-                            <div className="col-6">
+                            <div className="col c-6 m-6 l-6">
                                 <div className={cx('form-group')}>
                                     <label className={cx('lable-input')}>Phonenumber:</label>
                                     <input
@@ -93,7 +92,7 @@ function ModalEditUser({ ...props }) {
                                     />
                                 </div>
                             </div>
-                            <div className="col-6">
+                            <div className="col c-6 m-6 l-6">
                                 <div className={cx('form-group')}>
                                     <label className={cx('lable-input')}>Role:</label>
                                     <Select

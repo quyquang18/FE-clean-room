@@ -12,7 +12,6 @@ import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 
 function AccList() {
-    // const [roleID, setRoleID] = useState();
     const [dataUserEdit, setDataUserEdit] = useState();
     const [isOpenModalEditUser, setIsOpenModalEditUser] = useState(false);
     const listUser = useSelector((state) => state.admin.arrUser);

@@ -7,15 +7,13 @@ const handleVerifyEmail = (id, token) => {
     return axios.get(`/api/user/${id}/verify/${token}`);
 };
 const handleRegisterApi = (data) => {
-    return axios.post(`/api/create-new-user`, {
-        email: data.email,
-        username: data.username,
-        password: data.password,
-        phonenumber: data.phonenumber,
-    });
+    return axios.post(`/api/create-new-user`, data);
 };
 const editUserService = (data) => {
     return axios.put(`/api/edit-user`, data);
+};
+const apiRegisterCompany = (data) => {
+    return axios.post('/api/create-new-company', data);
 };
 const deleteUserService = (idUser) => {
     return axios.delete(`/api/delete-user`, { data: { id: idUser } });
@@ -36,6 +34,21 @@ const getAllCodeService = (inputType) => {
 const getDetailUserById = (userId) => {
     return axios.get(`/api/get-detail-user-by-id?id=${userId}`);
 };
+const handleGetListCompany = (type) => {
+    return axios.get(`/api/list-company?type=${type}`);
+};
+const apiConfirmCompany = (data) => {
+    return axios.post(`/api/confirm-company`, data);
+};
+const getNotifycations = (data) => {
+    return axios.get(`/api/get-notifycation?userId=${data.userId}&companyId=${data.companyId}`);
+};
+const getAllUserByCompany = (id) => {
+    return axios.get(`/api/get-all-users-by-company?companyId=${id}`);
+};
+const apiConfirmUserByCompany = (data) => {
+    return axios.post(`/api/confirm-by-company`, data);
+};
 export {
     handleLoginApi,
     handleVerifyEmail,
@@ -47,4 +60,10 @@ export {
     getAllCodeService,
     getDetailUserById,
     handleUpdateRole,
+    apiRegisterCompany,
+    handleGetListCompany,
+    apiConfirmCompany,
+    getNotifycations,
+    getAllUserByCompany,
+    apiConfirmUserByCompany,
 };

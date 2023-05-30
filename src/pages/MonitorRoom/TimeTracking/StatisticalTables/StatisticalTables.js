@@ -61,20 +61,20 @@ function StatisticalTables({ data }) {
                 setValueTable('humidity');
                 break;
             }
-            case 'dust_25': {
-                setValueTable('dust2_5');
+            case 'dust25': {
+                setValueTable('dust25');
                 break;
             }
             case 'dust_10': {
                 setValueTable('dust10');
                 break;
             }
-            case 'press_in': {
-                setValueTable('pressIn');
+            case 'differPressure': {
+                setValueTable('differPressure');
                 break;
             }
-            case 'press_out': {
-                setValueTable('pressOut');
+            case 'oxy': {
+                setValueTable('oxy');
                 break;
             }
             default: {
@@ -102,10 +102,10 @@ function StatisticalTables({ data }) {
                                 <option value="null">Select Type...</option>
                                 <option value="tempre">Temperature</option>
                                 <option value="humi">Humidity</option>
-                                <option value="dust_25">Dust 2.5</option>
+                                <option value="dust25">Dust 2.5</option>
                                 <option value="dust_10">Dust 10</option>
-                                <option value="press_in">Pressure In</option>
-                                <option value="press_out">Pressure Out</option>
+                                <option value="differPressure">Differential pressure</option>
+                                <option value="oxy">Oxy</option>
                             </select>
                         </th>
                         <th>Value</th>

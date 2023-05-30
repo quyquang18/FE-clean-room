@@ -3,24 +3,25 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
-// import LoadingOverlay from 'react-loading-overlay';
-import { configureStore } from '@reduxjs/toolkit';
-import { path, USER_ROLE } from '~/utils';
+import { USER_ROLE } from '~/utils';
 
-import { userRouter, adminRouter, notLogged } from '~/routes';
-import * as actions from '~/store/actions';
+import { adminSystemMenu, userRouter, adminRouter, notLogged } from '~/routes';
 import DefaultLayout from '~/layouts';
 import './App.scss';
 import LoadingOverlay from 'react-loading-overlay';
 function App() {
     const [menuApp, setMenuApp] = useState([]);
     const user = useSelector((state) => state.user);
+    const accessToken = useSelector((state) => state.user.access_token);
     useEffect(() => {
         let menu = [];
         if (user) {
             let isLoggedIn = user.isLoggedIn;
             if (isLoggedIn) {
                 let role = user.userInfo.roleID;
+                if (role === USER_ROLE.MANAGE_SYSTEM) {
+                    menu = adminSystemMenu;
+                }
                 if (role === USER_ROLE.ADMIN) {
                     menu = adminRouter;
                 }

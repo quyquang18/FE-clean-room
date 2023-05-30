@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames/bind';
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
 import styles from './MonitorRoom.module.scss';
 import MonitorRealtime from './MonitorRealtime';
@@ -10,10 +11,7 @@ import TimeTracking from './TimeTracking';
 
 const cx = classNames.bind(styles);
 
-var optionDisplay = [
-    { type: 'current', label: 'Monitor RealTime', active: true },
-    { type: 'old', label: 'Monitor Old', active: false },
-];
+var optionDisplay = [];
 function MonitorRoom() {
     document.title = 'LUXAS-Monitor Room';
     const [display, setDisplay] = useState('current');
@@ -33,14 +31,14 @@ function MonitorRoom() {
     };
     let listRoom = useSelector((state) => state.admin.arrRoom);
     listRoom = buildDataInputSelect(listRoom);
-    const userId = useSelector((state) => state.user.userInfo.id);
+    const companyId = useSelector((state) => state.user.userInfo.companyId);
     const dispatch = useDispatch();
     const initSelectedRoom = useMemo(() => listRoom && listRoom.length > 0 && listRoom[0], [listRoom]);
     const [selectedRoom, setSelectedRoom] = useState(initSelectedRoom);
 
     useEffect(() => {
-        dispatch(actions.fetchAllRoom(userId));
-    }, []);
+        dispatch(actions.fetchAllRoom(companyId));
+    }, [companyId, dispatch]);
     useEffect(() => {
         if (listRoom && listRoom.length > 0 && !selectedRoom) {
             setSelectedRoom(initSelectedRoom);
@@ -49,8 +47,8 @@ function MonitorRoom() {
 
     useEffect(() => {
         optionDisplay = [
-            { type: 'current', label: 'Monitor RealTime', active: true },
-            { type: 'old', label: 'Track previous time', active: false },
+            { type: 'current', label: <FormattedMessage id="monitor-room.option-display-1" />, active: true },
+            { type: 'old', label: <FormattedMessage id="monitor-room.option-display-2" />, active: false },
         ];
     }, []);
 
@@ -83,8 +81,10 @@ function MonitorRoom() {
                     </span>
                 ))}
             </div>
-            {display === 'current' && <MonitorRealtime roomId={selectedRoom && selectedRoom.value} userId={userId} />}
-            {display === 'old' && <TimeTracking roomId={selectedRoom && selectedRoom.value} userId={userId} />}
+            {display === 'current' && (
+                <MonitorRealtime roomId={selectedRoom && selectedRoom.value} companyId={companyId} />
+            )}
+            {display === 'old' && <TimeTracking roomId={selectedRoom && selectedRoom.value} companyId={companyId} />}
         </div>
     );
 }

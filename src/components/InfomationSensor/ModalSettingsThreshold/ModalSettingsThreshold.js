@@ -1,5 +1,6 @@
-import { useReducer, useState } from 'react';
+import { useReducer } from 'react';
 import { toast } from 'react-toastify';
+
 import Modal from '~/components/Modal';
 import { handleUpdateValueThreshold } from '~/services/deviceService';
 
@@ -31,7 +32,7 @@ function ModalSettingsThreshold({ ...props }) {
             let data = {};
             data.Type_sensor = props.valueThreshold1.Type_sensor;
             data.roomId = props.valueThreshold1.roomId;
-            data.userId = props.valueThreshold1.userId;
+            data.companyId = props.valueThreshold1.companyId;
             data.valueUp = state.valueUp1;
             data.valueDown = state.valueDown1;
             data.init = state.init1;
@@ -46,7 +47,7 @@ function ModalSettingsThreshold({ ...props }) {
             let data = {};
             data.Type_sensor = props.valueThreshold2.Type_sensor;
             data.roomId = props.valueThreshold2.roomId;
-            data.userId = props.valueThreshold2.userId;
+            data.companyId = props.valueThreshold2.companyId;
             data.valueUp = state.valueUp2;
             data.valueDown = state.valueDown2;
             data.init = state.init2;

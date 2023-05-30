@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
-import { handleRegisterApi } from '~/services/userService';
+import { handleGetListCompany, handleRegisterApi } from '~/services/userService';
 import styles from './Register.module.scss';
-
+import { path, STAUTUS_COMPANY } from '~/utils';
+import Select from 'react-select';
 const cx = classNames.bind(styles);
 
 function Register() {
@@ -12,16 +13,46 @@ function Register() {
     const [error, setError] = useState(1);
     const [message, setMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
+    const [listCompany, setListCompany] = useState([]);
+    const [selecedCompany, setSelectedCompany] = useState();
+    const getListCompany = useCallback(async () => {
+        let res = await handleGetListCompany(STAUTUS_COMPANY.CONFIRMED);
+        if (res && res.errCode === 0) {
+            setListCompany(buildDataInputSelect(res.data));
+        }
+    }, []);
+
+    useEffect(() => {
+        getListCompany();
+    }, [getListCompany]);
+    const buildDataInputSelect = (inputData) => {
+        let result = [];
+        if (inputData && inputData.length > 0) {
+            inputData.forEach((item) => {
+                result.push({
+                    value: item.id,
+                    label: item.name,
+                });
+            });
+        }
+        return result;
+    };
+    const handleChangeCompany = (event) => {
+        setSelectedCompany(event);
+    };
     const handleRegister = async (data) => {
-        setIsLoading(true);
-        let response = await handleRegisterApi(data);
-        setIsLoading(false);
-        setMessage(response.message);
-        if (response.errCode === 0) {
-            setError(1);
-            reset();
-        } else {
-            setError(0);
+        if (selecedCompany) {
+            data.companyId = selecedCompany.value;
+            setIsLoading(true);
+            let response = await handleRegisterApi(data);
+            setIsLoading(false);
+            setMessage(response.message);
+            if (response.errCode === 0) {
+                setError(1);
+                reset();
+            } else {
+                setError(0);
+            }
         }
     };
     const {
@@ -43,6 +74,9 @@ function Register() {
             )}
             <div className={cx('register-wrapper')}>
                 <h2 className={cx('title')}>Sign up for an account</h2>
+                <h3 className={cx('link-register-bussiness')}>
+                    <Link to={path.REGISTER_COMPANY}>Register for a business account</Link>
+                </h3>
                 <div className={cx('messError', !error ? 'err' : 'succees')}>{message} </div>
                 <form method="get" className={cx('form')} onSubmit={handleSubmit(handleRegister)}>
                     <div className={cx('form-group')}>
@@ -53,7 +87,7 @@ function Register() {
                             <input
                                 name="username"
                                 type="text"
-                                placeholder="EX: quyquang09"
+                                placeholder="User Name"
                                 className={cx('form-input')}
                                 {...register('username', { required: true, minLength: 6 })}
                             />
@@ -115,6 +149,18 @@ function Register() {
                         </fieldset>
                     </div>
                     <div className={cx('form-group')}>
+                        <fieldset className={cx('email')}>
+                            <label forhtml="email" className={cx('form-label')}>
+                                Company
+                            </label>
+                            <Select
+                                value={selecedCompany}
+                                onChange={(event) => handleChangeCompany(event)}
+                                options={listCompany}
+                            />
+                        </fieldset>
+                    </div>
+                    <div className={cx('form-group')}>
                         <fieldset className={cx('pass')}>
                             <label forhtml="password" className={cx('form-label')}>
                                 Password
@@ -142,7 +188,7 @@ function Register() {
                             </label>
                             <input
                                 name="password_confirmation"
-                                type="text"
+                                type="password"
                                 placeholder="Confirm password"
                                 className={cx('form-input')}
                                 {...register('confirm_password', {

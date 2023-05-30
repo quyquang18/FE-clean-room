@@ -1,6 +1,4 @@
 import actionTypes from './actionTypes';
-// import { updateInforDoctor } from '~/services/doctorService';
-import { toast } from 'react-toastify';
 import { INFOR_USER } from '~/utils';
 import { getAllCodeService, handleGetAllUser } from '~/services/userService';
 import { getAllRoom } from '~/services/roomService';
@@ -115,10 +113,10 @@ export const fetchTypeDevice = () => {
         }
     };
 };
-export const fetchAllRoom = (userId) => {
+export const fetchAllRoom = (companyId) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getAllRoom(userId);
+            let res = await getAllRoom(companyId);
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_ROOM_SUCCESS,
@@ -133,10 +131,10 @@ export const fetchAllRoom = (userId) => {
         }
     };
 };
-export const fetchAllDeviceInRoom = (userId, roomId) => {
+export const fetchAllDeviceInRoom = (companyId, roomId) => {
     return async (dispatch, getState) => {
         try {
-            let res = await getDeviceInRoom(userId, roomId);
+            let res = await getDeviceInRoom(companyId, roomId);
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.GET_ALL_DEVICE_SUCCESS,

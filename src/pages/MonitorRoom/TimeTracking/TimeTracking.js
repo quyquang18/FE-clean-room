@@ -17,7 +17,7 @@ const listViewMode = [
     { value: 'range', label: 'By time range' },
 ];
 
-function TimeTracking({ roomId, userId }) {
+function TimeTracking({ roomId, companyId }) {
     const [selectedViewMode, setSelectedViewMode] = useState();
     const [selectedDate, setSelectedDate] = useState(startOfDay(new Date()));
     const [typeSee, setTypeSee] = useState({ char: false, table: false });
@@ -44,7 +44,7 @@ function TimeTracking({ roomId, userId }) {
         if (selectedDate && selectedDate.length > 1) {
             fomatedDate = [getTime(selectedDate[0]), getTime(selectedDate[1])];
             if (selectedViewMode) {
-                let res = await getValueSensorByTime(selectedViewMode.value, userId, roomId, fomatedDate);
+                let res = await getValueSensorByTime(selectedViewMode.value, companyId, roomId, fomatedDate);
                 if (res && res.errCode === 0) {
                     setData(res.data);
                 }
@@ -52,13 +52,13 @@ function TimeTracking({ roomId, userId }) {
         } else {
             fomatedDate = getTime(selectedDate);
             if (selectedViewMode) {
-                let res = await getValueSensorByTime(selectedViewMode.value, userId, roomId, fomatedDate);
+                let res = await getValueSensorByTime(selectedViewMode.value, companyId, roomId, fomatedDate);
                 if (res && res.errCode === 0) {
                     setData(res.data);
                 }
             }
         }
-    }, [selectedViewMode, roomId, selectedDate, userId]);
+    }, [selectedViewMode, roomId, selectedDate, companyId]);
     useEffect(() => {
         handleGetValueSensor();
     }, [handleGetValueSensor]);

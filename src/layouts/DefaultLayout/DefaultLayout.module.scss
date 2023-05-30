@@ -13,16 +13,22 @@
     background-color: #ebf2f7;
     position: relative
 }
-.nav-bar{
-    @media (max-width: 1023px) {
-        .wrapper {
-            display: none;
+// .nav-bar{
+    @media (min-width: 1023px) {
+        .nav-bar {
             position: fixed;
             top: var(--default-layout-header-height);
-            z-index: 9999;
+            z-index: 1;
+            margin-top: 1px;
+        }
+        .content {
+            flex: 1;
+            background-color: #ebf2f7;
+            position: relative;
+            margin-left: var(--default-layout-sidebar-width);
         }
     }
-}
+// }
 .nav-overlay{
     position: fixed;
     top: 0;

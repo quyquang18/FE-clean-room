@@ -48,7 +48,7 @@ function DeviceMonitor() {
         }
     };
 
-    const userId = useSelector((state) => state.user.userInfo.id);
+    const companyId = useSelector((state) => state.user.userInfo.companyId);
     const dispatch = useDispatch();
     let listRoom = useSelector((state) => state.admin.arrRoom);
     listRoom = buildDataInputSelect(listRoom, 'room');
@@ -57,8 +57,8 @@ function DeviceMonitor() {
     let listStatus = useSelector((state) => state.admin.arrStatus);
     let language = useSelector((state) => state.app.language);
     useEffect(() => {
-        dispatch(actions.fetchAllRoom(userId));
-    }, [dispatch, userId]);
+        dispatch(actions.fetchAllRoom(companyId));
+    }, [dispatch, companyId]);
     const initSelectedRoom = useMemo(() => listRoom && listRoom.length > 0 && listRoom[0], [listRoom]);
     const [selectedRoom, setSelectedRoom] = useState(initSelectedRoom);
     const [selectedDevice, setSelectedDevice] = useState();
@@ -75,18 +75,18 @@ function DeviceMonitor() {
     };
     useEffect(() => {
         if (selectedRoom) {
-            dispatch(actions.fetchAllDeviceInRoom(userId, selectedRoom.value));
+            dispatch(actions.fetchAllDeviceInRoom(companyId, selectedRoom.value));
         }
-    }, [dispatch, userId, selectedRoom]);
+    }, [dispatch, companyId, selectedRoom]);
 
     useEffect(() => {
         if (selectedRoom && selectedDevice) {
-            onValue(child(dbRef, `${userId}/statusDevice/${selectedDevice.value}/status`), (snapshot) => {
+            onValue(child(dbRef, `${companyId}/statusDevice/${selectedDevice.value}/status`), (snapshot) => {
                 const dataFb = snapshot.val();
                 setStatusDevicce(dataFb);
             });
         }
-    }, [selectedRoom, selectedDevice, userId]);
+    }, [selectedRoom, selectedDevice, companyId]);
     const handleSelectTimeMode = (key) => {
         setTimeMode(key);
     };
@@ -101,7 +101,7 @@ function DeviceMonitor() {
         async (type, valueDate) => {
             if (selectedDevice && selectedRoom) {
                 let response = await handleGetStatusDevice(
-                    userId,
+                    companyId,
                     selectedDevice.value,
                     selectedRoom.value,
                     type,
@@ -115,7 +115,7 @@ function DeviceMonitor() {
                 }
             }
         },
-        [userId, selectedDevice, selectedRoom],
+        [companyId, selectedDevice, selectedRoom],
     );
 
     useEffect(() => {

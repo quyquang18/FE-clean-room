@@ -18,6 +18,7 @@ import Image from '~/components/Image';
 import Search from '../Search';
 import { DarkModeIcon, MenuIcon, NotificationIcon, ThreeDotsIcon } from '~/components/Icons';
 import { path } from '~/utils';
+import Notifycation from '~/components/Popper/Notifycation';
 
 const cx = classNames.bind(styles);
 
@@ -140,12 +141,7 @@ function Header({ toggleNavBar }) {
                                     <DarkModeIcon width="2.8rem" height="2.8rem" />
                                 </button>
                             </Tippy>
-                            <Tippy delay={[0, 20]} content="Notify" placement="bottom">
-                                <button className={cx('action-btn')}>
-                                    <NotificationIcon width="2.8rem" height="2.8rem" />
-                                    <span className={cx('badge')}>12</span>
-                                </button>
-                            </Tippy>
+                            <Notifycation></Notifycation>
                         </>
                     ) : (
                         <>

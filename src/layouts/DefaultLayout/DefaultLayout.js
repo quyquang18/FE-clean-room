@@ -11,21 +11,13 @@ const cx = className.bind(styles);
 function DefaultLayout({ children }) {
     const [isShowNavBar, setIsShowNavBar] = useState(false);
     const [isShowOverLay, setIsShowOverLay] = useState(false);
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const elementApp = document.querySelector('.App');
+    let appWidth = elementApp.clientWidth;
     useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        if (windowWidth > 1023) {
+        if (appWidth && appWidth > 1023) {
             setIsShowNavBar(true);
         }
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [windowWidth]);
+    }, [appWidth]);
     const toggleNavBar = () => {
         setIsShowNavBar(!isShowNavBar);
         setIsShowOverLay(!isShowOverLay);

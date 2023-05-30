@@ -5,7 +5,7 @@ import { MdDeleteForever } from 'react-icons/md';
 
 import Button from '~/components/Button';
 import { PlusIcon } from '~/components/Icons';
-import { getAllInfoDeviceByUser } from '~/services/deviceService';
+import { getAllInfoDeviceByCompany } from '~/services/deviceService';
 import styles from './DeviceManager.module.scss';
 import * as actions from '~/store/actions';
 import { useSelector, useDispatch } from 'react-redux';
@@ -23,22 +23,22 @@ function DeviceManager() {
     const [isOpenModalDeleteDevice, setIsOpenModalDeleteDevice] = useState();
     const [dataDeviceEdit, setDataDeviceEdit] = useState();
 
-    const userId = useSelector((state) => state.user.userInfo.id);
+    const companyId = useSelector((state) => state.user.userInfo.companyId);
     let language = useSelector((state) => state.app.language);
     const lisTypeDevice = useSelector((state) => state.admin.arrTypeDevice);
     let listRoom = useSelector((state) => state.admin.arrRoom);
     const dispatch = useDispatch();
     useEffect(() => {
-        if (userId) {
-            callApi(userId);
+        if (companyId) {
+            callApi(companyId);
         }
-        dispatch(actions.fetchAllRoom(userId));
-    }, [dispatch, userId]);
+        dispatch(actions.fetchAllRoom(companyId));
+    }, [dispatch, companyId]);
     useEffect(() => {
         dispatch(actions.fetchTypeDevice());
     }, [dispatch]);
-    const callApi = async (userId) => {
-        let res = await getAllInfoDeviceByUser(userId);
+    const callApi = async (companyId) => {
+        let res = await getAllInfoDeviceByCompany(companyId);
         if (res && res.errCode !== 0) {
             console.log(res.message);
         }
@@ -62,10 +62,10 @@ function DeviceManager() {
         setIsOpenModalDeleteDevice(!isOpenModalDeleteDevice);
     };
     const updateInFirebase = (data) => {
-        data.userId = userId;
+        data.companyId = companyId;
         data.status = 'OFF';
         onValue(
-            child(dbRef, `${userId}/statusDevice/` + data.idDevice),
+            child(dbRef, `${companyId}/statusDevice/` + data.idDevice),
             (snapshot) => {
                 var exists = snapshot.exists();
                 let resData = snapshot.val();
@@ -78,12 +78,12 @@ function DeviceManager() {
                         return true;
                     } else {
                         const updates = {};
-                        updates[userId + '/statusDevice/' + data.idDevice] = data;
+                        updates[companyId + '/statusDevice/' + data.idDevice] = data;
                         update(dbRef, updates);
                     }
                 } else {
                     const updates = {};
-                    updates[userId + '/statusDevice/' + data.idDevice] = data;
+                    updates[companyId + '/statusDevice/' + data.idDevice] = data;
                     update(dbRef, updates);
                 }
             },
@@ -93,8 +93,8 @@ function DeviceManager() {
         );
     };
     const updateInfoSuccees = (data) => {
-        if (userId) {
-            callApi(userId);
+        if (companyId) {
+            callApi(companyId);
             updateInFirebase(data);
         }
     };

@@ -54,10 +54,10 @@ function MonitorControler() {
     const initSelectedRoom = useMemo(() => listRoom && listRoom.length > 0 && listRoom[0], [listRoom]);
     const [selectedRoom, setSelectedRoom] = useState(initSelectedRoom);
     const dispatch = useDispatch();
-    const userId = useSelector((state) => state.user.userInfo.id);
+    const companyId = useSelector((state) => state.user.userInfo.companyId);
     useEffect(() => {
-        dispatch(actions.fetchAllRoom(userId));
-    }, [dispatch, userId]);
+        dispatch(actions.fetchAllRoom(companyId));
+    }, [dispatch, companyId]);
     useEffect(() => {
         if (listRoom && listRoom.length > 0 && !selectedRoom) {
             setSelectedRoom(initSelectedRoom);
@@ -71,9 +71,9 @@ function MonitorControler() {
         setSelectedDisplay(value);
     };
     useEffect(() => {
-        if (userId && selectedRoom) {
+        if (companyId && selectedRoom) {
             onValue(
-                child(dbRef, `${userId}/${selectedRoom.value}/valueDevice/Fan`),
+                child(dbRef, `${companyId}/${selectedRoom.value}/valueDevice/Fan`),
                 (snapshot) => {
                     if (snapshot.val() && snapshot.val().Speed && snapshot.val().Status) {
                         setValueFan(snapshot.val().Speed);
@@ -83,7 +83,7 @@ function MonitorControler() {
                 { onlyOnce: true },
             );
         }
-    }, [userId, selectedRoom]);
+    }, [companyId, selectedRoom]);
 
     const [valueFan, setValueFan] = useState(10);
     const handleChangeSpeedFan = (action) => {
@@ -110,27 +110,27 @@ function MonitorControler() {
         }
         setValueFan(coppyValueFan);
         const updates = {};
-        if (userId && selectedRoom) {
-            updates[`${userId}/${selectedRoom.value}/valueDevice/Fan/` + 'Speed'] = coppyValueFan;
+        if (companyId && selectedRoom) {
+            updates[`${companyId}/${selectedRoom.value}/valueDevice/Fan/` + 'Speed'] = coppyValueFan;
             update(dbRef, updates);
         }
     };
     const handleChangeStatusFan = () => {
         if (statusFan === StatusOnOff.ON) {
             setStatusFan(StatusOnOff.OFF);
-            if (userId && selectedRoom) {
+            if (companyId && selectedRoom) {
                 const updates = {};
                 // eslint-disable-next-line no-useless-concat
-                updates[`${userId}/${selectedRoom.value}/valueDevice/Fan/` + 'Status'] = StatusOnOff.OFF;
+                updates[`${companyId}/${selectedRoom.value}/valueDevice/Fan/` + 'Status'] = StatusOnOff.OFF;
                 update(dbRef, updates);
             }
         }
         if (statusFan === StatusOnOff.OFF) {
             setStatusFan(StatusOnOff.ON);
-            if (userId && selectedRoom) {
+            if (companyId && selectedRoom) {
                 const updates = {};
                 // eslint-disable-next-line no-useless-concat
-                updates[`${userId}/${selectedRoom.value}/valueDevice/Fan/` + 'Status'] = StatusOnOff.ON;
+                updates[`${companyId}/${selectedRoom.value}/valueDevice/Fan/` + 'Status'] = StatusOnOff.ON;
                 update(dbRef, updates);
             }
         }
@@ -240,7 +240,7 @@ function MonitorControler() {
                             return (
                                 <InfomationSensor
                                     key={index}
-                                    userId={userId}
+                                    companyId={companyId}
                                     typeDisplay={item.value}
                                     roomId={selectedRoom && selectedRoom.value}
                                 />

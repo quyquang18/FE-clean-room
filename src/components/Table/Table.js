@@ -49,7 +49,7 @@ function Table({
         if (data && data.length > 0) {
             if (type === 'valuesensor') {
                 return data.map((item, index) => {
-                    const { temperature, humidity, dust25, dust10, pressIn, date, roomId } = item;
+                    const { temperature, humidity, dust25, dust10, differPressure, date, roomId } = item;
                     let formatedDate = format(+date, 'dd:MM:yyyy');
                     let formatedTime = format(+date, 'HH:mm:ss');
                     return (
@@ -59,7 +59,7 @@ function Table({
                             <td>{humidity}</td>
                             <td>{dust25}</td>
                             <td>{dust10}</td>
-                            <td>{pressIn}</td>
+                            <td>{differPressure}</td>
                             <td>{formatedTime}</td>
                             <td>{formatedDate}</td>
                             <td>{roomId}</td>

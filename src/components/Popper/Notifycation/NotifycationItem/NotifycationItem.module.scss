@@ -1,0 +1,49 @@
+.notifycation-item {
+    .item-wrapper {
+        padding: 12px 0;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        -ms-flex-align: center;
+        -webkit-box-align: center;
+        border-bottom: 1px solid #ccc;
+        &.unread{
+            background: #edf2fa;
+            color: #000;
+        }
+        &.read{
+            background: #ffffff;
+            color: rgb(104, 101, 101);
+        }
+        &:hover {
+            color: rgb(39, 63, 202);
+            cursor: pointer;
+        }
+        .item-image {
+            margin-left: 12px;
+            .NT0 {
+                color: rgb(24, 207, 162);
+            }
+            .NT1 {
+                color: rgb(221, 190, 16);
+            }
+        }
+        .content-wrapper {
+            padding: 6px 0;
+            margin-left: 12px;
+            display: block;
+            .item-content {
+                display: block;
+                font-size: 1.8rem;
+                font-weight: 500;
+            }
+            .item-time {
+                font-size: 1.6rem;
+                float: right;
+                margin-right: 15px;
+                color: rgb(161, 161, 161);
+                font-weight: 600;
+            }
+        }
+    }
+}

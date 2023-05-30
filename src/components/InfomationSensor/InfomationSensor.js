@@ -1,18 +1,18 @@
 import classNames from 'classnames/bind';
-import { SettingsIcon } from '../Icons';
 import { child, ref, onValue } from 'firebase/database';
-import { database } from '~/firebase';
 import { useState, useEffect, useCallback } from 'react';
+
+import { SettingsIcon } from '../Icons';
+import { database } from '~/firebase';
 import styles from './InfomationSensor.module.scss';
 import { TYPE_DISPLAY, TYPE_SENSOR } from '~/utils';
 import { handleGetValueThreshold } from '~/services/deviceService';
-import _ from 'lodash';
 import ModalSettingsThreshold from './ModalSettingsThreshold';
 
 const cx = classNames.bind(styles);
 const dbRef = ref(database);
 
-function InfomationSensor({ userId, roomId, typeDisplay }) {
+function InfomationSensor({ companyId, roomId, typeDisplay }) {
     const [curentValue1, setCurrentValue1] = useState();
     const [curentValue2, setCurrentValue2] = useState();
     const [valueThreshold1, setValueThreshold1] = useState({});
@@ -24,7 +24,7 @@ function InfomationSensor({ userId, roomId, typeDisplay }) {
         async (typeSensor) => {
             let dataReq = {};
             dataReq.Type_sensor = typeSensor;
-            dataReq.userId = userId;
+            dataReq.companyId = companyId;
             dataReq.roomId = roomId;
             let res = await handleGetValueThreshold(dataReq);
             if (res && res.errCode === 0) {
@@ -34,12 +34,12 @@ function InfomationSensor({ userId, roomId, typeDisplay }) {
                 data.init = res.data.init;
                 data.Type_sensor = res.data.Type_sensor;
                 data.roomId = res.data.roomId;
-                data.userId = res.data.userId;
+                data.companyId = res.data.companyId;
                 return data;
             } else {
             }
         },
-        [roomId, userId],
+        [roomId, companyId],
     );
     useEffect(() => {
         switch (typeDisplay) {
@@ -52,11 +52,11 @@ function InfomationSensor({ userId, roomId, typeDisplay }) {
                 };
                 fetchData1();
                 setNameSensor(['Temperature', 'Humidity']);
-                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/Temperature`), (snapshot) => {
+                onValue(child(dbRef, `${companyId}/${roomId}/valueSensor/Temperature`), (snapshot) => {
                     const dataFb = snapshot.val();
                     setCurrentValue1(dataFb);
                 });
-                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/Humidity`), (snapshot) => {
+                onValue(child(dbRef, `${companyId}/${roomId}/valueSensor/Humidity`), (snapshot) => {
                     const dataFb = snapshot.val();
                     setCurrentValue2(dataFb);
                 });
@@ -70,31 +70,25 @@ function InfomationSensor({ userId, roomId, typeDisplay }) {
                 };
                 fetchData2();
                 setNameSensor(['Dust 2.5', 'Dust 10']);
-                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/Dust_2_5`), (snapshot) => {
+                onValue(child(dbRef, `${companyId}/${roomId}/valueSensor/Dust_2_5`), (snapshot) => {
                     const dataFb = snapshot.val();
                     setCurrentValue1(dataFb);
                 });
-                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/Dust_10`), (snapshot) => {
+                onValue(child(dbRef, `${companyId}/${roomId}/valueSensor/Dust_10`), (snapshot) => {
                     const dataFb = snapshot.val();
                     setCurrentValue2(dataFb);
                 });
                 break;
             case TYPE_DISPLAY.PRESSURE:
                 const fetchData3 = async () => {
-                    let value1 = await getValueThreshold(TYPE_SENSOR.PRESSURE_IN);
-                    let value2 = await getValueThreshold(TYPE_SENSOR.PRESSURE_OUT);
+                    let value1 = await getValueThreshold(TYPE_SENSOR.DEFFERENTIAL_PRESS);
                     setValueThreshold1(value1);
-                    setValueThreshold2(value2);
                 };
                 fetchData3();
-                setNameSensor(['Pressure In', 'Pressure Out']);
-                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/PressureIn`), (snapshot) => {
-                    const dataFb = snapshot.val() / 1000;
+                setNameSensor(['Defferential Press']);
+                onValue(child(dbRef, `${companyId}/${roomId}/valueSensor/DefferentialPress`), (snapshot) => {
+                    const dataFb = snapshot.val();
                     setCurrentValue1(dataFb);
-                });
-                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/PressureOut`), (snapshot) => {
-                    const dataFb = snapshot.val() / 1000;
-                    setCurrentValue2(dataFb);
                 });
                 break;
             case TYPE_DISPLAY.OXY:
@@ -104,7 +98,7 @@ function InfomationSensor({ userId, roomId, typeDisplay }) {
                 };
                 fetchData4();
                 setNameSensor(['Oxy']);
-                onValue(child(dbRef, `${userId}/${roomId}/valueSensor/Oxy`), (snapshot) => {
+                onValue(child(dbRef, `${companyId}/${roomId}/valueSensor/Oxy`), (snapshot) => {
                     const dataFb = snapshot.val();
                     setCurrentValue1(dataFb);
                 });
@@ -112,7 +106,7 @@ function InfomationSensor({ userId, roomId, typeDisplay }) {
             default:
                 break;
         }
-    }, [roomId, userId, typeDisplay, getValueThreshold]);
+    }, [roomId, companyId, typeDisplay, getValueThreshold]);
     const renderStatus = () => {
         let status1 = '';
         let status2 = '';

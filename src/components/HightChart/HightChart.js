@@ -4,7 +4,7 @@ import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import exporting from 'highcharts/modules/exporting';
 import fullscreen from 'highcharts/modules/full-screen';
-import { format, fromUnixTime, getTime } from 'date-fns';
+import { format, getTime } from 'date-fns';
 import viLocale from 'date-fns/locale/vi';
 import styles from './HightChart.module.scss';
 
@@ -24,6 +24,7 @@ const optionsModule = [
 function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
     const [typesensor, setTypeSensor] = useState('all');
     const [statusResultApi, setStatusResultApi] = useState(true);
+    // const [optionMode,setOptionMode]=
     const [newData, setNewData] = useState({
         temper: {
             value: [],
@@ -37,10 +38,7 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
         dust10: {
             value: [],
         },
-        pressIn: {
-            value: [],
-        },
-        pressOut: {
+        differPressure: {
             value: [],
         },
         oxy: {
@@ -53,9 +51,9 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
             value: [],
         },
     });
-
+    console.log(typesensor);
     useEffect(() => {
-        var dataDraw = {
+        let dataDraw = {
             temper: {
                 value: [],
             },
@@ -68,10 +66,7 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
             dust10: {
                 value: [],
             },
-            pressIn: {
-                value: [],
-            },
-            pressOut: {
+            differPressure: {
                 value: [],
             },
             oxy: {
@@ -99,10 +94,7 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
                 dust10: {
                     value: [],
                 },
-                pressIn: {
-                    value: [],
-                },
-                pressOut: {
+                differPressure: {
                     value: [],
                 },
                 oxy: {
@@ -123,8 +115,7 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
                     dataDraw.humidity.value.push(Number(item.humidity));
                     dataDraw.dust25.value.push(Number(item.dust25));
                     dataDraw.dust10.value.push(Number(item.dust10));
-                    dataDraw.pressIn.value.push(Number(item.pressIn / 1000));
-                    dataDraw.pressOut.value.push(Number(item.pressOut / 1000));
+                    dataDraw.differPressure.value.push(Number(item.differPressure));
                     dataDraw.oxy.value.push(Number(item.oxy));
                     dataDraw.times.value.push(format(+item.date, 'HH:mm'));
                     dataDraw.dates.value.push(format(+item.date, 'dd/MM'));
@@ -137,144 +128,61 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
         {
             name: 'Temperature (℃)',
             data: newData.temper.value,
+            color: '#153AB9',
         },
         {
             name: 'Humidity (%)',
             data: newData.humidity.value,
+            color: '#E60CBB',
         },
         {
             name: 'Dust 2.5 (µm)',
             data: newData.dust25.value,
+            color: '#E6340C',
         },
         {
-            name: 'Dust 10 (µm',
+            name: 'Dust 10 (µm)',
             data: newData.dust10.value,
+            color: '#3DCD16',
         },
         {
-            name: 'Pressure In (kPa)',
-            data: newData.pressIn.value,
-        },
-        {
-            name: 'Pressure Out (kPa)',
-            data: newData.pressOut.value,
+            name: 'Defferential Press (Pa)',
+            data: newData.differPressure.value,
+            color: '#DFE60C',
         },
         {
             name: 'Oxy (%)',
             data: newData.oxy.value,
+            color: '#15B942',
         },
     ];
+    useEffect(() => {
+        handleActive(0);
+    }, []);
     const seriesChart = () => {
-        var [temp, humidity, dust25, dust10, pressIn, pressOut, oxy] = datachart;
-
+        let coppyData = datachart;
+        let dataSeriesChart = [];
+        var [temp, humidity, dust25, dust10, differPressure, oxy] = coppyData;
         switch (typesensor) {
             case 'all':
-                return [temp, humidity, dust25, dust10, pressIn, pressOut, oxy];
+                dataSeriesChart = [temp, humidity, dust25, dust10, differPressure, oxy];
+                break;
             case 'temp-humi':
-                return [
-                    temp,
-                    humidity,
-                    (dust25 = {
-                        name: '',
-                        data: [],
-                    }),
-                    (dust10 = {
-                        name: '',
-                        data: [],
-                    }),
-                    (pressIn = {
-                        name: '',
-                        data: [],
-                    }),
-                    (pressOut = {
-                        name: '',
-                        data: [],
-                    }),
-                    (oxy = {
-                        name: '',
-                        data: [],
-                    }),
-                ];
+                dataSeriesChart = [temp, humidity];
+                break;
             case 'dust':
-                return [
-                    (temp = {
-                        name: '',
-                        data: [],
-                    }),
-                    (humidity = {
-                        name: '',
-                        data: [],
-                    }),
-                    dust25,
-                    dust10,
-                    (pressIn = {
-                        name: '',
-                        data: [],
-                    }),
-                    (pressOut = {
-                        name: '',
-                        data: [],
-                    }),
-                    (oxy = {
-                        name: '',
-                        data: [],
-                    }),
-                ];
+                dataSeriesChart = [dust25, dust10];
+                break;
             case 'pressure':
-                return [
-                    (dust25 = {
-                        name: '',
-                        data: [],
-                    }),
-                    (dust10 = {
-                        name: '',
-                        data: [],
-                    }),
-                    (temp = {
-                        name: '',
-                        data: [],
-                    }),
-                    (humidity = {
-                        name: '',
-                        data: [],
-                    }),
-                    (oxy = {
-                        name: '',
-                        data: [],
-                    }),
-                    pressIn,
-                    pressOut,
-                ];
+                dataSeriesChart = [differPressure];
+                break;
             case 'oxy':
-                return [
-                    (dust25 = {
-                        name: '',
-                        data: [],
-                    }),
-                    (dust10 = {
-                        name: '',
-                        data: [],
-                    }),
-                    (temp = {
-                        name: '',
-                        data: [],
-                    }),
-                    (humidity = {
-                        name: '',
-                        data: [],
-                    }),
-                    (pressIn = {
-                        name: '',
-                        data: [],
-                    }),
-                    (pressOut = {
-                        name: '',
-                        data: [],
-                    }),
-                    oxy,
-                ];
+                dataSeriesChart = [oxy];
+                break;
             default:
                 return;
         }
+        return dataSeriesChart;
     };
     const handleActive = (index) => {
         optionsModule.map((e) => {
@@ -361,7 +269,7 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
             {
                 // left y axis
                 title: {
-                    text: seriesChart()[0].name || seriesChart()[2].name || seriesChart()[4].name,
+                    text: typesensor === 'all' ? '' : seriesChart().length > 0 ? seriesChart()[0].name : '',
                     style: {
                         fontSize: '1.4rem',
                         fontFamily: 'Times New Roman',
@@ -384,7 +292,7 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
                 gridLineWidth: 0,
                 opposite: true,
                 title: {
-                    text: seriesChart()[1].name || seriesChart()[3].name || seriesChart()[5].name,
+                    text: typesensor === 'all' ? 'Value' : seriesChart().length > 1 ? seriesChart()[1].name : '',
                     style: {
                         fontSize: '1.4rem',
                         fontFamily: 'Times New Roman',
@@ -415,7 +323,6 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
         },
         series: seriesChart(),
     };
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('menu-mode')}>

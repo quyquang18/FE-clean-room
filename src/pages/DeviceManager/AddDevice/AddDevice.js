@@ -37,47 +37,47 @@ function AddDevice() {
             return result;
         }
     };
-    const userId = useSelector((state) => state.user.userInfo.id);
+    const companyId = useSelector((state) => state.user.userInfo.companyId);
     let lisTypeDevice = useSelector((state) => state.admin.arrTypeDevice);
     let listRoom = useSelector((state) => state.admin.arrRoom);
     listRoom = buildDataInputSelect(listRoom, 'room');
     lisTypeDevice = buildDataInputSelect(lisTypeDevice);
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(actions.fetchAllRoom(userId));
-    }, [dispatch, userId]);
+        dispatch(actions.fetchAllRoom(companyId));
+    }, [dispatch, companyId]);
     useEffect(() => {
         dispatch(actions.fetchTypeDevice());
     }, [dispatch]);
     const updateInFirebase = (data) => {
         let dataCreate = {};
-        dataCreate.userId = data.userId;
+        dataCreate.companyId = data.companyId;
         dataCreate.roomId = data.roomId;
         dataCreate.typeDevice = data.typeDevice;
         dataCreate.deviceName = data.deviceName;
         dataCreate.idDevice = data.id;
         dataCreate.status = 'OFF';
         onValue(
-            child(dbRef, `${userId}/statusDevice/` + dataCreate.idDevice),
+            child(dbRef, `${companyId}/statusDevice/` + dataCreate.idDevice),
             (snapshot) => {
                 var exists = snapshot.exists();
                 let resData = snapshot.val();
                 if (exists) {
                     if (
                         resData.deviceName === dataCreate.deviceName &&
-                        resData.userId === dataCreate.userId &&
+                        resData.companyId === dataCreate.companyId &&
                         resData.roomId === dataCreate.roomId &&
                         resData.typeDevice === dataCreate.typeDevice
                     ) {
                         return true;
                     } else {
                         const updates = {};
-                        updates[userId + '/statusDevice/' + dataCreate.idDevice] = dataCreate;
+                        updates[companyId + '/statusDevice/' + dataCreate.idDevice] = dataCreate;
                         update(dbRef, updates);
                     }
                 } else {
                     const updates = {};
-                    updates[userId + '/statusDevice/' + dataCreate.idDevice] = dataCreate;
+                    updates[companyId + '/statusDevice/' + dataCreate.idDevice] = dataCreate;
                     update(dbRef, updates);
                 }
             },
@@ -92,7 +92,7 @@ function AddDevice() {
         if (modeLocation === CRUD_ACTIONS.UPDATE) {
             let data = {};
             data.roomId = selecedRoom.value;
-            data.userId = userId;
+            data.companyId = companyId;
             data.typeDevice = selecedTypeDevice.value;
             data.deviceName = deviceName;
             data.mode = modeLocation;
@@ -107,14 +107,14 @@ function AddDevice() {
         if (modeLocation === CRUD_ACTIONS.CREATE) {
             let data = {};
             data.roomName = roomName;
-            data.userId = userId;
+            data.companyId = companyId;
             data.typeDevice = selecedTypeDevice.value;
             data.deviceName = deviceName;
             data.mode = modeLocation;
             let res = await handleCreateNewDevice(data);
             if (res && res.errCode === 0) {
                 toast.success(res.message);
-                dispatch(actions.fetchAllRoom(userId));
+                dispatch(actions.fetchAllRoom(companyId));
                 updateInFirebase(res.data);
             } else {
                 toast.error(res.message);
