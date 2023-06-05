@@ -13,12 +13,11 @@
     background-color: #ebf2f7;
     position: relative
 }
-// .nav-bar{
+
     @media (min-width: 1023px) {
         .nav-bar {
             position: fixed;
             top: var(--default-layout-header-height);
-            z-index: 1;
             margin-top: 1px;
         }
         .content {
@@ -28,7 +27,6 @@
             margin-left: var(--default-layout-sidebar-width);
         }
     }
-// }
 .nav-overlay{
     position: fixed;
     top: 0;

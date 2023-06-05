@@ -58,7 +58,7 @@ function AddDevice() {
         dataCreate.idDevice = data.id;
         dataCreate.status = 'OFF';
         onValue(
-            child(dbRef, `${companyId}/statusDevice/` + dataCreate.idDevice),
+            child(dbRef, `${companyId}/${dataCreate.roomId}/statusDevice/` + dataCreate.idDevice),
             (snapshot) => {
                 var exists = snapshot.exists();
                 let resData = snapshot.val();
@@ -72,12 +72,12 @@ function AddDevice() {
                         return true;
                     } else {
                         const updates = {};
-                        updates[companyId + '/statusDevice/' + dataCreate.idDevice] = dataCreate;
+                        updates[`${companyId}/${dataCreate.roomId}/statusDevice/` + dataCreate.idDevice] = dataCreate;
                         update(dbRef, updates);
                     }
                 } else {
                     const updates = {};
-                    updates[companyId + '/statusDevice/' + dataCreate.idDevice] = dataCreate;
+                    updates[`${companyId}/${dataCreate.roomId}/statusDevice/` + dataCreate.idDevice] = dataCreate;
                     update(dbRef, updates);
                 }
             },

@@ -8,7 +8,6 @@ function ModalConfirmUser({ ...props }) {
     };
 
     let { dataUser } = props;
-    console.log(dataUser);
     const handleConfirmCompany = async () => {
         let res = await apiConfirmUserByCompany({ userId: dataUser.id, companyId: dataUser.companyId });
         if (res && res.errCode === 0) {

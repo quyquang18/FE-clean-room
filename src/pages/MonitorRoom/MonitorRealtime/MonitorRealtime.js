@@ -1,6 +1,4 @@
 import classNames from 'classnames/bind';
-import { MdNotStarted } from 'react-icons/md';
-import { IoStopCircle } from 'react-icons/io5';
 import { useState, useRef, useEffect } from 'react';
 import { ref, child, get } from 'firebase/database';
 import { FormattedMessage } from 'react-intl';
@@ -10,6 +8,7 @@ import { format } from 'date-fns';
 
 import { database } from '~/firebase';
 import styles from './MonitorRealtime.module.scss';
+import { StartIcon, StopIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -333,7 +332,7 @@ function MonitorRealtime({ roomId, companyId }) {
                     })}
                     onClick={handleStart}
                 >
-                    <MdNotStarted className={cx('icon')} />
+                    <StartIcon className={cx('icon')} />
                     <FormattedMessage id="monitor-room.monitor-realtime.start" />
                 </span>
                 <span
@@ -342,7 +341,7 @@ function MonitorRealtime({ roomId, companyId }) {
                     })}
                     onClick={handleStop}
                 >
-                    <IoStopCircle className={cx('icon')} />
+                    <StopIcon className={cx('icon')} />
                     <FormattedMessage id="monitor-room.monitor-realtime.stop" />
                 </span>
             </div>

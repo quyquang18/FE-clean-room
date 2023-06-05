@@ -1,5 +1,4 @@
-import { async } from '@firebase/util';
-import { useEffect, useReducer, useState } from 'react';
+import { useReducer } from 'react';
 import { toast } from 'react-toastify';
 import Modal from '~/components/Modal';
 import { editUserService } from '~/services/userService';

@@ -156,13 +156,13 @@ function DeviceMonitor() {
             <h2 className={cx('header-page')}>Device Monitor</h2>
             <div className={cx('select-location', 'row')}>
                 <Select
-                    className="col c-5"
+                    className="col c-5 m-4 l-4"
                     value={selectedRoom}
                     onChange={(event) => handleChangeRoom(event)}
                     options={listRoom}
                 />
                 <Select
-                    className="col c-5"
+                    className="col c-5 m-4 l-4"
                     value={selectedDevice}
                     onChange={(event) => handleChangeDevice(event)}
                     options={listDevice}

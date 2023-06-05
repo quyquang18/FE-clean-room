@@ -8,6 +8,7 @@
         0px 30px 20px rgba(0, 0, 0, 0.05);
     max-height: 400px;
     overflow-y: auto;
+   
     .notifycation-header {
         color: #050505;
         font-size: 2.1rem;
@@ -59,5 +60,12 @@
         color: var(--white);
         font-family: 'ProximaNova', sans-serif;
         background-color: var(--primary);
+    }
+}
+.icon-notifycation{
+    border-radius: 50%;
+    &.active{
+        background-color: rgb(230, 235, 232);
+        color: #e99a06;
     }
 }

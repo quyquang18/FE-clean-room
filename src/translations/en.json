@@ -17,6 +17,7 @@
         "device-control": "Device Drivers",
         "manage-acc": "Account Management",
         "device-manager": "Device Management",
+        "room-manager": "Rooms Management",
         "manage-company": "Company Management"
     },
     "homepage": {

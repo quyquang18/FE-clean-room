@@ -6,12 +6,12 @@ import { handleUpdateValueThreshold } from '~/services/deviceService';
 
 function ModalSettingsThreshold({ ...props }) {
     const initialState = {
-        valueUp1: props.valueThreshold1.valueUp,
-        valueDown1: props.valueThreshold1.valueDown,
-        init1: props.valueThreshold1.init,
-        valueUp2: props.valueThreshold2.valueUp,
-        valueDown2: props.valueThreshold2.valueDown,
-        init2: props.valueThreshold2.init,
+        valueUp1: props.valueThreshold1.valueUp || '',
+        valueDown1: props.valueThreshold1.valueDown || '',
+        unit1: props.valueThreshold1.unit || '',
+        valueUp2: props.valueThreshold2.valueUp || '',
+        valueDown2: props.valueThreshold2.valueDown || '',
+        unit2: props.valueThreshold2.unit || '',
     };
     const [state, dispatch] = useReducer(reducer, initialState);
     function reducer(state, action) {
@@ -25,9 +25,9 @@ function ModalSettingsThreshold({ ...props }) {
     const toggle = () => {
         props.toggleEditUserModal();
     };
-
     const handleEditValueThreshold = async () => {
         let statusUpdate = true;
+
         if (state.valueUp1 && state.valueDown1) {
             let data = {};
             data.Type_sensor = props.valueThreshold1.Type_sensor;
@@ -35,7 +35,7 @@ function ModalSettingsThreshold({ ...props }) {
             data.companyId = props.valueThreshold1.companyId;
             data.valueUp = state.valueUp1;
             data.valueDown = state.valueDown1;
-            data.init = state.init1;
+            data.unit = state.unit1;
             let res = await handleUpdateValueThreshold(data);
             if (res && res.errCode === 0) {
                 statusUpdate = true;
@@ -50,7 +50,7 @@ function ModalSettingsThreshold({ ...props }) {
             data.companyId = props.valueThreshold2.companyId;
             data.valueUp = state.valueUp2;
             data.valueDown = state.valueDown2;
-            data.init = state.init2;
+            data.unit = state.unit2;
             let res = await handleUpdateValueThreshold(data);
             if (res && res.errCode === 0) {
                 statusUpdate = true;
@@ -61,6 +61,7 @@ function ModalSettingsThreshold({ ...props }) {
         if (statusUpdate) {
             toast.success('Update value Threshold succeed !');
             props.toggleEditUserModal();
+            props.updateSucceed(props.valueThreshold1.Type_sensor, props.valueThreshold2.Type_sensor);
         } else {
             toast.error('Update value Threshold failed !');
         }
@@ -84,17 +85,6 @@ function ModalSettingsThreshold({ ...props }) {
                         <div className="row">
                             <div className="col c-6 m-4 l-4">
                                 <div className="form-group">
-                                    <label className="lable-input">Value Up:</label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        value={state.valueUp1}
-                                        onChange={(item) => handleChangeInput(item, 'valueUp1')}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col c-6 m-4 l-4">
-                                <div className="form-group">
                                     <label className="lable-input">Value Down:</label>
                                     <input
                                         type="text"
@@ -104,14 +94,25 @@ function ModalSettingsThreshold({ ...props }) {
                                     />
                                 </div>
                             </div>
+                            <div className="col c-6 m-4 l-4">
+                                <div className="form-group">
+                                    <label className="lable-input">Value Up:</label>
+                                    <input
+                                        className="form-control"
+                                        type="text"
+                                        value={state.valueUp1}
+                                        onChange={(item) => handleChangeInput(item, 'valueUp1')}
+                                    />
+                                </div>
+                            </div>
                             <div className="col c-12 m-4 l-4">
                                 <div className="form-group">
                                     <label className="lable-input">Unit:</label>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        value={state.init1}
-                                        onChange={(item) => handleChangeInput(item, 'init1')}
+                                        value={state.unit1}
+                                        onChange={(item) => handleChangeInput(item, 'unit1')}
                                     />
                                 </div>
                             </div>
@@ -126,17 +127,6 @@ function ModalSettingsThreshold({ ...props }) {
                                 <div className="row">
                                     <div className="col c-6 m-4 l-4">
                                         <div className="form-group">
-                                            <label className="lable-input">Value Up:</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                value={state.valueUp2}
-                                                onChange={(item) => handleChangeInput(item, 'valueUp2')}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col c-6 m-4 l-4">
-                                        <div className="form-group">
                                             <label className="lable-input">Value Down:</label>
                                             <input
                                                 type="text"
@@ -146,14 +136,25 @@ function ModalSettingsThreshold({ ...props }) {
                                             />
                                         </div>
                                     </div>
+                                    <div className="col c-6 m-4 l-4">
+                                        <div className="form-group">
+                                            <label className="lable-input">Value Up:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={state.valueUp2}
+                                                onChange={(item) => handleChangeInput(item, 'valueUp2')}
+                                            />
+                                        </div>
+                                    </div>
                                     <div className="col c-12 m-4 l-4">
                                         <div className="form-group">
                                             <label className="lable-input">Unit:</label>
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                value={state.init2}
-                                                onChange={(item) => handleChangeInput(item, 'init2')}
+                                                value={state.unit2}
+                                                onChange={(item) => handleChangeInput(item, 'unit2')}
                                             />
                                         </div>
                                     </div>

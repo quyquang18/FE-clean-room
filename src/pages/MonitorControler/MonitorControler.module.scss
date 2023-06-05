@@ -58,10 +58,11 @@
 .header {
     font-size: 1.6rem;
     font-weight: 600;
-    margin: 0px 6px 16px;
+    margin-bottom: 16px;
     background: #c1e74fbd;
     padding: 4px 16px;
-    border-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
     text-align: center;
 }
 .control-wrapper {
@@ -124,9 +125,17 @@
         display: flex;
         align-items: center;
     }
+    button:disabled {
+        .icon-btn {
+            color: #a09aa3;
+        }
+    }
     .icon-btn {
         cursor: pointer;
         color: var(--primary);
+        &.disable {
+            color: #a09aa3;
+        }
     }
     .text-value {
         font-size: 1.2rem;
@@ -161,4 +170,8 @@
         background-color: #d7e4e2;
         padding: 2px 12px;
     }
+}
+.modal-controler {
+    min-width: 30%;
+    margin: 12px 0;
 }

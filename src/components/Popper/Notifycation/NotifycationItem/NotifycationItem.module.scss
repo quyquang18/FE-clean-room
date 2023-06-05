@@ -7,11 +7,11 @@
         -ms-flex-align: center;
         -webkit-box-align: center;
         border-bottom: 1px solid #ccc;
-        &.unread{
+        &.unread {
             background: #edf2fa;
             color: #000;
         }
-        &.read{
+        &.read {
             background: #ffffff;
             color: rgb(104, 101, 101);
         }
@@ -32,10 +32,15 @@
             padding: 6px 0;
             margin-left: 12px;
             display: block;
+
             .item-content {
                 display: block;
                 font-size: 1.8rem;
                 font-weight: 500;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3;
+                display: -webkit-box;
+                overflow: hidden;
             }
             .item-time {
                 font-size: 1.6rem;

@@ -1,8 +1,4 @@
 import classNames from 'classnames/bind';
-import { AiOutlineUser, AiOutlineLogout } from 'react-icons/ai';
-import { FiSettings, FiHelpCircle } from 'react-icons/fi';
-import { BiMessageEdit } from 'react-icons/bi';
-import { TbMessageLanguage } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -16,7 +12,17 @@ import images from '~/assets/images';
 import Menu from '~/components/Popper/Menu';
 import Image from '~/components/Image';
 import Search from '../Search';
-import { DarkModeIcon, MenuIcon, NotificationIcon, ThreeDotsIcon } from '~/components/Icons';
+import {
+    DarkModeIcon,
+    HelpIcon,
+    LanguageIcon,
+    LogoutIcon,
+    MenuIcon,
+    MessageIcon,
+    SettingsIcon,
+    ThreeDotsIcon,
+    UserIcon,
+} from '~/components/Icons';
 import { path } from '~/utils';
 import Notifycation from '~/components/Popper/Notifycation';
 
@@ -49,7 +55,7 @@ function Header({ toggleNavBar }) {
     };
     const MENU_ITEMS = [
         {
-            icon: <TbMessageLanguage />,
+            icon: <LanguageIcon />,
             title: <FormattedMessage id="menu-user.current -value-language" />,
             children: {
                 title: <FormattedMessage id="menu-user.language" />,
@@ -68,24 +74,24 @@ function Header({ toggleNavBar }) {
             },
         },
         {
-            icon: <FiHelpCircle width="2.2rem" height="2.2rem" />,
+            icon: <HelpIcon width="2.2rem" height="2.2rem" />,
             title: <FormattedMessage id="menu-user.help" />,
             to: '/feedback',
         },
         {
-            icon: <BiMessageEdit />,
+            icon: <MessageIcon />,
             title: <FormattedMessage id="menu-user.contribute" />,
         },
     ];
 
     const userMenu = [
         {
-            icon: <AiOutlineUser />,
+            icon: <UserIcon />,
             title: <FormattedMessage id="menu-user.profile" />,
             to: `/${userName}/${userId}`,
         },
         {
-            icon: <FiSettings />,
+            icon: <SettingsIcon />,
             title: <FormattedMessage id="menu-user.settings" />,
 
             children: {
@@ -108,7 +114,7 @@ function Header({ toggleNavBar }) {
         },
         ...MENU_ITEMS,
         {
-            icon: <AiOutlineLogout />,
+            icon: <LogoutIcon />,
             title: <FormattedMessage id="menu-user.logout" />,
             to: path.LOGIN,
             separate: true,

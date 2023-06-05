@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { getDetailUserById, editUserService } from '~/services/userService';
@@ -24,7 +24,7 @@ function ProfileUser() {
     const [phonenumber, setPhonenumber] = useState('');
     const params = useParams();
     const dispatch = useDispatch();
-    let getInforUser = async () => {
+    let getInforUser = useCallback(async () => {
         let res = await getDetailUserById(params.id);
         if (res && res.errCode === 0) {
             let data = res.data;
@@ -38,7 +38,7 @@ function ProfileUser() {
         } else {
             setInforUser({});
         }
-    };
+    }, [params]);
     const handleChangeGender = (value) => {
         setSelectedGender(value);
     };
@@ -58,7 +58,7 @@ function ProfileUser() {
     useEffect(() => {
         getInforUser();
         dispatch(actions.fetchGender());
-    }, []);
+    }, [dispatch, getInforUser]);
     let listGender = useSelector((state) => state.admin.genders);
     listGender = buildDataInputSelect(listGender);
     const getUrlAvatar = () => {

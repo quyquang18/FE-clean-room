@@ -12,6 +12,7 @@ export const path = {
     MONITOR_ROOM: '/monitor-room',
     MANAGE_ACCOUNT: '/manage-account',
     MANAGE_COMPANY: '/manage-company',
+    MANAGE_ROOM: '/manage-room',
     DEVICE_MANAGER: '/devicemanager',
     ADD_DEVICE: '/devicemanager/add-device',
     VERIFY_EMAIL: '/user/:id/verify/:token',
@@ -75,4 +76,8 @@ export const TYPE_SENSOR = {
 export const STAUTUS_COMPANY = {
     UNCONFIMRED: 'UNCONFIMRED',
     CONFIRMED: 'CONFIRMED',
+};
+export const MODAL = {
+    MANUAL: 'MANUAL',
+    AUTOMATION: 'AUTOMATION',
 };

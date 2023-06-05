@@ -12,7 +12,6 @@ import LoadingOverlay from 'react-loading-overlay';
 function App() {
     const [menuApp, setMenuApp] = useState([]);
     const user = useSelector((state) => state.user);
-    const accessToken = useSelector((state) => state.user.access_token);
     useEffect(() => {
         let menu = [];
         if (user) {

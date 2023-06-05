@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
-import { HiPencilAlt } from 'react-icons/hi';
-import { MdDeleteForever } from 'react-icons/md';
-import { handleGetAllUser, handleUpdateRole } from '~/services/userService';
+import { handleUpdateRole } from '~/services/userService';
+import { EditIcon, DeleteIcon } from '../Icons';
 import styles from './AccList.module.scss';
 import { useEffect, useState } from 'react';
 import ModalEditUser from './ModalEditUser';
@@ -90,14 +89,12 @@ function AccList() {
                                         <td>{item.role.label}</td>
                                         <td>
                                             <button className={cx('btn-action')}>
-                                                <HiPencilAlt
-                                                    className={cx('icon-btn-edit')}
-                                                    onClick={() => handleEditUser(item)}
-                                                />
-                                                <MdDeleteForever
-                                                    className={cx('icon-btn-delete')}
-                                                    onClick={() => handleDeleteUser(item)}
-                                                />
+                                                <span onClick={() => handleEditUser(item)}>
+                                                    <EditIcon className={cx('icon-btn-edit')} />
+                                                </span>
+                                                <span onClick={() => handleDeleteUser(item)}>
+                                                    <DeleteIcon className={cx('icon-btn-delete')} />
+                                                </span>
                                             </button>
                                         </td>
                                     </tr>

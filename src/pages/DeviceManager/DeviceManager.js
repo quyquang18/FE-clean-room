@@ -1,10 +1,9 @@
 import className from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { HiPencilAlt } from 'react-icons/hi';
-import { MdDeleteForever } from 'react-icons/md';
+
 
 import Button from '~/components/Button';
-import { PlusIcon } from '~/components/Icons';
+import { DeleteIcon, EditIcon, PlusIcon } from '~/components/Icons';
 import { getAllInfoDeviceByCompany } from '~/services/deviceService';
 import styles from './DeviceManager.module.scss';
 import * as actions from '~/store/actions';
@@ -65,7 +64,7 @@ function DeviceManager() {
         data.companyId = companyId;
         data.status = 'OFF';
         onValue(
-            child(dbRef, `${companyId}/statusDevice/` + data.idDevice),
+            child(dbRef, `${companyId}/${data.roomId}/statusDevice/` + data.idDevice),
             (snapshot) => {
                 var exists = snapshot.exists();
                 let resData = snapshot.val();
@@ -78,12 +77,12 @@ function DeviceManager() {
                         return true;
                     } else {
                         const updates = {};
-                        updates[companyId + '/statusDevice/' + data.idDevice] = data;
+                        updates[`${companyId}/${data.roomId}/statusDevice/` + data.idDevice] = data;
                         update(dbRef, updates);
                     }
                 } else {
                     const updates = {};
-                    updates[companyId + '/statusDevice/' + data.idDevice] = data;
+                    updates[`${companyId}/${data.roomId}/statusDevice/` + data.idDevice] = data;
                     update(dbRef, updates);
                 }
             },
@@ -157,14 +156,12 @@ function DeviceManager() {
                                         <td>{format(new Date(item.updatedAt), 'dd/MM/yyyy')}</td>
                                         <td>
                                             <button className={cx('btn-action')}>
-                                                <HiPencilAlt
-                                                    className={cx('icon-btn-edit')}
-                                                    onClick={() => handleEditDevice(item)}
-                                                />
-                                                <MdDeleteForever
-                                                    className={cx('icon-btn-delete')}
-                                                    onClick={() => handleDeleteUser(item)}
-                                                />
+                                                <span onClick={() => handleEditDevice(item)}>
+                                                    <EditIcon className={cx('icon-btn-edit')} />
+                                                </span>
+                                                <span onClick={() => handleDeleteUser(item)}>
+                                                    <DeleteIcon className={cx('icon-btn-delete')} />
+                                                </span>
                                             </button>
                                         </td>
                                     </tr>

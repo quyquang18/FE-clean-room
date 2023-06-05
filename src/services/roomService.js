@@ -13,5 +13,10 @@ const getDetailRoomById = (id) => {
 const getValueSensorByTime = (type, companyId, roomId, date) => {
     return axios.get(`/api/get-value-sensor-by-date?type=${type}&companyId=${companyId}&roomId=${roomId}&date=${date}`);
 };
-
-export { createNewRoom, getAllRoom, getDetailRoomById, getValueSensorByTime };
+const updateInfoRoom = (data) => {
+    return axios.post(`/api/update-info-room`, data);
+};
+const apiDeleteRoom = (data) => {
+    return axios.post(`/api/delete-room`, data);
+};
+export { createNewRoom, getAllRoom, getDetailRoomById, getValueSensorByTime, updateInfoRoom, apiDeleteRoom };

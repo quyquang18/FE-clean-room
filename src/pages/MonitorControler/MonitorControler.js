@@ -19,7 +19,7 @@ import {
 } from '~/components/Icons';
 import InfomationSensor from '~/components/InfomationSensor';
 import Button from '~/components/Button';
-import { StatusOnOff, TYPE_DISPLAY } from '~/utils';
+import { MODAL, StatusOnOff, TYPE_DISPLAY } from '~/utils';
 
 const dbRef = ref(database);
 const cx = classNames.bind(styles);
@@ -29,11 +29,16 @@ const listSensorDisplay = [
     { label: 'Press', value: TYPE_DISPLAY.PRESSURE },
     { label: 'Oxy', value: TYPE_DISPLAY.OXY },
 ];
+const listModalControl = [
+    { label: 'Manual', value: MODAL.MANUAL },
+    { label: 'Automation', value: MODAL.AUTOMATION },
+];
 
 function MonitorControler() {
     const [valueDew, dispatchDew] = useReducer(20);
     const [statusFan, setStatusFan] = useState(StatusOnOff.OFF);
     const [selectedDisplay, setSelectedDisplay] = useState();
+    const [selectedModalControllerFan, setSelectedModalControllerFan] = useState(listModalControl[0]);
     document.title = 'LUXAS-Monitor Control';
 
     const buildDataInputSelect = (inputData, type) => {
@@ -55,6 +60,7 @@ function MonitorControler() {
     const [selectedRoom, setSelectedRoom] = useState(initSelectedRoom);
     const dispatch = useDispatch();
     const companyId = useSelector((state) => state.user.userInfo.companyId);
+    const userId = useSelector((state) => state.user.userInfo.id);
     useEffect(() => {
         dispatch(actions.fetchAllRoom(companyId));
     }, [dispatch, companyId]);
@@ -78,6 +84,16 @@ function MonitorControler() {
                     if (snapshot.val() && snapshot.val().Speed && snapshot.val().Status) {
                         setValueFan(snapshot.val().Speed);
                         setStatusFan(snapshot.val().Status);
+                    }
+                },
+                { onlyOnce: true },
+            );
+            onValue(
+                child(dbRef, `${companyId}/${selectedRoom.value}/valueDevice/Fan/Modal`),
+                (snapshot) => {
+                    if (snapshot.val()) {
+                        let valueSelected = listModalControl.find((element) => element.value === snapshot.val());
+                        setSelectedModalControllerFan(valueSelected);
                     }
                 },
                 { onlyOnce: true },
@@ -111,7 +127,17 @@ function MonitorControler() {
         setValueFan(coppyValueFan);
         const updates = {};
         if (companyId && selectedRoom) {
+            // eslint-disable-next-line no-useless-concat
             updates[`${companyId}/${selectedRoom.value}/valueDevice/Fan/` + 'Speed'] = coppyValueFan;
+            update(dbRef, updates);
+        }
+    };
+    const handleChangeModalControlFan = (event) => {
+        setSelectedModalControllerFan(event);
+        if (companyId && selectedRoom) {
+            const updates = {};
+            // eslint-disable-next-line no-useless-concat
+            updates[`${companyId}/${selectedRoom.value}/valueDevice/Fan/` + 'Modal'] = event.value;
             update(dbRef, updates);
         }
     };
@@ -168,12 +194,22 @@ function MonitorControler() {
                                 <p>{statusFan}</p>
                             </span>
                         </div>
+                        <div className={cx('modal-controler')}>
+                            <Select
+                                value={selectedModalControllerFan}
+                                onChange={(event) => handleChangeModalControlFan(event)}
+                                options={listModalControl}
+                            />
+                        </div>
                         <div>
                             <span className={cx('speed-control')}>
                                 <span className={cx('control-value')}>
-                                    <span onClick={() => handleChangeSpeedFan('MINUS')}>
+                                    <button
+                                        disabled={selectedModalControllerFan.value === MODAL.AUTOMATION}
+                                        onClick={() => handleChangeSpeedFan('MINUS')}
+                                    >
                                         <MinusIcon className={cx('icon-btn')} />
-                                    </span>
+                                    </button>
                                     <p className={cx('text-value')}>05</p>
                                 </span>
                                 <span className={cx('slider-value')}>
@@ -185,9 +221,12 @@ function MonitorControler() {
                                 </span>
                                 <span className={cx('control-value')}>
                                     <p className={cx('text-value')}>25</p>
-                                    <span onClick={() => handleChangeSpeedFan('PLUS')}>
+                                    <button
+                                        disabled={selectedModalControllerFan.value === MODAL.AUTOMATION}
+                                        onClick={() => handleChangeSpeedFan('PLUS')}
+                                    >
                                         <PlusIcon className={cx('icon-btn')} />
-                                    </span>
+                                    </button>
                                 </span>
                             </span>
                         </div>
@@ -201,9 +240,9 @@ function MonitorControler() {
                         <div>
                             <span className={cx('speed-control')}>
                                 <span className={cx('control-value')}>
-                                    <span>
+                                    <button disabled={selectedModalControllerFan.value === MODAL.AUTOMATION}>
                                         <MinusIcon className={cx('icon-btn')} />
-                                    </span>
+                                    </button>
                                     <p className={cx('text-value')}>05</p>
                                 </span>
                                 <span className={cx('slider-value')}>
@@ -243,6 +282,8 @@ function MonitorControler() {
                                     companyId={companyId}
                                     typeDisplay={item.value}
                                     roomId={selectedRoom && selectedRoom.value}
+                                    roomName={selectedRoom && selectedRoom.label}
+                                    userId={userId}
                                 />
                             );
                         })}

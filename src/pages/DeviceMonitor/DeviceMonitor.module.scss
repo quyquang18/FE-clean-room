@@ -18,6 +18,7 @@
 .head-content {
     font-size: 1.6rem;
     font-weight: 500;
+    margin-left: 12px;
 }
 
 .status-light {
@@ -59,6 +60,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: space-evenly;
     margin: 6px -6px;
     .item {
         display: flex;

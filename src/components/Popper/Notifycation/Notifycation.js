@@ -1,7 +1,7 @@
 import Tippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
 import { useState, useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NotificationIcon } from '~/components/Icons';
 import styles from './Notifycation.module.scss';
 import NotifycationItem from './NotifycationItem';
@@ -10,10 +10,12 @@ import { getNotifycations } from '~/services/userService';
 const cx = classNames.bind(styles);
 function Notifycation() {
     const [listNotifycation, setListNotifycation] = useState([]);
-
-    const handleReset = () => {};
+    const [isShowTippy, setIsShowTippy] = useState(false);
+    const handleHide = () => {
+        setIsShowTippy(false);
+    };
     const handleMouting = () => {
-        // console.log('asjda');
+        setIsShowTippy(true);
     };
     const getNumNotifycation = () => {
         if (listNotifycation.length > 0) {
@@ -64,10 +66,14 @@ function Notifycation() {
                     </div>
                 </div>
             )}
-            onHide={handleReset}
+            onHide={handleHide}
         >
             <button className={cx('action-btn')}>
-                <NotificationIcon width="2.8rem" height="2.8rem" />
+                <NotificationIcon
+                    width="2.8rem"
+                    height="2.8rem"
+                    className={cx('icon-notifycation', isShowTippy ? 'active' : '')}
+                />
                 <span className={cx('badge')}>{getNumNotifycation()}</span>
             </button>
         </Tippy>

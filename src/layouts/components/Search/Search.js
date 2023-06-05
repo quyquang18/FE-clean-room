@@ -1,8 +1,8 @@
-import { FaSearch } from 'react-icons/fa';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
 
 import styles from './Search.module.scss';
+import { SearchIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -16,7 +16,7 @@ function Search() {
                 <div className={cx('search')}>
                     <input placeholder="Search devices" spellCheck={false}></input>
                     <button className={cx('search-btn')} onMouseDown={(e) => e.preventDefault()}>
-                        <FaSearch />
+                        <SearchIcon width="2.0rem" height="2.0rem" />
                     </button>
                 </div>
             </HeadlessTippy>

@@ -49,6 +49,9 @@ const getAllUserByCompany = (id) => {
 const apiConfirmUserByCompany = (data) => {
     return axios.post(`/api/confirm-by-company`, data);
 };
+const sendNotificationsWarning = (data) => {
+    return axios.post(`/api/send-notifications-warning`, data);
+};
 export {
     handleLoginApi,
     handleVerifyEmail,
@@ -66,4 +69,5 @@ export {
     getNotifycations,
     getAllUserByCompany,
     apiConfirmUserByCompany,
+    sendNotificationsWarning,
 };

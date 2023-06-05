@@ -51,7 +51,6 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
             value: [],
         },
     });
-    console.log(typesensor);
     useEffect(() => {
         let dataDraw = {
             temper: {

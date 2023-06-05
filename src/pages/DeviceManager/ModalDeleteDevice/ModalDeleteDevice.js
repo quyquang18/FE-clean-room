@@ -1,7 +1,8 @@
 import Modal from '~/components/Modal';
 import { handleDeleteDevice } from '~/services/deviceService';
 import { toast } from 'react-toastify';
-
+import { ref, remove } from 'firebase/database';
+import { database } from '~/firebase';
 function ModalDeleteDevice({ ...props }) {
     const toggle = () => {
         props.toggleDeleteDeviceModal();
@@ -10,6 +11,9 @@ function ModalDeleteDevice({ ...props }) {
     const handleConfirmDelete = async () => {
         let res = await handleDeleteDevice(dataDeviceEdit.id);
         if (res.errCode === 0) {
+            remove(
+                ref(database, `${dataDeviceEdit.companyId}/${dataDeviceEdit.roomId}/statusDevice/${dataDeviceEdit.id}`),
+            );
             toast.success('Delete Device Succeed!');
             props.toggleDeleteDeviceModal();
             props.updateInfoSuccees();
@@ -30,7 +34,7 @@ function ModalDeleteDevice({ ...props }) {
                 <>
                     <form>
                         <div className="row">
-                            <div className="col-12">
+                            <div className="col c-12 m-8 l-8 m-o-2 l-o-2">
                                 <div className="form-group">
                                     <label className="lable-input">Name Device:</label>
                                     <input
@@ -43,7 +47,7 @@ function ModalDeleteDevice({ ...props }) {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-12">
+                            <div className="col c-12 m-8 l-8 m-o-2 l-o-2">
                                 <div className="form-group">
                                     <label className="lable-input">Locatin:</label>
                                     <input

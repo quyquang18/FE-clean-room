@@ -24,7 +24,6 @@ function ManageAccByCompany() {
         if (companyId) {
             let res = await getAllUserByCompany(companyId);
             if (res && res.errCode === 0) {
-                console.log(res.data);
                 setListUser(res.data);
             }
         }
@@ -74,18 +73,16 @@ function ManageAccByCompany() {
                                                 <td>{item.userVerified ? 'Confirmed' : 'Unconfimred'}</td>
                                                 <td>{item.companyVerified ? 'Confirmed' : 'Unconfimred'}</td>
                                                 <td>
-                                                    {
-                                                        <button className={cx('btn-action')}>
-                                                            {!item.companyVerified && (
-                                                                <span onClick={() => handleConfirm(item)}>
-                                                                    <DoneIcon className={cx('icon-btn-edit')} />
-                                                                </span>
-                                                            )}
-                                                            <span onClick={() => handleCancel(item)}>
-                                                                <CancelIcon className={cx('icon-btn-delete')} />
+                                                    <button className={cx('btn-action')}>
+                                                        {!item.companyVerified && (
+                                                            <span onClick={() => handleConfirm(item)}>
+                                                                <DoneIcon className={cx('icon-btn-edit')} />
                                                             </span>
-                                                        </button>
-                                                    }
+                                                        )}
+                                                        <span onClick={() => handleCancel(item)}>
+                                                            <CancelIcon className={cx('icon-btn-delete')} />
+                                                        </span>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         );

@@ -66,6 +66,8 @@
 .btn-action{
     background-color: transparent;
     display: flex;
+    width: 100%;
+    justify-content: center;
     .icon-btn-edit{
         color: #e4e00d;
         width: 1.8rem;

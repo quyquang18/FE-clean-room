@@ -8,6 +8,7 @@ import {
     MonitorIcon,
     DeviceIcon,
     CompanyIcon,
+    ManageRoomIcon,
 } from '~/components/Icons';
 export const adminSystemMenu = [
     {
@@ -51,6 +52,11 @@ export const adminMenu = [
         title: <FormattedMessage id="home-sidebar.device-manager" />,
         to: config.routes.devicemanager,
         icon: <DeviceIcon />,
+    },
+    {
+        title: <FormattedMessage id="home-sidebar.room-manager" />,
+        to: config.routes.manage_room,
+        icon: <ManageRoomIcon />,
     },
     {
         title: <FormattedMessage id="home-sidebar.manage-acc" />,

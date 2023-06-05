@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import './Modal.scss';
 import { CloseIcon } from '../Icons';
-import Button from '../Button';
 
 function Modal({ ...props }) {
     if (props.isOpen) {

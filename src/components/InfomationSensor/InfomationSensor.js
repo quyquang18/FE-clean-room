@@ -8,18 +8,19 @@ import styles from './InfomationSensor.module.scss';
 import { TYPE_DISPLAY, TYPE_SENSOR } from '~/utils';
 import { handleGetValueThreshold } from '~/services/deviceService';
 import ModalSettingsThreshold from './ModalSettingsThreshold';
+import { sendNotificationsWarning } from '~/services/userService';
 
 const cx = classNames.bind(styles);
 const dbRef = ref(database);
 
-function InfomationSensor({ companyId, roomId, typeDisplay }) {
+function InfomationSensor({ companyId, roomId, typeDisplay, roomName, userId }) {
     const [curentValue1, setCurrentValue1] = useState();
     const [curentValue2, setCurrentValue2] = useState();
     const [valueThreshold1, setValueThreshold1] = useState({});
     const [valueThreshold2, setValueThreshold2] = useState({});
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [nameSensor, setNameSensor] = useState(['', '']);
-
+    const [isSendNotifications1, setIsSendNotifications] = useState(false);
     const getValueThreshold = useCallback(
         async (typeSensor) => {
             let dataReq = {};
@@ -31,16 +32,26 @@ function InfomationSensor({ companyId, roomId, typeDisplay }) {
                 let data = {};
                 data.valueUp = res.data.valueUp;
                 data.valueDown = res.data.valueDown;
-                data.init = res.data.init;
-                data.Type_sensor = res.data.Type_sensor;
-                data.roomId = res.data.roomId;
-                data.companyId = res.data.companyId;
+                data.unit = res.data.unit;
+                data.Type_sensor = res.data.Type_sensor || typeSensor;
+                data.roomId = res.data.roomId || roomId;
+                data.companyId = res.data.companyId || companyId;
                 return data;
             } else {
             }
         },
         [roomId, companyId],
     );
+    const updateSucceed = async (typeSensor1, typeSensor2) => {
+        if (typeSensor1) {
+            let value1 = await getValueThreshold(typeSensor1);
+            setValueThreshold1(value1);
+        }
+        if (typeSensor2) {
+            let value2 = await getValueThreshold(typeSensor2);
+            setValueThreshold2(value2);
+        }
+    };
     useEffect(() => {
         switch (typeDisplay) {
             case TYPE_DISPLAY.TEMPERATURE_HUMIDITY:
@@ -99,6 +110,7 @@ function InfomationSensor({ companyId, roomId, typeDisplay }) {
                 fetchData4();
                 setNameSensor(['Oxy']);
                 onValue(child(dbRef, `${companyId}/${roomId}/valueSensor/Oxy`), (snapshot) => {
+                    alert('change');
                     const dataFb = snapshot.val();
                     setCurrentValue1(dataFb);
                 });
@@ -107,20 +119,31 @@ function InfomationSensor({ companyId, roomId, typeDisplay }) {
                 break;
         }
     }, [roomId, companyId, typeDisplay, getValueThreshold]);
+
     const renderStatus = () => {
         let status1 = '';
         let status2 = '';
         if (curentValue1 && valueThreshold1 && valueThreshold1.valueDown && valueThreshold1.valueUp) {
             status1 =
-                +valueThreshold1.valueDown < +curentValue1 && +curentValue1 < +valueThreshold1.valueUp
+                +valueThreshold1.valueDown <= +curentValue1 && +curentValue1 <= +valueThreshold1.valueUp
                     ? 'OK'
                     : 'Warning';
         }
         if (curentValue2 && valueThreshold2 && valueThreshold2.valueDown && valueThreshold2.valueUp) {
             status2 =
-                +valueThreshold2.valueDown < +curentValue2 && +curentValue2 < +valueThreshold2.valueUp
+                +valueThreshold2.valueDown <= +curentValue2 && +curentValue2 <= +valueThreshold2.valueUp
                     ? 'OK'
                     : 'Warning';
+        }
+        if (status1 === 'Warning') {
+            if (!isSendNotifications1) {
+                setIsSendNotifications(true);
+            }
+        }
+        if (status1 === 'OK') {
+            if (isSendNotifications1) {
+                setIsSendNotifications(false);
+            }
         }
         return (
             <span className={cx('sensor-status')}>
@@ -135,12 +158,39 @@ function InfomationSensor({ companyId, roomId, typeDisplay }) {
     const toggleEditUserModal = () => {
         setIsOpenModal(!isOpenModal);
     };
+    const handleSendNotifications = useCallback(
+        async (type, valueDate) => {
+            if (companyId && userId && roomName) {
+                let data = {};
+                data.userId = userId;
+                data.companyId = companyId;
+                data.roomName = roomName;
+                data.typeSensor = valueThreshold1.Type_sensor;
+                data.valueDown = valueThreshold1.valueDown;
+                data.valueUp = valueThreshold1.valueUp;
+                data.valueCurrent = curentValue1;
+                let response = await sendNotificationsWarning(data);
+                console.log(response);
+                if (response.errCode === 0) {
+                }
+                if (response.errCode !== 0) {
+                }
+            }
+        },
+        [companyId, valueThreshold1, roomName, userId, curentValue1],
+    );
+    useEffect(() => {
+        if (isSendNotifications1) {
+            handleSendNotifications();
+        }
+    }, [isSendNotifications1, handleSendNotifications]);
     return (
         <div className={cx('wrapper')}>
             {isOpenModal && (
                 <ModalSettingsThreshold
                     isOpen={isOpenModal}
                     toggleEditUserModal={toggleEditUserModal}
+                    updateSucceed={updateSucceed}
                     valueThreshold1={valueThreshold1}
                     valueThreshold2={valueThreshold2}
                 />
@@ -158,49 +208,75 @@ function InfomationSensor({ companyId, roomId, typeDisplay }) {
                 {renderStatus()}
             </div>
             <div className={cx('wrapper-table')}>
-                <table className={cx('flat-table')}>
-                    <thead className={cx('thead')}>
-                        <tr>
-                            <th>Parameters</th>
-                            <th>
-                                {nameSensor[0] && nameSensor[0]}
-                                <p>{valueThreshold1.init}</p>
-                            </th>
-                            <th>
-                                {nameSensor[1] && nameSensor[1]}
-                                <p>{'(' + valueThreshold2.init + ')'}</p>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className={cx('tbody')}>
-                        <tr className={cx('tr-1', 'tr')}>
-                            <td className={cx('title-row')}>
-                                <span>Up</span>
-                            </td>
-                            <td>{valueThreshold1.valueUp && <p>{valueThreshold1.valueUp}</p>}</td>
-                            <td>{valueThreshold2.valueUp && <p>{valueThreshold2.valueUp}</p>}</td>
-                        </tr>
-                        <tr className={cx('tr-2', 'tr')}>
-                            <td className={cx('title-row')}>
-                                <span>Down</span>
-                            </td>
-                            <td>{valueThreshold1.valueDown && <p>{valueThreshold1.valueDown}</p>}</td>
-                            <td>{valueThreshold2.valueDown && <p>{valueThreshold2.valueDown}</p>}</td>
-                        </tr>
-                        <tr className={cx('tr-3', 'tr')}>
-                            <td>Current </td>
-                            <td>{curentValue1 && <p>{curentValue1}</p>}</td>
-                            <td>{curentValue2 && <p>{curentValue2}</p>}</td>
-                        </tr>
-                        <tr className={cx('tr-4', 'tr')}>
-                            <td>Sample (s)</td>
-                            <td>
-                                <p>5</p>
-                            </td>
-                            <td>{curentValue2 && <p>5</p>}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                {valueThreshold1 && valueThreshold2 && (
+                    <table className={cx('flat-table')}>
+                        <thead className={cx('thead')}>
+                            <tr>
+                                <th>Parameters</th>
+                                <th>
+                                    {nameSensor[0] && nameSensor[0]}
+                                    <p>{valueThreshold1.unit && valueThreshold1.unit}</p>
+                                </th>
+                                {nameSensor[1] && (
+                                    <th>
+                                        {nameSensor[1]}
+                                        <p>{valueThreshold2.unit && valueThreshold2.unit}</p>
+                                    </th>
+                                )}
+                            </tr>
+                        </thead>
+                        <tbody className={cx('tbody')}>
+                            <tr className={cx('tr-1', 'tr')}>
+                                <td className={cx('title-row')}>
+                                    <span>Up</span>
+                                </td>
+                                <td>{valueThreshold1.valueUp && <p>{valueThreshold1.valueUp}</p>}</td>
+                                {valueThreshold2.valueUp && (
+                                    <td>
+                                        <p>{valueThreshold2.valueUp}</p>
+                                    </td>
+                                )}
+                            </tr>
+                            <tr className={cx('tr-2', 'tr')}>
+                                <td className={cx('title-row')}>
+                                    <span>Down</span>
+                                </td>
+                                <td>{valueThreshold1.valueDown && <p>{valueThreshold1.valueDown}</p>}</td>
+                                {valueThreshold2.valueDown && (
+                                    <td>
+                                        <p>{valueThreshold2.valueDown}</p>
+                                    </td>
+                                )}
+                            </tr>
+                            <tr className={cx('tr-3', 'tr')}>
+                                <td>Current </td>
+                                {curentValue1 && (
+                                    <td>
+                                        <p>{curentValue1}</p>
+                                    </td>
+                                )}
+                                {curentValue2 && (
+                                    <td>
+                                        <p>{curentValue2}</p>
+                                    </td>
+                                )}
+                            </tr>
+                            <tr className={cx('tr-4', 'tr')}>
+                                <td>Sample (s)</td>
+                                {curentValue1 && (
+                                    <td>
+                                        <p>5</p>
+                                    </td>
+                                )}
+                                {curentValue2 && (
+                                    <td>
+                                        <p>5</p>
+                                    </td>
+                                )}
+                            </tr>
+                        </tbody>
+                    </table>
+                )}
             </div>
         </div>
     );

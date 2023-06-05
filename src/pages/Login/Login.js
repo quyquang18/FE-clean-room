@@ -1,6 +1,5 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import { BiHide, BiShow } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 
 import * as actions from '~/store/actions';
@@ -9,6 +8,7 @@ import config from '~/config';
 import styles from './Login.module.scss';
 import { useDispatch } from 'react-redux';
 import { path } from '~/utils';
+import { EyeHideIcon, EyeShowIcon } from '~/components/Icons';
 const cx = classNames.bind(styles);
 
 function Login() {
@@ -77,7 +77,7 @@ function Login() {
                                 <span>
                                     {hidePassword ? (
                                         <>
-                                            <BiHide />
+                                            <EyeHideIcon />
                                             <p
                                                 onClick={() => {
                                                     setHidePassword(false);
@@ -89,7 +89,7 @@ function Login() {
                                         </>
                                     ) : (
                                         <>
-                                            <BiShow />
+                                            <EyeShowIcon />
                                             <p
                                                 onClick={() => {
                                                     setHidePassword(true);

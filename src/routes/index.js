@@ -16,6 +16,7 @@ import NotFoundPage from '~/pages/NotFoundPage/NotFoundPage';
 import SettingsControler from '~/pages/MonitorControler/SettingsControler';
 import RegisterCompany from '~/pages/Register/RegisterCompany';
 import ManageCompany from '~/pages/ManageCompany';
+import ManageRoom from '~/pages/ManageRoom';
 
 const adminSystemMenu = [
     { path: config.routes.home, component: Home },
@@ -40,6 +41,7 @@ const adminRouter = [
     { path: config.routes.verifyemail, component: VerifyEmail, layout: null },
     { path: config.routes.other, component: NotFoundPage, layout: HeaderOnly },
     { path: config.routes.manage_account, component: ManageAccount },
+    { path: config.routes.manage_room, component: ManageRoom },
 ];
 
 const userRouter = [
