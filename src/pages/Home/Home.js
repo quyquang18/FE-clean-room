@@ -1,10 +1,10 @@
-import { getMessaging, getToken } from 'firebase/messaging';
+// import { getMessaging, getToken } from 'firebase/messaging';
 import SliderHome from './SliderHome';
 import Footer from './Footer';
 import ContentHome from './ContentHome';
-import { app } from '~/firebase';
+// import { app } from '~/firebase';
 
-const messaging = getMessaging(app);
+// const messaging = getMessaging(app);
 function Home() {
     // getToken(messaging, {
     //     vapidKey: 'BLwPhCS1XyILkeZkNo9iCYzTcI2X0PWcv7HNrmUNB7o2OCmKeAUEIQ0pFNQu57Cez786F3L1jaTgTJ0siWCaAI0',
