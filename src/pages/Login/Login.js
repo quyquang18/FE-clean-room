@@ -76,29 +76,25 @@ function Login() {
                                 <label htmlFor="curent-password">Mật khẩu</label>
                                 <span>
                                     {hidePassword ? (
-                                        <>
-                                            <EyeHideIcon />
-                                            <p
-                                                onClick={() => {
-                                                    setHidePassword(false);
-                                                }}
-                                                className={cx('show-btn')}
-                                            >
-                                                Hide
-                                            </p>
-                                        </>
+                                        <span
+                                            className={cx('show-btn')}
+                                            onClick={() => {
+                                                setHidePassword(false);
+                                            }}
+                                        >
+                                            <EyeHideIcon width="2.2rem" height="2.2rem" />
+                                            <p>Hide</p>
+                                        </span>
                                     ) : (
-                                        <>
-                                            <EyeShowIcon />
-                                            <p
-                                                onClick={() => {
-                                                    setHidePassword(true);
-                                                }}
-                                                className={cx('show-btn')}
-                                            >
-                                                Show
-                                            </p>
-                                        </>
+                                        <span
+                                            className={cx('show-btn')}
+                                            onClick={() => {
+                                                setHidePassword(true);
+                                            }}
+                                        >
+                                            <EyeShowIcon width="2.2rem" height="2.2rem" />
+                                            <p>Show</p>
+                                        </span>
                                     )}
                                 </span>
                             </div>

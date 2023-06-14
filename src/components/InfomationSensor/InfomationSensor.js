@@ -97,7 +97,7 @@ function InfomationSensor({ companyId, roomId, typeDisplay, roomName, userId }) 
                 };
                 fetchData3();
                 setNameSensor(['Defferential Press']);
-                onValue(child(dbRef, `${companyId}/${roomId}/valueSensor/DefferentialPress`), (snapshot) => {
+                onValue(child(dbRef, `${companyId}/${roomId}/valueSensor/DifferPress`), (snapshot) => {
                     const dataFb = snapshot.val();
                     setCurrentValue1(dataFb);
                 });
@@ -110,7 +110,6 @@ function InfomationSensor({ companyId, roomId, typeDisplay, roomName, userId }) 
                 fetchData4();
                 setNameSensor(['Oxy']);
                 onValue(child(dbRef, `${companyId}/${roomId}/valueSensor/Oxy`), (snapshot) => {
-                    alert('change');
                     const dataFb = snapshot.val();
                     setCurrentValue1(dataFb);
                 });
@@ -170,7 +169,6 @@ function InfomationSensor({ companyId, roomId, typeDisplay, roomName, userId }) 
                 data.valueUp = valueThreshold1.valueUp;
                 data.valueCurrent = curentValue1;
                 let response = await sendNotificationsWarning(data);
-                console.log(response);
                 if (response.errCode === 0) {
                 }
                 if (response.errCode !== 0) {
@@ -215,12 +213,16 @@ function InfomationSensor({ companyId, roomId, typeDisplay, roomName, userId }) 
                                 <th>Parameters</th>
                                 <th>
                                     {nameSensor[0] && nameSensor[0]}
-                                    <p>{valueThreshold1.unit && valueThreshold1.unit}</p>
+                                    <p>
+                                        {'( '} {valueThreshold1.unit && valueThreshold1.unit} {' )'}
+                                    </p>
                                 </th>
                                 {nameSensor[1] && (
                                     <th>
                                         {nameSensor[1]}
-                                        <p>{valueThreshold2.unit && valueThreshold2.unit}</p>
+                                        <p>
+                                            {'( '} {valueThreshold2.unit && valueThreshold2.unit} {' )'}
+                                        </p>
                                     </th>
                                 )}
                             </tr>

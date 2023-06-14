@@ -48,6 +48,10 @@
             font-style: normal;
             font-weight: 600;
             user-select: none;
+            p{
+                min-width: 42px;
+                margin-left: 4px;
+            }
         }
     }
 }
