@@ -5,8 +5,8 @@ import styles from './Footer.module.scss';
 const cx = classNames.bind(styles);
 function Footer() {
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('sub-footer-1')}>
+        <div className={cx('wrapper', 'row')}>
+            <div className={cx('sub-footer-1', 'col c-12 m-12 l-4')}>
                 <h2>LUXAS</h2>
                 <div className={cx('service')}>
                     <span>LUXAS CO., LTD</span>
@@ -29,7 +29,7 @@ function Footer() {
                     </ul>
                 </div>
             </div>
-            <div className={cx('sub-footer-2')}>
+            <div className={cx('sub-footer-2', 'col c-12 m-12 l-3')}>
                 <h2>
                     <span>
                         <FormattedMessage id="homepage-footer.info" />
@@ -49,7 +49,7 @@ function Footer() {
                     </li>
                 </ul>
             </div>
-            <div className={cx('sub-footer-3')}>
+            <div className={cx('sub-footer-3', 'col c-12 m-12 l-4')}>
                 <h2>
                     <span>
                         <FormattedMessage id="homepage-footer.address" />

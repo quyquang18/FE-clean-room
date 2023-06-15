@@ -21,10 +21,9 @@ const optionsModule = [
     { type: 'oxy', label: 'Oxy ', active: false },
 ];
 
-function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
+function HightChart({ data = [], mode, valueTime }) {
     const [typesensor, setTypeSensor] = useState('all');
     const [statusResultApi, setStatusResultApi] = useState(true);
-    // const [optionMode,setOptionMode]=
     const [newData, setNewData] = useState({
         temper: {
             value: [],
@@ -123,6 +122,9 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
         }
         setNewData(dataDraw);
     }, [data]);
+    useEffect(() => {
+        handleActive(0);
+    }, []);
     const datachart = [
         {
             name: 'Temperature (℃)',
@@ -155,13 +157,11 @@ function HightChart({ data = [], mode, valueTime, valueTimeTo }) {
             color: '#15B942',
         },
     ];
-    useEffect(() => {
-        handleActive(0);
-    }, []);
+
     const seriesChart = () => {
-        let coppyData = datachart;
+        let copyData = JSON.parse(JSON.stringify(datachart));
         let dataSeriesChart = [];
-        var [temp, humidity, dust25, dust10, differPressure, oxy] = coppyData;
+        const [temp, humidity, dust25, dust10, differPressure, oxy] = copyData;
         switch (typesensor) {
             case 'all':
                 dataSeriesChart = [temp, humidity, dust25, dust10, differPressure, oxy];
