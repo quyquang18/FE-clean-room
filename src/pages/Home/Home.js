@@ -2,7 +2,6 @@
 import SliderHome from './SliderHome';
 import Footer from './Footer';
 import ContentHome from './ContentHome';
-// import { app } from '~/firebase';
 
 // const messaging = getMessaging(app);
 function Home() {

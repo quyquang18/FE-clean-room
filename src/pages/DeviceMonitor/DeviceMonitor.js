@@ -13,7 +13,7 @@ import CustomDatePicker from '~/components/CustomDatePicker';
 import { getTime, startOfDay, startOfMonth, sub } from 'date-fns';
 import { toast } from 'react-toastify';
 import TableStatusDevice from './TableStatusDevice';
-import { LANGUAGES } from '~/utils';
+import { getPathStatusDeviceFirebase, LANGUAGES } from '~/utils';
 const cx = classNames.bind(styles);
 const dbRef = ref(database);
 function DeviceMonitor() {
@@ -81,10 +81,13 @@ function DeviceMonitor() {
 
     useEffect(() => {
         if (selectedRoom && selectedDevice) {
-            onValue(child(dbRef, `${companyId}/statusDevice/${selectedDevice.value}/status`), (snapshot) => {
-                const dataFb = snapshot.val();
-                setStatusDevicce(dataFb);
-            });
+            onValue(
+                child(dbRef, getPathStatusDeviceFirebase(companyId, selectedRoom.value, selectedDevice.value)),
+                (snapshot) => {
+                    const dataFb = snapshot.val();
+                    setStatusDevicce(dataFb);
+                },
+            );
         }
     }, [selectedRoom, selectedDevice, companyId]);
     const handleSelectTimeMode = (key) => {

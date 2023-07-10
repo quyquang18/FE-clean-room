@@ -116,7 +116,7 @@ function HightChart({ data = [], mode, valueTime }) {
                     dataDraw.differPressure.value.push(Number(item.differPressure));
                     dataDraw.oxy.value.push(Number(item.oxy));
                     dataDraw.times.value.push(format(+item.date, 'HH:mm'));
-                    dataDraw.dates.value.push(format(+item.date, 'dd/MM'));
+                    dataDraw.dates.value.push(format(+item.date, 'HH:mm--dd/MM/yyyy'));
                 });
             }
         }
@@ -157,7 +157,6 @@ function HightChart({ data = [], mode, valueTime }) {
             color: '#15B942',
         },
     ];
-
     const seriesChart = () => {
         let copyData = JSON.parse(JSON.stringify(datachart));
         let dataSeriesChart = [];
@@ -214,6 +213,7 @@ function HightChart({ data = [], mode, valueTime }) {
         }
         return subText;
     };
+    console.log(newData);
     const chartConfig = {
         chart: {
             type: 'spline',
@@ -263,6 +263,10 @@ function HightChart({ data = [], mode, valueTime }) {
                     color: '#FFA500',
                 },
             },
+        },
+        tooltip: {
+            className: cx('customize-tooltip'),
+            backgroundColor: '#FCFFC5',
         },
         yAxis: [
             {

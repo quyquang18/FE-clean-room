@@ -78,3 +78,16 @@
     padding-top: 10px;
     width: 100%;
 }
+.customize-tooltip{
+    color: red;
+    path{
+        width: 200px;
+    }
+   text{
+    font-size: 1.4rem !important;
+    color: #000000 !important;
+    tspan:first-child {
+        font-size: 1.4rem !important;
+    }
+   }
+}

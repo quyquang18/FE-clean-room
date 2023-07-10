@@ -8,7 +8,6 @@ import styles from './InfomationSensor.module.scss';
 import { TYPE_DISPLAY, TYPE_SENSOR } from '~/utils';
 import { handleGetValueThreshold } from '~/services/deviceService';
 import ModalSettingsThreshold from './ModalSettingsThreshold';
-import { sendNotificationsWarning } from '~/services/userService';
 
 const cx = classNames.bind(styles);
 const dbRef = ref(database);
@@ -20,7 +19,6 @@ function InfomationSensor({ companyId, roomId, typeDisplay, roomName, userId }) 
     const [valueThreshold2, setValueThreshold2] = useState({});
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [nameSensor, setNameSensor] = useState(['', '']);
-    const [isSendNotifications1, setIsSendNotifications] = useState(false);
     const getValueThreshold = useCallback(
         async (typeSensor) => {
             let dataReq = {};
@@ -134,16 +132,7 @@ function InfomationSensor({ companyId, roomId, typeDisplay, roomName, userId }) 
                     ? 'OK'
                     : 'Warning';
         }
-        if (status1 === 'Warning') {
-            if (!isSendNotifications1) {
-                setIsSendNotifications(true);
-            }
-        }
-        if (status1 === 'OK') {
-            if (isSendNotifications1) {
-                setIsSendNotifications(false);
-            }
-        }
+
         return (
             <span className={cx('sensor-status')}>
                 {status1 && <p className={cx(status1 === 'OK' ? 'ok' : 'warning')}>{status1}</p>}
@@ -157,31 +146,6 @@ function InfomationSensor({ companyId, roomId, typeDisplay, roomName, userId }) 
     const toggleEditUserModal = () => {
         setIsOpenModal(!isOpenModal);
     };
-    const handleSendNotifications = useCallback(
-        async (type, valueDate) => {
-            if (companyId && userId && roomName) {
-                let data = {};
-                data.userId = userId;
-                data.companyId = companyId;
-                data.roomName = roomName;
-                data.typeSensor = valueThreshold1.Type_sensor;
-                data.valueDown = valueThreshold1.valueDown;
-                data.valueUp = valueThreshold1.valueUp;
-                data.valueCurrent = curentValue1;
-                let response = await sendNotificationsWarning(data);
-                if (response.errCode === 0) {
-                }
-                if (response.errCode !== 0) {
-                }
-            }
-        },
-        [companyId, valueThreshold1, roomName, userId, curentValue1],
-    );
-    useEffect(() => {
-        if (isSendNotifications1) {
-            handleSendNotifications();
-        }
-    }, [isSendNotifications1, handleSendNotifications]);
     return (
         <div className={cx('wrapper')}>
             {isOpenModal && (

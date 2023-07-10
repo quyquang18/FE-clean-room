@@ -1,8 +1,11 @@
+import { onValue, ref, child, update } from 'firebase/database';
 import { useReducer } from 'react';
 import { toast } from 'react-toastify';
 
 import Modal from '~/components/Modal';
-import { handleUpdateValueThreshold } from '~/services/deviceService';
+import { handleUpdateValueThresholdInDb } from '~/services/deviceService';
+import { database } from '~/firebase';
+const dbRef = ref(database);
 
 function ModalSettingsThreshold({ ...props }) {
     const initialState = {
@@ -36,7 +39,8 @@ function ModalSettingsThreshold({ ...props }) {
             data.valueUp = state.valueUp1;
             data.valueDown = state.valueDown1;
             data.unit = state.unit1;
-            let res = await handleUpdateValueThreshold(data);
+            let res = await handleUpdateValueThresholdInDb(data);
+            await handleUpdateInFirebase(data);
             if (res && res.errCode === 0) {
                 statusUpdate = true;
             } else {
@@ -51,7 +55,8 @@ function ModalSettingsThreshold({ ...props }) {
             data.valueUp = state.valueUp2;
             data.valueDown = state.valueDown2;
             data.unit = state.unit2;
-            let res = await handleUpdateValueThreshold(data);
+            let res = await handleUpdateValueThresholdInDb(data);
+            await handleUpdateInFirebase(data);
             if (res && res.errCode === 0) {
                 statusUpdate = true;
             } else {
@@ -59,12 +64,43 @@ function ModalSettingsThreshold({ ...props }) {
             }
         }
         if (statusUpdate) {
-            toast.success('Update value Threshold succeed !');
+            toast.success('Update of Threshold value to database succeed !');
             props.toggleEditUserModal();
             props.updateSucceed(props.valueThreshold1.Type_sensor, props.valueThreshold2.Type_sensor);
         } else {
-            toast.error('Update value Threshold failed !');
+            toast.error('Update of Threshold value to database failed!');
         }
+    };
+    const handleUpdateInFirebase = (data) => {
+        onValue(
+            child(dbRef, `${data.companyId}/${data.roomId}/valueThreshold/${data.Type_sensor}`),
+            (snapshot) => {
+                var exists = snapshot.exists();
+                let resData = snapshot.val();
+                if (exists) {
+                    if (
+                        resData.companyId === data.companyId &&
+                        resData.roomId === data.roomId &&
+                        resData.typeDevice === data.typeDevice &&
+                        resData.valueDown === data.valueDown &&
+                        resData.valueUp === data.valueUp
+                    ) {
+                        return true;
+                    } else {
+                        const updates = {};
+                        updates[`${data.companyId}/${data.roomId}/valueThreshold/${data.Type_sensor}`] = data;
+                        update(dbRef, updates);
+                    }
+                } else {
+                    const updates = {};
+                    updates[`${data.companyId}/${data.roomId}/valueThreshold/${data.Type_sensor}`] = data;
+                    update(dbRef, updates);
+                }
+            },
+            {
+                onlyOnce: true,
+            },
+        );
     };
     return (
         <Modal

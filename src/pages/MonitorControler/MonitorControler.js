@@ -79,7 +79,7 @@ function MonitorControler() {
     useEffect(() => {
         if (companyId && selectedRoom) {
             onValue(
-                child(dbRef, `${companyId}/${selectedRoom.value}/valueDevice/Fan`),
+                child(dbRef, `${companyId}/${selectedRoom.value}/deviceControler/Fan`),
                 (snapshot) => {
                     if (snapshot.val() && snapshot.val().Speed && snapshot.val().Status) {
                         setValueFan(snapshot.val().Speed);
@@ -89,7 +89,7 @@ function MonitorControler() {
                 { onlyOnce: true },
             );
             onValue(
-                child(dbRef, `${companyId}/${selectedRoom.value}/valueDevice/Fan/Modal`),
+                child(dbRef, `${companyId}/${selectedRoom.value}/deviceControler/Fan/Modal`),
                 (snapshot) => {
                     if (snapshot.val()) {
                         let valueSelected = listModalControl.find((element) => element.value === snapshot.val());
@@ -128,7 +128,7 @@ function MonitorControler() {
         const updates = {};
         if (companyId && selectedRoom) {
             // eslint-disable-next-line no-useless-concat
-            updates[`${companyId}/${selectedRoom.value}/valueDevice/Fan/` + 'Speed'] = coppyValueFan;
+            updates[`${companyId}/${selectedRoom.value}/deviceControler/Fan/` + 'Speed'] = coppyValueFan;
             update(dbRef, updates);
         }
     };
@@ -137,7 +137,7 @@ function MonitorControler() {
         if (companyId && selectedRoom) {
             const updates = {};
             // eslint-disable-next-line no-useless-concat
-            updates[`${companyId}/${selectedRoom.value}/valueDevice/Fan/` + 'Modal'] = event.value;
+            updates[`${companyId}/${selectedRoom.value}/deviceControler/Fan/` + 'Modal'] = event.value;
             update(dbRef, updates);
         }
     };
@@ -147,7 +147,7 @@ function MonitorControler() {
             if (companyId && selectedRoom) {
                 const updates = {};
                 // eslint-disable-next-line no-useless-concat
-                updates[`${companyId}/${selectedRoom.value}/valueDevice/Fan/` + 'Status'] = StatusOnOff.OFF;
+                updates[`${companyId}/${selectedRoom.value}/deviceControler/Fan/` + 'Status'] = StatusOnOff.OFF;
                 update(dbRef, updates);
             }
         }
@@ -156,7 +156,7 @@ function MonitorControler() {
             if (companyId && selectedRoom) {
                 const updates = {};
                 // eslint-disable-next-line no-useless-concat
-                updates[`${companyId}/${selectedRoom.value}/valueDevice/Fan/` + 'Status'] = StatusOnOff.ON;
+                updates[`${companyId}/${selectedRoom.value}/deviceControler/Fan/` + 'Status'] = StatusOnOff.ON;
                 update(dbRef, updates);
             }
         }

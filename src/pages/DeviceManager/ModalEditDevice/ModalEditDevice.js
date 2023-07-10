@@ -1,8 +1,9 @@
 import Select from 'react-select';
-import Modal from '~/components/Modal';
 import { useMemo, useState } from 'react';
-import { handleUpdateDevice } from '~/services/deviceService';
 import { toast } from 'react-toastify';
+
+import Modal from '~/components/Modal';
+import { handleUpdateDevice } from '~/services/deviceService';
 
 function ModalEditDevice({ ...props }) {
     const buildDataInputSelect = (inputData, type) => {

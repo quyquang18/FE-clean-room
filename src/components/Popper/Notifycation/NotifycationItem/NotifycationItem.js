@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 function NotifycationItem({ data }) {
     const renderTime = () => {
         if (data && data.time) {
-            let timeString = format(+data.time, 'dd-MM-yyyy');
+            let timeString = format(+data.time, 'HH:MM--dd-MM-yyyy');
             return timeString;
         }
     };

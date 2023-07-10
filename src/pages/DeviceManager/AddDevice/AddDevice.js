@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import * as actions from '~/store/actions';
 import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import Select from 'react-select';
+import { onValue, ref, child, update } from 'firebase/database';
+
 import styles from './AddDevice.module.scss';
 import { handleCreateNewDevice } from '~/services/deviceService';
-import Select from 'react-select';
 import { CRUD_ACTIONS, path } from '~/utils';
-import { toast } from 'react-toastify';
+import * as actions from '~/store/actions';
 import Button from '~/components/Button';
 import { BackWard } from '~/components/Icons';
-import { onValue, ref, child, update } from 'firebase/database';
 import { database } from '~/firebase';
 const dbRef = ref(database);
 const cx = classNames.bind(styles);

@@ -32,7 +32,7 @@ const handleGetValueThreshold = (data) => {
         `/api/get-value-threshold?companyId=${data.companyId}&roomId=${data.roomId}&Type_sensor=${data.Type_sensor}`,
     );
 };
-const handleUpdateValueThreshold = (data) => {
+const handleUpdateValueThresholdInDb = (data) => {
     return axios.post(`/api/update-value-threshold`, data);
 };
 export {
@@ -44,5 +44,5 @@ export {
     handleGetValueSensor,
     getAllInfoDeviceByCompany,
     handleGetValueThreshold,
-    handleUpdateValueThreshold,
+    handleUpdateValueThresholdInDb,
 };
