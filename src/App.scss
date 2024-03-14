@@ -36,3 +36,11 @@
 div._loading_overlay_wrapper {
     position: unset;
     }
+/*-------------------------------------Style HightCharts----------------------*/
+
+.highcharts-background{
+    // fill: #0a0a0a;
+}
+g.highcharts-data-labels.highcharts-line-series.highcharts-tracker {
+    font-size: 18px;
+}

@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { child, ref, onValue } from 'firebase/database';
-import { useState, useEffect, useMemo, useCallback, forwardRef } from 'react';
+import { useState, useEffect, useMemo, useCallback, forwardRef, useRef } from 'react';
 
 import { handleGetStatusDevice } from '~/services/deviceService';
 import PieChart from '~/components/PieChart';
@@ -14,6 +14,7 @@ import { getTime, startOfDay, startOfMonth, sub } from 'date-fns';
 import { toast } from 'react-toastify';
 import TableStatusDevice from './TableStatusDevice';
 import { getPathStatusDeviceFirebase, LANGUAGES } from '~/utils';
+import { buildDataInputSelect } from '~/reuse';
 const cx = classNames.bind(styles);
 const dbRef = ref(database);
 function DeviceMonitor() {
@@ -23,42 +24,15 @@ function DeviceMonitor() {
     const [selectedDate, setSelectedDate] = useState();
     const [data, setData] = useState([]);
 
-    const buildDataInputSelect = (inputData, type) => {
-        let result = [];
-        if (inputData && inputData.length > 0) {
-            if (type === 'room') {
-                inputData.map((item, index) => {
-                    let object = {};
-                    object.value = item.id;
-                    object.label = item.name;
-                    result.push(object);
-                    return true;
-                });
-            }
-            if (type === 'device') {
-                inputData.map((item, index) => {
-                    let object = {};
-                    object.value = item.id;
-                    object.label = item.deviceName;
-                    result.push(object);
-                    return true;
-                });
-            }
-            return result;
-        }
-    };
-
     const companyId = useSelector((state) => state.user.userInfo.companyId);
-    const dispatch = useDispatch();
     let listRoom = useSelector((state) => state.admin.arrRoom);
     listRoom = buildDataInputSelect(listRoom, 'room');
+
     let listDevice = useSelector((state) => state.admin.arrDevice);
     listDevice = buildDataInputSelect(listDevice, 'device');
-    let listStatus = useSelector((state) => state.admin.arrStatus);
-    let language = useSelector((state) => state.app.language);
-    useEffect(() => {
-        dispatch(actions.fetchAllRoom(companyId));
-    }, [dispatch, companyId]);
+    const listStatus = useSelector((state) => state.admin.arrStatus);
+    const language = useSelector((state) => state.app.language);
+
     const initSelectedRoom = useMemo(() => listRoom && listRoom.length > 0 && listRoom[0], [listRoom]);
     const [selectedRoom, setSelectedRoom] = useState(initSelectedRoom);
     const [selectedDevice, setSelectedDevice] = useState();
@@ -67,18 +41,20 @@ function DeviceMonitor() {
             setSelectedRoom(initSelectedRoom);
         }
     }, [listRoom, selectedRoom, initSelectedRoom]);
-    const handleChangeRoom = (value) => {
-        setSelectedRoom(value);
-    };
-    const handleChangeDevice = (value) => {
-        setSelectedDevice(value);
-    };
+
+    const listRoomRef = useRef(null);
+    useEffect(() => {
+        if (JSON.stringify(listRoomRef.current) !== JSON.stringify(listRoom)) {
+            listRoomRef.current = listRoom;
+            console.log(listRoom);
+        }
+    }, [listRoom]);
+    const dispatch = useDispatch();
     useEffect(() => {
         if (selectedRoom) {
             dispatch(actions.fetchAllDeviceInRoom(companyId, selectedRoom.value));
         }
     }, [dispatch, companyId, selectedRoom]);
-
     useEffect(() => {
         if (selectedRoom && selectedDevice) {
             onValue(
@@ -100,6 +76,23 @@ function DeviceMonitor() {
             handleCallApi('range', [getTime(date[0]), getTime(date[1])]);
         }
     };
+    const handleChangeRoom = (value) => {
+        setSelectedRoom(value);
+    };
+    const handleChangeDevice = (value) => {
+        setSelectedDevice(value);
+    };
+    const valuePrev = useRef(null);
+    useEffect(() => {
+        if (listDevice && listDevice.length > 0) {
+            if (listDevice[0].value === valuePrev.current) {
+                return;
+            } else {
+                valuePrev.current = listDevice[0].value;
+                handleChangeDevice(listDevice[0]);
+            }
+        }
+    }, [selectedRoom, listDevice]);
     const handleCallApi = useCallback(
         async (type, valueDate) => {
             if (selectedDevice && selectedRoom) {
@@ -118,7 +111,7 @@ function DeviceMonitor() {
                 }
             }
         },
-        [companyId, selectedDevice, selectedRoom],
+        [companyId, selectedRoom, selectedDevice],
     );
 
     useEffect(() => {
@@ -154,6 +147,7 @@ function DeviceMonitor() {
         );
     });
     let labelStatusDevice = listStatus && listStatus.find((elment) => elment.keyMap === statusDevicce);
+
     return (
         <div className={cx('wrapper')}>
             <h2 className={cx('header-page')}>Device Monitor</h2>

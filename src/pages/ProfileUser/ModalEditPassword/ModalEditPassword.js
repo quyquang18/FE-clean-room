@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import { toast } from 'react-toastify';
 import Modal from '~/components/Modal';
-import { editUserService } from '~/services/userService';
+import { handleChangePassWord } from '~/services/userService';
 
 function ModalEditPassword({ ...props }) {
     const initialState = {
@@ -62,14 +62,13 @@ function ModalEditPassword({ ...props }) {
     };
     const handleSaveNewPassWord = async () => {
         let data = { ...state };
-        data.type = 'password';
         data.id = props.userId;
         delete data.inputError;
         delete data.confirmNewPassword;
         if (checkEmptyInput()) {
             if (checkNewpassword()) {
                 if (checkConfirmPassword()) {
-                    let res = await editUserService(data);
+                    let res = await handleChangePassWord(data);
                     if (res && res.errCode === 0) {
                         toast.success(res.message);
                         dispatch({ type: 'inputError', payload: '' });

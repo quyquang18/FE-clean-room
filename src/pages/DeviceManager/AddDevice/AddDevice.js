@@ -57,7 +57,7 @@ function AddDevice() {
         dataCreate.typeDevice = data.typeDevice;
         dataCreate.deviceName = data.deviceName;
         dataCreate.idDevice = data.id;
-        dataCreate.status = 'OFF';
+        dataCreate.status = 'S2';
         onValue(
             child(dbRef, `${companyId}/${dataCreate.roomId}/statusDevice/` + dataCreate.idDevice),
             (snapshot) => {

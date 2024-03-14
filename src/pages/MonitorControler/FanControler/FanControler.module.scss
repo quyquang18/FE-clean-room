@@ -1,0 +1,113 @@
+.control-wrapper {
+    margin-bottom: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .header-control {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+    }
+    .btn-control {
+        cursor: pointer;
+        user-select: none;
+        min-width: 90px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 4px 12px;
+        margin-bottom: 22px;
+        color: #e5e2e7;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        &.on {
+            background-color: #11be11;
+        }
+        &.off {
+            background-color: #d62008;
+        }
+        p {
+            margin-left: 10px;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+    }
+    .title-control {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 4px 12px;
+        margin-bottom: 22px;
+        background-color: #e5e2e7;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+        p {
+            margin-left: 10px;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+    }
+}
+.speed-control,
+.dew-control {
+    display: flex;
+    align-items: center;
+    user-select: none;
+    .control-value {
+        display: flex;
+        align-items: center;
+    }
+    button:disabled {
+        .icon-btn {
+            color: #a09aa3;
+        }
+    }
+    .btn-set-value{
+        background-color: transparent;
+    }
+    .icon-btn {
+        cursor: pointer;
+        color: var(--primary);
+        &.disable {
+            color: #a09aa3;
+        }
+    }
+    .text-value {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+}
+.slider-value {
+    display: block;
+    position: relative;
+    text-align: center;
+    flex: 1;
+    .range-slider {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        top: 25%;
+        left: 19%;
+    }
+}
+
+.text-value {
+    margin: 0px 12px;
+}
+.input-value {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    input {
+        border: 1px solid #3d3b3e;
+        border-radius: 15px;
+        background-color: #d7e4e2;
+        padding: 2px 12px;
+    }
+}
+.modal-controler {
+    min-width: 30%;
+    margin: 12px 0;
+}

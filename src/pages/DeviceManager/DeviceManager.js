@@ -62,6 +62,7 @@ function DeviceManager() {
     };
     const updateInFirebase = (data) => {
         data.companyId = companyId;
+        console.log(companyId);
         data.status = 'OFF';
         onValue(
             child(dbRef, `${companyId}/${data.roomId}/statusDevice/` + data.idDevice),

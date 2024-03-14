@@ -12,27 +12,27 @@ import LoadingOverlay from 'react-loading-overlay';
 function App() {
     const [menuApp, setMenuApp] = useState([]);
     const user = useSelector((state) => state.user);
-    useEffect(() => {
-        let menu = [];
-        if (user) {
-            let isLoggedIn = user.isLoggedIn;
-            if (isLoggedIn) {
-                let role = user.userInfo.roleID;
-                if (role === USER_ROLE.MANAGE_SYSTEM) {
-                    menu = adminSystemMenu;
-                }
-                if (role === USER_ROLE.ADMIN) {
-                    menu = adminRouter;
-                }
-                if (role === USER_ROLE.USER) {
-                    menu = userRouter;
-                }
-            } else {
-                menu = notLogged;
-            }
-            setMenuApp(menu);
-        }
-    }, [user]);
+      useEffect(() => {
+          let menu = [];
+          if (user) {
+              let isLoggedIn = user.isLoggedIn;
+              if (isLoggedIn) {
+                  let role = user.userInfo.roleID;
+                  if (role === USER_ROLE.MANAGE_SYSTEM) {
+                      menu = adminSystemMenu;
+                  }
+                  if (role === USER_ROLE.ADMIN) {
+                      menu = adminRouter;
+                  }
+                  if (role === USER_ROLE.USER) {
+                      menu = userRouter;
+                  }
+              } else {
+                  menu = notLogged;
+              }
+              setMenuApp(menu);
+          }
+      }, [user]);
     const isShowReactLoading = useSelector((state) => state.app.isShowReactLoading);
     LoadingOverlay.propTypes = undefined;
     return (

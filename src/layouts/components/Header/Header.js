@@ -25,7 +25,6 @@ import {
 } from '~/components/Icons';
 import { path } from '~/utils';
 import Notifycation from '~/components/Popper/Notifycation';
-
 const cx = classNames.bind(styles);
 
 function Header({ toggleNavBar }) {
@@ -152,10 +151,10 @@ function Header({ toggleNavBar }) {
                     ) : (
                         <>
                             <Button to={path.REGISTER} text>
-                                Sign up
+                                <FormattedMessage id="header.sign-up" />
                             </Button>
                             <Button to={path.LOGIN} primary>
-                                Sign in
+                                <FormattedMessage id="header.sign-in" />
                             </Button>
                         </>
                     )}

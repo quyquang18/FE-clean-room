@@ -11,6 +11,10 @@
         "contribute": "Đóng góp ý kiến",
         "logout": "Đăng xuất"
     },
+    "header": {
+        "sign-up": "Đăng ký",
+        "sign-in": "Đăng nhập"
+    },
     "home-sidebar": {
         "home": "Trang chủ",
         "monitor-room": "Giám sát các phòng",
@@ -21,7 +25,50 @@
         "manage-acc": "Quản lí tài khoản",
         "manage-company": "Quản lí Công ty"
     },
-
+    "register-user": {
+        "title": "Đăng kí một tài khoản",
+        "register-business": "Đăng ký tài khoản doanh nghiệp",
+        "username": "Tên tài khoản",
+        "phone-number": "Số điện thoại",
+        "company": "Công ty",
+        "password": "Mật khẩu",
+        "confirm-password": "Xác nhận mật khẩu",
+        "register": "Đăng kí",
+        "agree": "Đồng ý với",
+        "terms": "các điều khoản cho người dùng"
+    },
+    "register-company": {
+        "title": "Đăng ký tài khoản doanh nghiệp",
+        "register-user": "Đăng ký một tài khoản người dùng",
+        "company-name": "Tên công ty",
+        "address": "Địa chỉ",
+        "phone-number": "Số điện thoại",
+        "company": "Công ty",
+        "password": "Mật khẩu",
+        "confirm-password": "Xác nhận mật khẩu",
+        "register": "Đăng kí",
+        "agree": "Đồng ý với",
+        "terms": "các điều khoản cho người dùng"
+    },
+    "login": {
+        "login": "Đăng nhập",
+        "redirect-register": "Bạn chưa có tài khoản",
+        "password": "Mật khẩu",
+        "register": "Đăng kí",
+        "forgot-password": "Quên mật khẩu ?",
+        "show": "Hiện",
+        "hide": "Ẩn"
+    },
+    "profile-user": {
+        "title": "Hồ sơ của bạn",
+        "upload-img": "Tải hình ảnh",
+        "username": "Tên người dùng",
+        "phonenumber": "Số điện thoại",
+        "password": "Mật khẩu",
+        "gender": "Giới tính",
+        "save": "Lưu",
+        "edit-info": "Chỉnh sửa thông tin"
+    },
     "homepage": {
         "about-us": "Về Chúng tôi",
         "section-desc": "LUXAS là nhà cung cấp các thiết bị, phụ tùng trong nhà máy. Tư vấn lắp đặt hệ thốngIoT cho mọi khách hàng trên toàn thế giới.",

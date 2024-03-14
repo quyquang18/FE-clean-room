@@ -13,19 +13,24 @@ const persistCommonConfig = {
 const userPersistConfig = {
     ...persistCommonConfig,
     key: 'user',
-    whitelist: ['isLoggedIn', 'userInfo', 'access_token', 'refresh_token'],
+    whitelist: ['isLoggedIn', 'userInfo', 'access_token', 'refresh_token', 'expiresIn'],
 };
 const appPersistConfig = {
     ...persistCommonConfig,
     key: 'app',
     whitelist: ['language'],
 };
+const adminPersistConfig = {
+    ...persistCommonConfig,
+    key: 'admin',
+    whitelist: ['arrRoom'],
+};
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default (history) =>
     combineReducers({
         router: connectRouter(history),
         user: persistReducer(userPersistConfig, userReducer),
         app: persistReducer(appPersistConfig, appReducer),
-        admin: adminReducer,
+        admin: persistReducer(adminPersistConfig, adminReducer),
+        // admin: adminReducer,
     });

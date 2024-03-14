@@ -10,6 +10,10 @@
         "contribute": "Contribute ideas",
         "logout": "Log out"
     },
+    "header": {
+        "sign-up": "Sign Up",
+        "sign-in": "Sign in"
+    },
     "home-sidebar": {
         "home": "Home",
         "monitor-room": "Monitor the rooms",
@@ -19,6 +23,50 @@
         "device-manager": "Device Management",
         "room-manager": "Rooms Management",
         "manage-company": "Company Management"
+    },
+    "register-user": {
+        "title": "User account registration",
+        "register-business": "Register for a business account",
+        "username": "User name",
+        "phone-number": "Phone number",
+        "company": "Company",
+        "password": "Password",
+        "confirm-password": "Confirm password",
+        "register": "Company Management",
+        "agree": "Agree with",
+        "terms": "terms for users"
+    },
+    "register-company": {
+        "title": "Register for a business account",
+        "register-user": "Register for a user account",
+        "company-name": "Company name",
+        "address": "Address",
+        "phone-number": "Phone number",
+        "company": "Company",
+        "password": "Password",
+        "confirm-password": "Confirm password",
+        "register": "Register",
+        "agree": "Agree with",
+        "terms": "terms for users"
+    },
+    "login": {
+        "login": "Login",
+        "redirect-register": "Do not have an account",
+        "password": "Password",
+        "register": "Register",
+        "forgot-password": "Forgot password ?",
+        "show": "show",
+        "hide": "hide"
+    },
+    "profile-user": {
+        "title": "You Profile",
+        "upload-img": "UPload Image",
+        "phonenumber": "Phonenumber",
+        "username": "User name",
+        "password": "Password",
+        "gender": "Gender",
+        "save": "Save",
+        "edit-info": "Edit Information"
     },
     "homepage": {
         "about-us": "About us",

@@ -1,14 +1,16 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
+import { useDispatch } from 'react-redux';
 
 import * as actions from '~/store/actions';
 import { handleLoginApi } from '~/services/userService';
 import config from '~/config';
 import styles from './Login.module.scss';
-import { useDispatch } from 'react-redux';
 import { path } from '~/utils';
 import { EyeHideIcon, EyeShowIcon } from '~/components/Icons';
+
 const cx = classNames.bind(styles);
 
 function Login() {
@@ -32,12 +34,16 @@ function Login() {
                 setErrMessage(data.message);
             }
             if (data && data.errCode === 0) {
-                dispatch(actions.changeStatusReactLoading(false));
-                dispatch(actions.userLoginSuccess(data.user, data.accessToken, data.refreshToken));
+                let expiresIn = data.expires_in * 1000 + Date.now();
+                dispatch(actions.userLoginSuccess(data.user, data.accessToken, data.refreshToken, expiresIn));
                 navigate(path.HOME);
+                dispatch(actions.changeStatusReactLoading(false));
             }
         } catch (error) {
             console.log(error);
+            dispatch(actions.changeStatusReactLoading(false));
+            dispatch(actions.userLoginFail());
+            setErrMessage(error.message);
         }
     };
     return (
@@ -45,16 +51,20 @@ function Login() {
             <div className={cx('col c-12 m-6 m-o-3 l-4 l-o-4')}>
                 <div className={cx('login-container')}>
                     <div className={cx('header')}>
-                        <h1 className={cx('form-heading')}>Đăng nhập</h1>
+                        <h1 className={cx('form-heading')}>
+                            <FormattedMessage id="login.login" />
+                        </h1>
                     </div>
                     <form method="post">
                         <div className="row mt-2">
                             <div className={cx('fif_wrap', 'col c-12 m-12 l-12')}>
                                 <label htmlFor="email">Email</label>
                                 <span>
-                                    <p>Bạn chưa có tài khoản?</p>
+                                    <p>
+                                        <FormattedMessage id="login.redirect-register" />
+                                    </p>
                                     <Link to={config.routes.register} className={cx('btn-register')}>
-                                        Đăng kí
+                                        <FormattedMessage id="login.register" />
                                     </Link>
                                 </span>
                             </div>
@@ -73,7 +83,9 @@ function Login() {
                         </div>
                         <div className="row mt-2">
                             <div className={cx('fif_wrap', 'col c-12 m-12 l-12')}>
-                                <label htmlFor="curent-password">Mật khẩu</label>
+                                <label htmlFor="curent-password">
+                                    <FormattedMessage id="login.password" />
+                                </label>
                                 <span>
                                     {hidePassword ? (
                                         <span
@@ -83,7 +95,9 @@ function Login() {
                                             }}
                                         >
                                             <EyeHideIcon width="2.2rem" height="2.2rem" />
-                                            <p>Hide</p>
+                                            <p>
+                                                <FormattedMessage id="login.hide" />
+                                            </p>
                                         </span>
                                     ) : (
                                         <span
@@ -93,7 +107,9 @@ function Login() {
                                             }}
                                         >
                                             <EyeShowIcon width="2.2rem" height="2.2rem" />
-                                            <p>Show</p>
+                                            <p>
+                                                <FormattedMessage id="login.show" />
+                                            </p>
                                         </span>
                                     )}
                                 </span>
@@ -111,9 +127,13 @@ function Login() {
                             </div>
                         </div>
                         <div className={cx('mess-error')}>{errMessage}</div>
-                        <input type="submit" value="Đăng nhập" className={cx('form-submit')} onClick={handleLogin} />
+                        <FormattedMessage id="login.login">
+                            {(msg) => (
+                                <input type="submit" value={msg} className={cx('form-submit')} onClick={handleLogin} />
+                            )}
+                        </FormattedMessage>
                         <Link className={cx('forgot_pass')} to={config.routes.register}>
-                            Quên mật khẩu
+                            <FormattedMessage id="login.forgot-password" />
                         </Link>
                     </form>
                 </div>

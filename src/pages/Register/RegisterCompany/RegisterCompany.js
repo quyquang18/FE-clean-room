@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
 import { apiRegisterCompany } from '~/services/userService';
 import { path } from '~/utils';
@@ -40,16 +41,20 @@ function RegisterCompany() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('register-wrapper')}>
-                <h2 className={cx('title')}>Sign up for an account</h2>
+                <h2 className={cx('title')}>
+                    <FormattedMessage id="register-company.title" />
+                </h2>
                 <h3 className={cx('link-register-bussiness')}>
-                    <Link to={path.REGISTER}>Register for a user account</Link>
+                    <Link to={path.REGISTER}>
+                        <FormattedMessage id="register-company.register-user" />
+                    </Link>
                 </h3>
                 <div className={cx('messError', !error ? 'err' : 'succees')}>{message} </div>
                 <form method="get" className={cx('form')} onSubmit={handleSubmit(handleRegister)}>
                     <div className={cx('form-group')}>
                         <fieldset className={cx('username')}>
                             <label forhtml="name" className={cx('form-label')}>
-                                Company name
+                                <FormattedMessage id="register-company.company-name" />
                             </label>
                             <input
                                 name="name"
@@ -68,12 +73,12 @@ function RegisterCompany() {
                     <div className={cx('form-group')}>
                         <fieldset className={cx('address')}>
                             <label forhtml="address" className={cx('form-label')}>
-                                Address
+                                <FormattedMessage id="register-company.address" />
                             </label>
                             <input
                                 name="address"
                                 type="text"
-                                placeholder="Company name"
+                                placeholder="Address"
                                 className={cx('form-input')}
                                 {...register('address', { required: true, minLength: 6 })}
                             />
@@ -88,7 +93,7 @@ function RegisterCompany() {
                     <div className={cx('form-group')}>
                         <fieldset className={cx('phone')}>
                             <label forhtml="phonenumber" className={cx('form-label')}>
-                                Phone number
+                                <FormattedMessage id="register-company.phone-number" />
                             </label>
                             <input
                                 name="phonenumber"
@@ -137,7 +142,7 @@ function RegisterCompany() {
                     <div className={cx('form-group')}>
                         <fieldset className={cx('pass')}>
                             <label forhtml="password" className={cx('form-label')}>
-                                Password
+                                <FormattedMessage id="register-company.password" />
                             </label>
                             <input
                                 name="password"
@@ -158,7 +163,7 @@ function RegisterCompany() {
                     <div className={cx('form-group')}>
                         <fieldset className={cx('pass')}>
                             <label forhtml="password_confirmation" className={cx('form-label')}>
-                                Confirm password
+                                <FormattedMessage id="register-company.confirm-password" />
                             </label>
                             <input
                                 name="password_confirmation"
@@ -184,12 +189,14 @@ function RegisterCompany() {
                     </div>
                     <span className={cx('agree-terms')}>
                         <input type="checkbox" name="agree-terms" value="OK" />
-                        Agree with
-                        <Link to="#"> terms for users</Link>
+                        <FormattedMessage id="register-company.agree" />
+                        <Link to="#">
+                            <FormattedMessage id="register-company.terms" />
+                        </Link>
                     </span>
 
                     <button name="register-submit" value="Đăng kí" type="submit" className={cx('form-submit')}>
-                        Register
+                        <FormattedMessage id="register-company.register" />
                     </button>
                 </form>
             </div>

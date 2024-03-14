@@ -2,10 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
-import { handleGetListCompany, handleRegisterApi } from '~/services/userService';
+import { FormattedMessage } from 'react-intl';
+import Select from 'react-select';
+
 import styles from './Register.module.scss';
 import { path, STAUTUS_COMPANY } from '~/utils';
-import Select from 'react-select';
+import { handleGetListCompany, handleRegisterApi } from '~/services/userService';
 const cx = classNames.bind(styles);
 
 function Register() {
@@ -41,6 +43,7 @@ function Register() {
         setSelectedCompany(event);
     };
     const handleRegister = async (data) => {
+        console.log(data);
         if (selecedCompany) {
             data.companyId = selecedCompany.value;
             setIsLoading(true);
@@ -61,7 +64,7 @@ function Register() {
         formState: { errors },
         watch,
         reset,
-    } = useForm();
+    } = useForm({ mode: 'onBlur' });
 
     const isError = Object.keys(errors).length !== 0;
     return (
@@ -73,23 +76,31 @@ function Register() {
                 </div>
             )}
             <div className={cx('register-wrapper')}>
-                <h2 className={cx('title')}>Sign up for an account</h2>
+                <h2 className={cx('title')}>
+                    <FormattedMessage id="register-user.title" />
+                </h2>
                 <h3 className={cx('link-register-bussiness')}>
-                    <Link to={path.REGISTER_COMPANY}>Register for a business account</Link>
+                    <Link to={path.REGISTER_COMPANY}>
+                        <FormattedMessage id="register-user.register-business" />
+                    </Link>
                 </h3>
                 <div className={cx('messError', !error ? 'err' : 'succees')}>{message} </div>
                 <form method="get" className={cx('form')} onSubmit={handleSubmit(handleRegister)}>
                     <div className={cx('form-group')}>
                         <fieldset className={cx('username')}>
                             <label forhtml="username" className={cx('form-label')}>
-                                User name
+                                <FormattedMessage id="register-user.username" />
                             </label>
                             <input
                                 name="username"
                                 type="text"
                                 placeholder="User Name"
                                 className={cx('form-input')}
-                                {...register('username', { required: true, minLength: 6 })}
+                                {...register('username', {
+                                    required: true,
+                                    pattern: /^([a-zA-Z0-9._])+$/,
+                                    minLength: 6,
+                                })}
                             />
                             {isError && (
                                 <span className={cx('form-message')}>
@@ -102,7 +113,7 @@ function Register() {
                     <div className={cx('form-group')}>
                         <fieldset className={cx('phone')}>
                             <label forhtml="phonenumber" className={cx('form-label')}>
-                                Phone number
+                                <FormattedMessage id="register-user.phone-number" />
                             </label>
                             <input
                                 name="phonenumber"
@@ -151,7 +162,7 @@ function Register() {
                     <div className={cx('form-group')}>
                         <fieldset className={cx('email')}>
                             <label forhtml="email" className={cx('form-label')}>
-                                Company
+                                <FormattedMessage id="register-user.company" />
                             </label>
                             <Select
                                 value={selecedCompany}
@@ -163,7 +174,7 @@ function Register() {
                     <div className={cx('form-group')}>
                         <fieldset className={cx('pass')}>
                             <label forhtml="password" className={cx('form-label')}>
-                                Password
+                                <FormattedMessage id="register-user.password" />
                             </label>
                             <input
                                 name="password"
@@ -184,7 +195,7 @@ function Register() {
                     <div className={cx('form-group')}>
                         <fieldset className={cx('pass')}>
                             <label forhtml="password_confirmation" className={cx('form-label')}>
-                                Confirm password
+                                <FormattedMessage id="register-user.confirm-password" />
                             </label>
                             <input
                                 name="password_confirmation"
@@ -210,12 +221,14 @@ function Register() {
                     </div>
                     <span className={cx('agree-terms')}>
                         <input type="checkbox" name="agree-terms" value="OK" />
-                        Agree with
-                        <Link to="#"> terms for users</Link>
+                        <FormattedMessage id="register-user.agree" />
+                        <Link to="#">
+                            <FormattedMessage id="register-user.terms" />
+                        </Link>
                     </span>
 
                     <button name="register-submit" value="Đăng kí" type="submit" className={cx('form-submit')}>
-                        Register
+                        <FormattedMessage id="register-user.register" />
                     </button>
                 </form>
             </div>

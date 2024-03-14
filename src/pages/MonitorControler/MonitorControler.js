@@ -1,27 +1,15 @@
 import classNames from 'classnames/bind';
-import { useState, useMemo, useEffect, useReducer } from 'react';
-import { ref, child, onValue, update } from 'firebase/database';
+import { useState, useMemo, useEffect } from 'react';
 import Select from 'react-select';
-import { database } from '~/firebase';
-import ProgressBar from '~/components/ProgressBar';
 import * as actions from '~/store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './MonitorControler.module.scss';
-import {
-    FanIcon,
-    RoomIcon,
-    MinusIcon,
-    PlusIcon,
-    DashedCircleIcon,
-    DewIcon,
-    SettingsIcon,
-    PowerIcon,
-} from '~/components/Icons';
+import { RoomIcon, SettingsIcon } from '~/components/Icons';
 import InfomationSensor from '~/components/InfomationSensor';
 import Button from '~/components/Button';
-import { MODAL, StatusOnOff, TYPE_DISPLAY } from '~/utils';
+import { TYPE_DISPLAY } from '~/utils';
+import FanControler from './FanControler';
 
-const dbRef = ref(database);
 const cx = classNames.bind(styles);
 const listSensorDisplay = [
     { label: 'T-H', value: TYPE_DISPLAY.TEMPERATURE_HUMIDITY },
@@ -29,16 +17,9 @@ const listSensorDisplay = [
     { label: 'Press', value: TYPE_DISPLAY.PRESSURE },
     { label: 'Oxy', value: TYPE_DISPLAY.OXY },
 ];
-const listModalControl = [
-    { label: 'Manual', value: MODAL.MANUAL },
-    { label: 'Automation', value: MODAL.AUTOMATION },
-];
 
 function MonitorControler() {
-    const [valueDew, dispatchDew] = useReducer(20);
-    const [statusFan, setStatusFan] = useState(StatusOnOff.OFF);
     const [selectedDisplay, setSelectedDisplay] = useState();
-    const [selectedModalControllerFan, setSelectedModalControllerFan] = useState(listModalControl[0]);
     document.title = 'LUXAS-Monitor Control';
 
     const buildDataInputSelect = (inputData, type) => {
@@ -76,94 +57,10 @@ function MonitorControler() {
     const handleChangeDisplay = (value) => {
         setSelectedDisplay(value);
     };
-    useEffect(() => {
-        if (companyId && selectedRoom) {
-            onValue(
-                child(dbRef, `${companyId}/${selectedRoom.value}/deviceControler/Fan`),
-                (snapshot) => {
-                    if (snapshot.val() && snapshot.val().Speed && snapshot.val().Status) {
-                        setValueFan(snapshot.val().Speed);
-                        setStatusFan(snapshot.val().Status);
-                    }
-                },
-                { onlyOnce: true },
-            );
-            onValue(
-                child(dbRef, `${companyId}/${selectedRoom.value}/deviceControler/Fan/Modal`),
-                (snapshot) => {
-                    if (snapshot.val()) {
-                        let valueSelected = listModalControl.find((element) => element.value === snapshot.val());
-                        setSelectedModalControllerFan(valueSelected);
-                    }
-                },
-                { onlyOnce: true },
-            );
-        }
-    }, [companyId, selectedRoom]);
 
-    const [valueFan, setValueFan] = useState(10);
-    const handleChangeSpeedFan = (action) => {
-        let coppyValueFan = valueFan;
-        switch (action) {
-            case 'PLUS':
-                if (coppyValueFan < 40) {
-                    coppyValueFan += 1;
-                    break;
-                } else {
-                    coppyValueFan = 40;
-                    break;
-                }
-            case 'MINUS':
-                if (coppyValueFan > 0) {
-                    coppyValueFan -= 1;
-                    break;
-                } else {
-                    coppyValueFan = 0;
-                    break;
-                }
-            default:
-                break;
-        }
-        setValueFan(coppyValueFan);
-        const updates = {};
-        if (companyId && selectedRoom) {
-            // eslint-disable-next-line no-useless-concat
-            updates[`${companyId}/${selectedRoom.value}/deviceControler/Fan/` + 'Speed'] = coppyValueFan;
-            update(dbRef, updates);
-        }
-    };
-    const handleChangeModalControlFan = (event) => {
-        setSelectedModalControllerFan(event);
-        if (companyId && selectedRoom) {
-            const updates = {};
-            // eslint-disable-next-line no-useless-concat
-            updates[`${companyId}/${selectedRoom.value}/deviceControler/Fan/` + 'Modal'] = event.value;
-            update(dbRef, updates);
-        }
-    };
-    const handleChangeStatusFan = () => {
-        if (statusFan === StatusOnOff.ON) {
-            setStatusFan(StatusOnOff.OFF);
-            if (companyId && selectedRoom) {
-                const updates = {};
-                // eslint-disable-next-line no-useless-concat
-                updates[`${companyId}/${selectedRoom.value}/deviceControler/Fan/` + 'Status'] = StatusOnOff.OFF;
-                update(dbRef, updates);
-            }
-        }
-        if (statusFan === StatusOnOff.OFF) {
-            setStatusFan(StatusOnOff.ON);
-            if (companyId && selectedRoom) {
-                const updates = {};
-                // eslint-disable-next-line no-useless-concat
-                updates[`${companyId}/${selectedRoom.value}/deviceControler/Fan/` + 'Status'] = StatusOnOff.ON;
-                update(dbRef, updates);
-            }
-        }
-    };
     return (
         <div className={cx('wrapper')}>
-            <h2 className={cx('header-page')}>Monitor Control </h2>
+            <h2 className={cx('header-page')}>Device Drivers </h2>
             <div className={cx('select-location')}>
                 <Select value={selectedRoom} onChange={(event) => handleChangeRoom(event)} options={listRoom} />
             </div>
@@ -180,90 +77,7 @@ function MonitorControler() {
             <div className={cx('conten-wrapper', 'row')}>
                 <div className={cx('control', 'col c-12 m-6 l-6')}>
                     <h4 className={cx('header')}>Control</h4>
-                    <div className={cx('control-wrapper')}>
-                        <div className={cx('header-control')}>
-                            <span className={cx('title-control')}>
-                                <FanIcon width="22px" height="22px" />
-                                <p>speed fan</p>
-                            </span>
-                            <span
-                                className={cx('btn-control', statusFan === StatusOnOff.ON ? 'on' : 'off')}
-                                onClick={() => handleChangeStatusFan()}
-                            >
-                                <PowerIcon width="22px" height="22px" />
-                                <p>{statusFan}</p>
-                            </span>
-                        </div>
-                        <div className={cx('modal-controler')}>
-                            <Select
-                                value={selectedModalControllerFan}
-                                onChange={(event) => handleChangeModalControlFan(event)}
-                                options={listModalControl}
-                            />
-                        </div>
-                        <div>
-                            <span className={cx('speed-control')}>
-                                <span className={cx('control-value')}>
-                                    <button
-                                        disabled={selectedModalControllerFan.value === MODAL.AUTOMATION}
-                                        onClick={() => handleChangeSpeedFan('MINUS')}
-                                    >
-                                        <MinusIcon className={cx('icon-btn')} />
-                                    </button>
-                                    <p className={cx('text-value')}>05</p>
-                                </span>
-                                <span className={cx('slider-value')}>
-                                    <p className={cx('text-value')}>15</p>
-                                    <DashedCircleIcon width="160" height="160" />
-                                    <div className={cx('range-slider')}>
-                                        <ProgressBar value={valueFan} />
-                                    </div>
-                                </span>
-                                <span className={cx('control-value')}>
-                                    <p className={cx('text-value')}>25</p>
-                                    <button
-                                        disabled={selectedModalControllerFan.value === MODAL.AUTOMATION}
-                                        onClick={() => handleChangeSpeedFan('PLUS')}
-                                    >
-                                        <PlusIcon className={cx('icon-btn')} />
-                                    </button>
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-                    <div className={cx('control-wrapper')}>
-                        <span className={cx('title-control')}>
-                            <DewIcon width="22px" height="22px" />
-                            <p>Fog Degree</p>
-                        </span>
-
-                        <div>
-                            <span className={cx('speed-control')}>
-                                <span className={cx('control-value')}>
-                                    <button disabled={selectedModalControllerFan.value === MODAL.AUTOMATION}>
-                                        <MinusIcon className={cx('icon-btn')} />
-                                    </button>
-                                    <p className={cx('text-value')}>05</p>
-                                </span>
-                                <span className={cx('slider-value')}>
-                                    <p className={cx('text-value')}>15</p>
-                                    <DashedCircleIcon width="160" height="160" />
-                                    <div className={cx('range-slider')}>
-                                        <ProgressBar value={valueDew} />
-                                    </div>
-                                </span>
-                                <span className={cx('control-value')}>
-                                    <p className={cx('text-value')}>25</p>
-                                    <span>
-                                        <PlusIcon className={cx('icon-btn')} />
-                                    </span>
-                                </span>
-                            </span>
-                            <span className={cx('input-value')}>
-                                <input placeholder="Input values"></input>
-                            </span>
-                        </div>
-                    </div>
+                    <FanControler roomId={selectedRoom && selectedRoom.value} companyId={companyId && companyId} />
                 </div>
                 <div className={cx('monitor', 'col c-12 m-5 l-5')}>
                     <h4 className={cx('header')}>Monitor</h4>

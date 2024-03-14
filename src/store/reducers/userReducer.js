@@ -5,6 +5,7 @@ const initialState = {
     userInfo: null,
     access_token: null,
     refresh_token: null,
+    expiresIn: null,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -16,6 +17,7 @@ const userReducer = (state = initialState, action) => {
                 userInfo: action.userInfo,
                 access_token: action.accessToken,
                 refresh_token: action.refreshToken,
+                expiresIn: action.expiresIn,
             };
         case actionTypes.USER_LOGIN_FAIL:
             return {
@@ -24,14 +26,17 @@ const userReducer = (state = initialState, action) => {
                 userInfo: null,
                 access_token: null,
                 refresh_token: null,
+                expiresIn: null,
             };
         case actionTypes.PROCESS_LOGOUT:
+            console.log('logout');
             return {
                 ...state,
                 isLoggedIn: false,
                 userInfo: null,
                 access_token: null,
                 refresh_token: null,
+                expiresIn: null,
             };
         default:
             return state;

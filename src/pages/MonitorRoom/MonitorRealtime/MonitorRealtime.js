@@ -8,75 +8,18 @@ import { format } from 'date-fns';
 
 import { database } from '~/firebase';
 import styles from './MonitorRealtime.module.scss';
-import { StartIcon, StopIcon } from '~/components/Icons';
+import { CloseIcon, ControlerIcon, StartIcon, StopIcon } from '~/components/Icons';
+import FanControler from '~/pages/MonitorControler/FanControler';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 function MonitorRealtime({ roomId, companyId }) {
     var dataSeeChar = [];
 
-    const [listIsDisplay, setListIsDisplay] = useState([
-        {
-            id: 0,
-            key: 'all',
-            name: <FormattedMessage id="monitor-room.monitor-realtime.all" />,
-            init: '',
-            color: '',
-            isCheck: false,
-        },
-        {
-            id: 1,
-            key: 'Temperature',
-            name: <FormattedMessage id="monitor-room.monitor-realtime.temperature" />,
-            init: '(℃)',
-            color: '#990000',
-            isCheck: false,
-        },
-        {
-            id: 2,
-            key: 'Humidity',
-            name: <FormattedMessage id="monitor-room.monitor-realtime.humidity" />,
-            init: '(%)',
-            color: '#00FF00',
-            isCheck: false,
-        },
-        {
-            id: 3,
-            key: 'Dust_2.5',
-            name: <FormattedMessage id="monitor-room.monitor-realtime.dust-2.5" />,
-            init: '(µm)',
-            color: '#6699FF',
-            isCheck: false,
-        },
-        {
-            id: 4,
-            key: 'Dust_10',
-            name: <FormattedMessage id="monitor-room.monitor-realtime.dust-10" />,
-            init: '(µm)',
-            color: '#FFCC33',
-            isCheck: false,
-        },
-        {
-            id: 5,
-            key: 'DifferentialPress',
-            name: <FormattedMessage id="monitor-room.monitor-realtime.differ-press" />,
-            init: '(Pa)',
-            color: '#006699',
-            isCheck: false,
-        },
-        {
-            id: 7,
-            key: 'Oxygen',
-            name: <FormattedMessage id="monitor-room.monitor-realtime.oxy" />,
-            init: '(%)',
-            color: '#011011',
-            isCheck: false,
-        },
-    ]);
-
     const [status, setStatus] = useState({ type: 'stop', activeStop: true, activeStart: false });
-    const [inputSample, setInputSample] = useState(5);
-    const [sample, setSample] = useState(5);
+    const [inputSample, setInputSample] = useState(1);
+    const [sample, setSample] = useState(1);
     const statusRef = useRef(null);
 
     const [temp, setTemp] = useState([]);
@@ -87,40 +30,42 @@ function MonitorRealtime({ roomId, companyId }) {
     const [realTime, setRealTime] = useState([]);
     const [oxy, setOxy] = useState([]);
     const dbRef = ref(database);
+    const [maxValueSensor, setMaxValueSensor] = useState(100);
     const handleStart = () => {
         setStatus({ value: 'start', activeStop: false, activeStart: true });
 
-        statusRef.current = setInterval(() => {
-            get(child(dbRef, `${companyId}/${roomId}/valueSensor`))
-                .then((snapshot) => {
-                    if (snapshot.exists()) {
-                        let currentTime = format(new Date(), 'HH:MM:ss');
-                        setTemp((prev) => [...prev, Number(snapshot.val().Temperature)]);
-                        setHumi((prev) => [...prev, Number(snapshot.val().Humidity)]);
-                        setDust2_5((prev) => [...prev, Number(snapshot.val().Dust_2_5)]);
-                        setDust10((prev) => [...prev, Number(snapshot.val().Dust_10)]);
-                        setDifferPress((prev) => [...prev, Number(snapshot.val().DifferPress)]);
-                        setOxy((prev) => [...prev, Number(snapshot.val().Oxy)]);
-                        setRealTime((prev) => [...prev, currentTime]);
-                    } else {
-                        console.log('No data available');
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }, sample * 1000);
-        return () => {
-            clearInterval(statusRef.current);
-        };
+        if (sample) {
+            statusRef.current = setInterval(() => {
+                get(child(dbRef, `${companyId}/${roomId}/valueSensor`))
+                    .then((snapshot) => {
+                        if (snapshot.exists()) {
+                            let currentTime = format(new Date(), 'mm:ss.SSS');
+                            setTemp((prev) => [...prev, Number(snapshot.val().temperature)]);
+                            setHumi((prev) => [...prev, Number(snapshot.val().humidity)]);
+                            setDust2_5((prev) => [...prev, Number(snapshot.val().dust_pm_25)]);
+                            setDust10((prev) => [...prev, Number(snapshot.val().dust_pm_10)]);
+                            setDifferPress((prev) => [...prev, Number(snapshot.val().dif_pressure)]);
+                            setOxy((prev) => [...prev, Number(snapshot.val().oxy)]);
+                            setRealTime((prev) => [...prev, currentTime]);
+                        } else {
+                            console.log('No data available');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }, sample * 1000);
+            return () => {
+                clearInterval(statusRef.current);
+            };
+        }
     };
-
     const handleStop = () => {
         setStatus({ value: 'stop', activeStop: true, activeStart: false });
         clearInterval(statusRef.current);
     };
     useEffect(() => {
-        if (temp.length > 6) {
+        if (temp.length > 10) {
             temp.shift();
             humi.shift();
             dust2_5.shift();
@@ -130,88 +75,43 @@ function MonitorRealtime({ roomId, companyId }) {
             realTime.shift();
         }
     }, [temp, humi, dust2_5, dust10, differPress, oxy, realTime]);
-    const handleChangeCheckboxs = (id) => {
-        setListIsDisplay((prev) => {
-            if (id === 0) {
-                if (!prev[0].isCheck) {
-                    return prev.map((item) => {
-                        return { ...item, isCheck: true };
-                    });
-                } else {
-                    return prev.map((item) => {
-                        return { ...item, isCheck: false };
-                    });
-                }
-            } else {
-                return prev.map((item) => {
-                    if (item.id === id) {
-                        return { ...item, isCheck: !item.isCheck };
-                    } else {
-                        return { ...item };
-                    }
-                });
-            }
-        });
-    };
+
     const seriesChart = () => {
-        for (let i = 0; i < listIsDisplay.length; i++) {
-            if (listIsDisplay[i].isCheck) {
-                if (listIsDisplay[i].key !== 'all') {
-                    switch (listIsDisplay[i].key) {
-                        case 'Temperature':
-                            dataSeeChar.push({
-                                name: 'Temperature',
-                                data: temp,
-                                color: '#990000',
-                            });
-                            break;
-                        case 'Humidity':
-                            dataSeeChar.push({
-                                name: 'Humidity',
-                                data: humi,
-                                color: '#00FF00',
-                            });
-                            break;
-                        case 'Dust_2.5':
-                            dataSeeChar.push({
-                                name: 'Dust 2.5',
-                                data: dust2_5,
-                                color: '#6699FF',
-                            });
-                            break;
-                        case 'Dust_10':
-                            dataSeeChar.push({
-                                name: 'Dust 10',
-                                data: dust10,
-                                color: '#FFCC33',
-                            });
-                            break;
-                        case 'DifferentialPress':
-                            dataSeeChar.push({
-                                name: 'Differential Press',
-                                data: differPress,
-                                color: '#006699',
-                            });
-                            break;
-                        case 'Oxygen':
-                            dataSeeChar.push({
-                                name: 'Oxygen',
-                                data: oxy,
-                                color: '#EA18C1',
-                            });
-                            break;
-                        default:
-                            return dataSeeChar;
-                    }
-                } else {
-                    if (!listIsDisplay[i].isCheck) {
-                        return (dataSeeChar = []);
-                    }
-                }
-            }
-        }
+        dataSeeChar.push({
+            name: 'Temperature',
+            data: temp,
+            color: '#990000',
+        });
+        dataSeeChar.push({
+            name: 'Humidity',
+            data: humi,
+            color: '#990000',
+        });
+        dataSeeChar.push({
+            name: 'Dust 2.5',
+            data: dust2_5,
+            color: '#6699FF',
+        });
+        dataSeeChar.push({
+            name: 'Dust 10',
+            data: dust10,
+            color: '#FFCC33',
+        });
+
+        dataSeeChar.push({
+            name: 'Differential Press',
+            data: differPress,
+            color: '#006699',
+        });
+
+        dataSeeChar.push({
+            name: 'Oxygen',
+            data: oxy,
+            color: '#EA18C1',
+        });
         return dataSeeChar;
     };
+
     const renderChart = () => {
         return (
             <HighchartsReact
@@ -219,11 +119,30 @@ function MonitorRealtime({ roomId, companyId }) {
                 highcharts={Highcharts}
                 options={{
                     chart: {
-                        type: 'spline',
-                        reflow: true, // Thêm thuộc tính reflow
+                        type: 'line',
+                        reflow: true,
+                        events: {
+                            render(event) {
+                                var seriesIndex = this.index;
+                                var series = this.series;
+                                let dataSensorMax = 0;
+                                for (var i = 0; i < series.length; i++) {
+                                    if (series[i].index !== seriesIndex) {
+                                        if (series[i].visible) {
+                                            if (series[i].dataMax && series[i].dataMax > dataSensorMax) {
+                                                dataSensorMax = series[i].dataMax;
+                                            }
+                                        }
+                                        //         // series[i].visible ? series[i].hide() : series[i].show();
+                                    }
+                                }
+                                setMaxValueSensor(dataSensorMax + 10);
+                            },
+                        },
+                        // styledMode: true,
                     },
                     title: {
-                        text: `Chart RealTime`,
+                        text: `Chart RealTime - ${sample * 1000} (ms)`,
                         style: {
                             fontSize: '18px',
                             fontFamily: 'Times New Roman',
@@ -247,6 +166,7 @@ function MonitorRealtime({ roomId, companyId }) {
                         },
                         categories: realTime,
                         crosshair: false,
+                        gridLineWidth: 1,
                         labels: {
                             rotation: 0,
                             style: {
@@ -276,12 +196,45 @@ function MonitorRealtime({ roomId, companyId }) {
                                 format: '{value:.,0f}',
                             },
                             showFirstLabel: false,
+                            min: 0,
+                            max: maxValueSensor || 100,
                         },
                     ],
                     legend: {
                         align: 'left',
                         verticalAlign: 'top',
                         borderWidth: 0,
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true,
+                            },
+                            color: '#ffff',
+                            // enableMouseTracking: false,
+                        },
+                        series: {
+                            events: {
+                                show: function (event) {
+                                    var seriesIndex = this.index;
+                                    console.log(this);
+                                    var series = this.chart.series;
+                                    let dataSensorMax = 0;
+                                    for (var i = 0; i < series.length; i++) {
+                                        if (series[i].index !== seriesIndex) {
+                                            if (series[i].visible) {
+                                                if (series[i].dataMax && series[i].dataMax > dataSensorMax) {
+                                                    dataSensorMax = series[i].dataMax;
+                                                }
+                                            }
+                                            //         // series[i].visible ? series[i].hide() : series[i].show();
+                                        }
+                                    }
+                                    setMaxValueSensor(dataSensorMax + 10);
+                                    // return false;
+                                },
+                            },
+                        },
                     },
                     series: seriesChart(),
                     responsive: {
@@ -305,14 +258,24 @@ function MonitorRealtime({ roomId, companyId }) {
         );
     };
     const handleOnchangeSample = (value) => {
-        if (value < 1) {
-            setInputSample(1);
-        } else {
-            setInputSample(+value);
+        const isNumber = !isNaN(value);
+        if (isNumber) {
+            setInputSample(value);
         }
     };
     const addValueSample = () => {
-        setSample(inputSample);
+        const isNumber = !isNaN(inputSample);
+        if (isNumber) {
+            if (inputSample < 0.2) {
+                toast.warning('It is recommended to set the sampling time value above 200ms');
+                setInputSample(0.2);
+                setSample(0.2);
+            } else {
+                setSample(inputSample);
+            }
+        } else {
+            toast.error('Please enter the correct number format');
+        }
     };
 
     useEffect(() => {
@@ -321,38 +284,19 @@ function MonitorRealtime({ roomId, companyId }) {
         setTemp([]);
         setDifferPress([]);
         setDust2_5([]);
+        setOxy([]);
+        setRealTime([]);
+        handleStop();
     }, [roomId]);
-
     return (
         <>
-            <div className={cx('status')}>
-                <span
-                    className={cx('start', {
-                        active: status.activeStart,
-                    })}
-                    onClick={handleStart}
-                >
-                    <StartIcon className={cx('icon')} />
-                    <FormattedMessage id="monitor-room.monitor-realtime.start" />
-                </span>
-                <span
-                    className={cx('stop', {
-                        active: status.activeStop,
-                    })}
-                    onClick={handleStop}
-                >
-                    <StopIcon className={cx('icon')} />
-                    <FormattedMessage id="monitor-room.monitor-realtime.stop" />
-                </span>
-            </div>
-            <div className={cx('wrapper-content', 'row')}>
-                <div className={cx('chart', 'col l-9 m-12 c-12')}>{renderChart()}</div>
-                <div className={cx('select-mode', 'col l-3 m-12 c-12')}>
-                    <div className={cx('sample', ' c-8 c-o-2 m-5 l-12')}>
+            <div className={cx('row', 'content-control')}>
+                <div className={cx('col c-8 m-3 l-3')}>
+                    <div className={cx('sample')}>
                         <h2 className={cx('head')}>
                             <FormattedMessage id="monitor-room.monitor-realtime.sample" />
                         </h2>
-                        <span>
+                        <div className={cx('set-input')}>
                             <input
                                 disabled={status.activeStart}
                                 onChange={(e) => {
@@ -360,34 +304,66 @@ function MonitorRealtime({ roomId, companyId }) {
                                 }}
                                 value={inputSample}
                                 className={cx('input')}
-                                type="number"
+                                type="text"
                             />
                             <label className={cx('unit')}>( s )</label>
                             <button onClick={addValueSample} className={cx('btn')}>
                                 Ok
                             </button>
-                        </span>
-                    </div>
-                    <div className={cx('select-sensor', 'col c-12 m-12 l-12')}>
-                        <div className="row">
-                            {listIsDisplay.map((e) => (
-                                <span key={e.id} className={cx('wrapper-input', 'row', 'col c-6  m-3 l-12')}>
-                                    <input
-                                        type="checkbox"
-                                        checked={e.isCheck}
-                                        className={cx('option-input')}
-                                        value={e.key}
-                                        onChange={() => handleChangeCheckboxs(e.id)}
-                                    />
-                                    <label className={cx('title')}>
-                                        {e.name}
-                                        <span className={cx('init')}>{e.init}</span>
-                                    </label>
-                                </span>
-                            ))}
                         </div>
                     </div>
                 </div>
+                <div className={cx('col c-2 m-6 l-6')}>
+                    <div className={cx('status')}>
+                        <span
+                            className={cx('start', {
+                                active: status.activeStart,
+                            })}
+                            onClick={handleStart}
+                        >
+                            <StartIcon className={cx('icon')} />
+                            <FormattedMessage id="monitor-room.monitor-realtime.start" />
+                        </span>
+                        <span
+                            className={cx('stop', {
+                                active: status.activeStop,
+                            })}
+                            onClick={handleStop}
+                        >
+                            <StopIcon className={cx('icon')} />
+                            <FormattedMessage id="monitor-room.monitor-realtime.stop" />
+                        </span>
+                    </div>
+                </div>
+                <div className={cx('col c-2 m-3 l-3')}>
+                    <div className={cx('fan-control')}>
+                        <input
+                            className={cx('input-set-open-fan-control')}
+                            type="checkbox"
+                            id="setOpenFanControl"
+                        ></input>
+                        <label htmlFor="setOpenFanControl">
+                            <span className={cx('dashboard')}>
+                                <ControlerIcon />
+                                <p>Dashboard</p>
+                            </span>
+                        </label>
+                        <div className={cx('wrapper-fan-controler')}>
+                            <span className={cx('head-control')}>
+                                <p>Controler</p>
+                                <label htmlFor="setOpenFanControl">
+                                    <span className={cx('icon-close')}>
+                                        <CloseIcon width="2.0rem" height="2.0rem" color="#C9B8D2" fontWeight={4} />
+                                    </span>
+                                </label>
+                            </span>
+                            <FanControler roomId={roomId && roomId} companyId={companyId && companyId} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className={cx('wrapper-content', 'row')}>
+                <div className={cx('chart', 'col l-12 m-12 c-12')}>{renderChart()}</div>
             </div>
         </>
     );

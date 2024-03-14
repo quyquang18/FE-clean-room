@@ -1,17 +1,21 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { getDetailUserById, editUserService } from '~/services/userService';
+import { FormattedMessage } from 'react-intl';
+import Select from 'react-select';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+
+import { getDetailUserById, handleEditInforUser } from '~/services/userService';
 import images from '~/assets/images';
 import styles from './ProfileUser.module.scss';
 import { EditIcon } from '~/components/Icons';
-import Select from 'react-select';
 import ModalAvatarUser from './ModalAvatarUser';
 import * as actions from '~/store/actions';
-import { useSelector, useDispatch } from 'react-redux';
 import ModalEditPassword from './ModalEditPassword';
-import { toast } from 'react-toastify';
+
 const cx = classNames.bind(styles);
+
 function ProfileUser() {
     document.title = 'LUXAS-ProfileUser';
 
@@ -86,12 +90,11 @@ function ProfileUser() {
     };
     const saveInfoUser = async () => {
         let data = {};
-        data.type = 'info';
         data.id = inforUser.id;
         data.email = email;
         data.phonenumber = phonenumber;
         data.gender = selectedGender.value;
-        let res = await editUserService(data);
+        let res = await handleEditInforUser(data);
         if (res && res.errCode === 0) {
             toast.success(res.message);
             setIsEditInfo(false);
@@ -110,7 +113,9 @@ function ProfileUser() {
 
     return (
         <div className={cx('profile-user-container')}>
-            <h2 className={cx('title-page')}>You Profile</h2>
+            <h2 className={cx('title-page')}>
+                <FormattedMessage id="profile-user.title" />
+            </h2>
             <div className={cx('avatar-user')}>
                 {isOpenModalAvatarUser && (
                     <ModalAvatarUser
@@ -130,7 +135,9 @@ function ProfileUser() {
                 <div className={cx('btn-load-image')} onClick={handleChangeImage}>
                     <span className={cx('load-image-label')}>
                         <EditIcon width="2.0rem" height="2.0rem" />
-                        <span>Upload Image</span>
+                        <span>
+                            <FormattedMessage id="profile-user.upload-img" />
+                        </span>
                     </span>
                 </div>
             </div>
@@ -153,7 +160,9 @@ function ProfileUser() {
                     <div className="row">
                         <div className="col c-10 c-o-1  m-8 m-o-2 l-6 l-o-3">
                             <div className={cx('form-group')}>
-                                <label className={cx('lable-input')}>User Name:</label>
+                                <label className={cx('lable-input')}>
+                                    <FormattedMessage id="profile-user.username" />:
+                                </label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -166,7 +175,9 @@ function ProfileUser() {
                     <div className="row">
                         <div className="col c-10 c-o-1  m-8 m-o-2 l-6 l-o-3">
                             <div className={cx('form-group')}>
-                                <label className={cx('lable-input')}>Phone Number:</label>
+                                <label className={cx('lable-input')}>
+                                    <FormattedMessage id="profile-user.phonenumber" />:
+                                </label>
                                 <input
                                     className="form-control"
                                     type="text"
@@ -180,7 +191,9 @@ function ProfileUser() {
                     <div className="row">
                         <div className="col c-10 c-o-1  m-8 m-o-2 l-6 l-o-3">
                             <div className={cx('form-group')}>
-                                <label className={cx('lable-input')}>Gender:</label>
+                                <label className={cx('lable-input')}>
+                                    <FormattedMessage id="profile-user.gender" />:
+                                </label>
                                 {!isEditInfo ? (
                                     <input
                                         type="text"
@@ -201,7 +214,9 @@ function ProfileUser() {
                     <div className="row">
                         <div className="col c-10 c-o-1  m-8 m-o-2 l-6 l-o-3">
                             <div className={cx('form-group')}>
-                                <label className={cx('lable-input')}>Password:</label>
+                                <label className={cx('lable-input')}>
+                                    <FormattedMessage id="profile-user.password" />:
+                                </label>
                                 <input type="password" className="form-control" disabled={true} value={'1111111111'} />
                             </div>
                         </div>
@@ -211,9 +226,13 @@ function ProfileUser() {
                     </div>
                     <div className={cx('btn-edit-infor')}>
                         {!isEditInfo ? (
-                            <button onClick={() => setIsEditInfo(true)}>Chỉnh sửa thông tin</button>
+                            <button onClick={() => setIsEditInfo(true)}>
+                                <FormattedMessage id="profile-user.edit-info" />
+                            </button>
                         ) : (
-                            <button onClick={() => saveInfoUser()}>Lưu</button>
+                            <button onClick={() => saveInfoUser()}>
+                                <FormattedMessage id="profile-user.save" />
+                            </button>
                         )}
                     </div>
                 </div>

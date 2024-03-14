@@ -1,7 +1,7 @@
 import Modal from '~/components/Modal';
 import { useState } from 'react';
 import Avatar from 'react-avatar-edit';
-import { editUserService } from '~/services/userService';
+import { handleUpdateImageAvatar } from '~/services/userService';
 import { toast } from 'react-toastify';
 function ModalAvatarUser({ ...props }) {
     const toggle = () => {
@@ -22,7 +22,7 @@ function ModalAvatarUser({ ...props }) {
         }
     };
     const handleSaveAvatar = async () => {
-        let res = await editUserService({ type: 'image', id: props.userId, avatar: previewAvatar });
+        let res = await handleUpdateImageAvatar({ id: props.userId, avatar: previewAvatar });
         if (res && res.errCode === 0) {
             toast.success('Update Avatar Succeed');
             props.toggeAvatarUserModal();

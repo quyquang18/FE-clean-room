@@ -11,6 +11,7 @@ const cx = classNames.bind(styles);
 function Notifycation() {
     const [listNotifycation, setListNotifycation] = useState([]);
     const [isShowTippy, setIsShowTippy] = useState(false);
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
     const handleHide = () => {
         setIsShowTippy(false);
     };
@@ -39,17 +40,41 @@ function Notifycation() {
     };
     const companyId = useSelector((state) => state.user.userInfo.companyId);
     const userId = useSelector((state) => state.user.userInfo.id);
+    let timeoutId;
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    useEffect(() => {
+        const checkLoginStatus = () => {
+            let dataLocalStorage = localStorage.getItem('persist:user');
+            let dataUserLCST = !!dataLocalStorage ? JSON.parse(dataLocalStorage) : null;
+            const testLogin = JSON.parse(dataUserLCST?.isLoggedIn) || false;
+            if (testLogin === true) {
+                setIsLoggedIn(true);
+                clearTimeout(timeoutId);
+                return;
+            } else {
+                timeoutId = setTimeout(checkLoginStatus, 1000);
+            }
+        };
+
+        checkLoginStatus();
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [isLoggedIn]);
     const handleGetNotifycation = useCallback(async () => {
-        if (companyId && userId) {
+        if (companyId && userId && isLoggedIn) {
             let res = await getNotifycations({ companyId, userId });
             if (res && res.errCode === 0) {
                 setListNotifycation(res.data);
+            } else {
             }
         }
-    }, [companyId, userId]);
+    }, [companyId, userId, isLoggedIn]);
     useEffect(() => {
         handleGetNotifycation();
     }, [handleGetNotifycation]);
+
     return (
         <Tippy
             interactive={true}

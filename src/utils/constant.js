@@ -41,8 +41,8 @@ export const YesNoObj = {
     NO: 'N',
 };
 export const StatusOnOff = {
-    ON: 'ON',
-    OFF: 'OFF',
+    ON: 1,
+    OFF: 0,
 };
 export const USER_ROLE = {
     MANAGE_SYSTEM: 'R1',
@@ -78,6 +78,6 @@ export const STAUTUS_COMPANY = {
     CONFIRMED: 'CONFIRMED',
 };
 export const MODAL = {
-    MANUAL: 'MANUAL',
-    AUTOMATION: 'AUTOMATION',
+    MANUAL: 1,
+    AUTOMATION: 0,
 };

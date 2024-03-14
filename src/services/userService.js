@@ -9,8 +9,17 @@ const handleVerifyEmail = (id, token) => {
 const handleRegisterApi = (data) => {
     return axios.post(`/api/create-new-user`, data);
 };
-const editUserService = (data) => {
-    return axios.put(`/api/edit-user`, data);
+const handleUpdateRoleUser = (data) => {
+    return axios.put(`/api/update-role-user`, data);
+};
+const handleUpdateImageAvatar = (data) => {
+    return axios.post(`/api/update-avatar-user`, data);
+};
+const handleChangePassWord = (data) => {
+    return axios.put(`/api/change-password`, data);
+};
+const handleEditInforUser = (data) => {
+    return axios.put(`/api/edit-infor-user`, data);
 };
 const apiRegisterCompany = (data) => {
     return axios.post('/api/create-new-company', data);
@@ -59,7 +68,6 @@ export {
     handleGetAllUser,
     createNewUserService,
     deleteUserService,
-    editUserService,
     getAllCodeService,
     getDetailUserById,
     handleUpdateRole,
@@ -70,4 +78,8 @@ export {
     getAllUserByCompany,
     apiConfirmUserByCompany,
     sendNotificationsWarning,
+    handleChangePassWord,
+    handleEditInforUser,
+    handleUpdateImageAvatar,
+    handleUpdateRoleUser,
 };
